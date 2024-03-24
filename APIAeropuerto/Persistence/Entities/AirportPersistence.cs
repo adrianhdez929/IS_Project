@@ -9,4 +9,6 @@ public class AirportPersistence
     public string Address { get; set; }
     public string GeographicPosition { get; set; }
     public virtual IEnumerable<InstallationsPersistence> Installations { get; set; }
+    public virtual IEnumerable<FlightPersistence> OriginFlights { get; set; }
+    public virtual IEnumerable<FlightPersistence> DestinationFlights { get; set; }
 }

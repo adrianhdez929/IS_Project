@@ -17,7 +17,7 @@ public class ClientServiceController : Controller
 
     [HttpDelete]
     [Route("{idClient},{idService}")]
-    public async Task<IActionResult> Delete(Guid idClient, string idService)
+    public async Task<IActionResult> Delete(Guid idClient, Guid idService)
     {
         var result = await _deleteClientServiceUseCase.Execute(new DeleteClientServiceDTO()
             { IdClient = idClient, IdService = idService });

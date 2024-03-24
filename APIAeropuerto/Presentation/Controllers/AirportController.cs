@@ -1,6 +1,9 @@
 ﻿using APIAeropuerto.Application.DTOs.Airport;
 using APIAeropuerto.Application.UseCases.Airport;
 using APIAeropuerto.Domain.Interfaces;
+using APIAeropuerto.Domain.Shared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIAeropuerto.Presentation.Controllers;
@@ -32,6 +35,7 @@ public class AirportController : Controller
     }
     
     [HttpPost]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadAirport)]
     public async Task<IActionResult> CreateAirport([FromBody] CreateAirportDTO dto)
     {
         var result = await _createAirportUseCase.Execute(dto);

@@ -5,6 +5,6 @@ namespace APIAeropuerto.Domain.Interfaces;
 
 public interface IAirportRepository : IBaseRepository<AirportEntity>
 {
-    public Task<GetAirportInstDTO> GetInstallations(Guid id, CancellationToken ct);
-    public Task<AirportEntity> GetOneAirport(Guid id, CancellationToken ct);
+    Task<GetAirportInstDTO> GetInstallations(Guid id, CancellationToken ct);
+    Task<AirportEntity> GetOneAirport(Guid id, CancellationToken ct);
 }

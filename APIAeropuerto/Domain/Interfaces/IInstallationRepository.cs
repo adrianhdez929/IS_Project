@@ -6,7 +6,7 @@ namespace APIAeropuerto.Domain.Interfaces;
 
 public interface IInstallationRepository : IBaseRepository<InstallationsEntity>
 {
-    public Task<InstallationsEntity> CreateInstallations(InstallationsPersistence entity, CancellationToken ct);
-    public Task<GetInstallationServicesDTO> GetServices(Guid id, CancellationToken ct);
-    public Task<InstallationsEntity> GetOneInstallation(Guid id, CancellationToken ct);
+    Task<InstallationsEntity> CreateInstallations(InstallationsPersistence entity, CancellationToken ct);
+    Task<GetInstallationServicesDTO> GetServices(Guid id, CancellationToken ct);
+    Task<InstallationsEntity> GetOneInstallation(Guid id, CancellationToken ct);
 }

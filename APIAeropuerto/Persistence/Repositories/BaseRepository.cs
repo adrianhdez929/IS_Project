@@ -1,4 +1,5 @@
-﻿using APIAeropuerto.Domain.Interfaces;
+﻿using System.Linq.Expressions;
+using APIAeropuerto.Domain.Interfaces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -80,4 +81,25 @@ public class BaseRepository<TEntity,TPEntity,TContext> : IBaseRepository<TEntity
         _table.Remove(temp);
         await _context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<TEntity> GetOneReadOnlyAsync<TKey>(TKey primaryKeyValue, string primaryKeyName = "Id", CancellationToken cancellationToken = default)
+    {
+        var parameter = Expression.Parameter(typeof(TPEntity), "entity");
+        var property = Expression.Property(parameter, primaryKeyName);
+        var value = Expression.Constant(primaryKeyValue);
+        var equal = Expression.Equal(property, value);
+        var lambda = Expression.Lambda<Func<TPEntity, bool>>(equal, parameter);
+        
+        var temp = await _table
+            .AsNoTracking()
+            .FirstOrDefaultAsync(lambda, cancellationToken);
+
+        if (temp == null)
+        {
+            throw new KeyNotFoundException($"Error: Entity with {primaryKeyName} {primaryKeyValue} Not Found");
+        }
+
+        return _mapper.Map<TPEntity, TEntity>(temp);
+    }
+
 }

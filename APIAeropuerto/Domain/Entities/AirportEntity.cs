@@ -39,4 +39,6 @@ public class AirportEntity : BaseEntity
     public string Address { get; set; }
     public string GeographicPosition { get; set; }
     public virtual IEnumerable<InstallationsEntity> Installations { get; private set; }
+    public virtual IEnumerable<FlightEntity> OriginFlights { get; private set; }
+    public virtual IEnumerable<FlightEntity> DestinationFlights { get; private set; }
 }

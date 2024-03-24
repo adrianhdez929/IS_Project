@@ -17,6 +17,8 @@ public class CreateAirportUseCase : IUseCase<AirportDTO, CreateAirportDTO>
     }
     public async Task<AirportDTO> Execute(CreateAirportDTO dto, CancellationToken ct = default)
     {
+        var airports = await _repository.GetAll(ct);
+        if (airports.Any(a => a.Address == dto.Address)) throw new Exception("El aeropuerto ya existe");
         var devices = new List<InstallationsEntity>();
         foreach (var d in dto.Installations)
         {

@@ -81,11 +81,11 @@ public class ClientController : Controller
         return Ok(result);
     }
     
-    [HttpGet]
-    [Route("{id}/services/{serviceId}")]
-    public async Task<IActionResult> AddService(Guid id, string serviceId, CancellationToken ct = default)
+    [HttpPost]
+    [Route("add/services")]
+    public async Task<IActionResult> AddService([FromBody]AddServiceDTO addServiceDto, CancellationToken ct = default)
     {
-        var result = await _addServiceUseCase.Execute(new AddServiceDTO(){IdClient = id, IdService = serviceId},ct);
+        var result = await _addServiceUseCase.Execute(addServiceDto,ct);
         return Ok(result);
     }
 }

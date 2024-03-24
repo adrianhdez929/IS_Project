@@ -6,4 +6,5 @@ public interface IBaseRepository<TEntity>
     Task<TEntity> Create(TEntity entity, CancellationToken cancellationToken = default);
     Task Put(Guid id, TEntity entity, CancellationToken cancellationToken = default);
     Task Delete(Guid id, CancellationToken cancellationToken = default);
+    Task<TEntity> GetOneReadOnlyAsync<TKey>(TKey primaryKeyValue, string primaryKeyName = "Id", CancellationToken cancellationToken = default);
 }

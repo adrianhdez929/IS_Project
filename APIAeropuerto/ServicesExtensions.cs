@@ -1,4 +1,8 @@
-﻿using APIAeropuerto.Persistence;
+﻿using APIAeropuerto.Domain.Entities;
+using APIAeropuerto.Persistence;
+using APIAeropuerto.Persistence.Entities;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace APIAeropuerto;
@@ -11,4 +15,11 @@ public static class ServicesExtensions
             dbContextOptions => dbContextOptions
                 .UseSqlServer(config.GetConnectionString("ApiConnection")));
     }
-}
+    
+    public static void ConfigureIdentity(this IServiceCollection services)
+    {
+        services.AddIdentity<UserPersistence, RolePersistence>()
+            .AddEntityFrameworkStores<CoreDbContext>()
+            .AddDefaultTokenProviders();
+    }
+}   

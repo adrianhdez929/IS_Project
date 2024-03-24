@@ -6,10 +6,11 @@ namespace APIAeropuerto.Domain.Interfaces;
 
 public interface IServiceRepository
 {
-    public Task<ServicesEntity> CreateService(ServicesPersistence entity, CancellationToken ct);
-    public Task DeleteService(string code);
-    public Task<ServicesEntity> GetOneService(string code);
-    public Task UpdateService(string code, ServicesEntity entity,CancellationToken ct);
+    Task<ServiceDTO> CreateRepairService(CreateRepairServiceDTO dto, CancellationToken ct);
+    Task<ServicesEntity> CreateService(ServicesPersistence entity, CancellationToken ct);
+    Task DeleteService(string code);
+    Task<ServicesEntity> GetOneService(string code);
+    Task UpdateService(string code, ServicesEntity entity,CancellationToken ct);
     
-    public Task<GetAllClientsServiceDTO> GetAllClientsService(string code,CancellationToken ct);
+    Task<GetAllClientsServiceDTO> GetAllClientsService(string code,CancellationToken ct);
 }

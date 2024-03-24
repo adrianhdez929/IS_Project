@@ -20,7 +20,7 @@ public class AddServiceUseCase : IUseCase<string,AddServiceDTO>
 
     public async Task<string> Execute(AddServiceDTO dto, CancellationToken ct = default)
     {
-        var temp = ClientServicesEntity.Create(dto.IdClient, dto.IdService);
+        var temp = ClientServicesEntity.Create(dto.IdClient, dto.IdService, dto.Comments, dto.Rating);
         await _repository.AddService(temp.Value,ct);
         return "Service added";
     }

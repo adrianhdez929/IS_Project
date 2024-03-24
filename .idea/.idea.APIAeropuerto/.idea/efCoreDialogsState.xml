@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EfCoreDialogsState">
+    <option name="keyValueStorage">
+      <map>
+        <entry key="Common:168ff206-b53e-4ee7-b754-adeeb041b77a:dbContext" value="APIAeropuerto.Data.CoreDbContext" />
+        <entry key="Common:68b26016-131c-4c39-a7a3-a90f52cf583b:dbContext" value="APIAeropuerto.Persistence.CoreDbContext" />
+        <entry key="Common:buildConfiguration" value="Debug" />
+        <entry key="Common:c0a9cee5-46b7-4f3f-bc15-14d2f2acf60f:dbContext" value="APIAeropuerto.Persistence.CoreDbContext" />
+        <entry key="Common:noBuild" value="false" />
+        <entry key="Common:outputFolder" value="Persistence\Migrations" />
+        <entry key="Common:useDefaultConnection" value="true" />
+      </map>
+    </option>
+  </component>
+</project>

@@ -84,11 +84,17 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.Property<Guid>("IdClient")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("IdService")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("IdService")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
+
+                    b.Property<float>("Rating")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");
@@ -98,6 +104,49 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.HasIndex("IdService");
 
                     b.ToTable("ClientServices");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.FlightPersistence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ArrivalDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DepartureDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("IdAirportDestination")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdAirportOrigin")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdClient")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdShip")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdAirportDestination");
+
+                    b.HasIndex("IdAirportOrigin");
+
+                    b.HasIndex("IdClient");
+
+                    b.HasIndex("IdShip");
+
+                    b.ToTable("Flights");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.InstallationsPersistence", b =>
@@ -138,10 +187,30 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.ToTable("Installations");
                 });
 
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ServiceServicePersistence", b =>
+                {
+                    b.Property<Guid>("IdService1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdService2")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("IdService1", "IdService2");
+
+                    b.HasIndex("IdService2");
+
+                    b.ToTable("RepairServices");
+                });
+
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ServicesPersistence", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -153,17 +222,350 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.Property<Guid>("InstallationId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Precio")
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<int>("ServiceType")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Code");
+                    b.HasKey("Id");
 
                     b.HasIndex("InstallationId");
 
                     b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ShipPersistence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Clasification")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PassengersAmmount")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("PropietaryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TripulationAmmount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tuition")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PropietaryId");
+
+                    b.ToTable("Ships");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.UserPersistence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastLogin")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole<Guid>");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRoleClaim<Guid>");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserClaim<Guid>");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserLogin<Guid>");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserRole<Guid>");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.RolePersistence", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.HasDiscriminator().HasValue("RolePersistence");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.RoleClaimPersistence", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>");
+
+                    b.HasDiscriminator().HasValue("RoleClaimPersistence");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.UserClaimPersistence", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>");
+
+                    b.HasIndex("UserId");
+
+                    b.HasDiscriminator().HasValue("UserClaimPersistence");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.UserLoginPersistence", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>");
+
+                    b.HasIndex("UserId");
+
+                    b.HasDiscriminator().HasValue("UserLoginPersistence");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.UserRolePersistence", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>");
+
+                    b.HasDiscriminator().HasValue("UserRolePersistence");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ClientServicesPersistence", b =>
@@ -185,6 +587,41 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.Navigation("Service");
                 });
 
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.FlightPersistence", b =>
+                {
+                    b.HasOne("APIAeropuerto.Persistence.Entities.AirportPersistence", "AirportDestination")
+                        .WithMany("DestinationFlights")
+                        .HasForeignKey("IdAirportDestination")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("APIAeropuerto.Persistence.Entities.AirportPersistence", "AirportOrigin")
+                        .WithMany("OriginFlights")
+                        .HasForeignKey("IdAirportOrigin")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("APIAeropuerto.Persistence.Entities.ClientPersistence", "Client")
+                        .WithMany("Flights")
+                        .HasForeignKey("IdClient")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("APIAeropuerto.Persistence.Entities.ShipPersistence", "Ship")
+                        .WithMany("Flights")
+                        .HasForeignKey("IdShip")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("AirportDestination");
+
+                    b.Navigation("AirportOrigin");
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Ship");
+                });
+
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.InstallationsPersistence", b =>
                 {
                     b.HasOne("APIAeropuerto.Persistence.Entities.AirportPersistence", "Airport")
@@ -194,6 +631,25 @@ namespace APIAeropuerto.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Airport");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ServiceServicePersistence", b =>
+                {
+                    b.HasOne("APIAeropuerto.Persistence.Entities.ServicesPersistence", "RepairService1")
+                        .WithMany("ServiceService")
+                        .HasForeignKey("IdService1")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("APIAeropuerto.Persistence.Entities.ServicesPersistence", "RepairService2")
+                        .WithMany()
+                        .HasForeignKey("IdService2")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("RepairService1");
+
+                    b.Navigation("RepairService2");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ServicesPersistence", b =>
@@ -207,14 +663,111 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.Navigation("Installation");
                 });
 
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ShipPersistence", b =>
+                {
+                    b.HasOne("APIAeropuerto.Persistence.Entities.ClientPersistence", "Propietary")
+                        .WithMany()
+                        .HasForeignKey("PropietaryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Propietary");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.HasOne("APIAeropuerto.Persistence.Entities.UserPersistence", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.RoleClaimPersistence", b =>
+                {
+                    b.HasOne("APIAeropuerto.Persistence.Entities.RolePersistence", "RolePersistence")
+                        .WithMany("RoleClaims")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("FK_AspNetRoleClaims_AspNetRoles_RoleId1");
+
+                    b.Navigation("RolePersistence");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.UserClaimPersistence", b =>
+                {
+                    b.HasOne("APIAeropuerto.Persistence.Entities.UserPersistence", "UserPersistence")
+                        .WithMany("UserClaims")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserPersistence");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.UserLoginPersistence", b =>
+                {
+                    b.HasOne("APIAeropuerto.Persistence.Entities.UserPersistence", "UserPersistence")
+                        .WithMany("UserLogins")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("UserPersistence");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.UserRolePersistence", b =>
+                {
+                    b.HasOne("APIAeropuerto.Persistence.Entities.RolePersistence", "RolePersistence")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("APIAeropuerto.Persistence.Entities.UserPersistence", "UserPersistence")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RolePersistence");
+
+                    b.Navigation("UserPersistence");
+                });
+
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.AirportPersistence", b =>
                 {
+                    b.Navigation("DestinationFlights");
+
                     b.Navigation("Installations");
+
+                    b.Navigation("OriginFlights");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ClientPersistence", b =>
                 {
                     b.Navigation("ClientServices");
+
+                    b.Navigation("Flights");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.InstallationsPersistence", b =>
@@ -225,6 +778,29 @@ namespace APIAeropuerto.Persistence.Migrations
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ServicesPersistence", b =>
                 {
                     b.Navigation("ClientServices");
+
+                    b.Navigation("ServiceService");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ShipPersistence", b =>
+                {
+                    b.Navigation("Flights");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.UserPersistence", b =>
+                {
+                    b.Navigation("UserClaims");
+
+                    b.Navigation("UserLogins");
+
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.RolePersistence", b =>
+                {
+                    b.Navigation("RoleClaims");
+
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

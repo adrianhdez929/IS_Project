@@ -79,3 +79,5 @@ C:\EISLER\Projects\School\APIAeropuerto\APIAeropuerto\bin\Debug\net7.0\Newtonsof
 C:\EISLER\Projects\School\APIAeropuerto\APIAeropuerto\bin\Debug\net7.0\Newtonsoft.Json.Bson.dll
 C:\EISLER\Projects\School\APIAeropuerto\APIAeropuerto\obj\Debug\net7.0\APIAeropuerto.RazorAssemblyInfo.cache
 C:\EISLER\Projects\School\APIAeropuerto\APIAeropuerto\obj\Debug\net7.0\APIAeropuerto.RazorAssemblyInfo.cs
+C:\EISLER\Projects\School\APIAeropuerto\APIAeropuerto\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\EISLER\Projects\School\APIAeropuerto\APIAeropuerto\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

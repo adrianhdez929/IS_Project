@@ -36,7 +36,7 @@ public class ClientRepository : BaseRepository<ClientEntity,ClientPersistence,Co
 
     public async Task AddService(ClientServicesEntity dto, CancellationToken ct)
     {
-        var service = await _context.Services.FirstOrDefaultAsync(x => x.Code == dto.IdService);
+        var service = await _context.Services.FirstOrDefaultAsync(x => x.Id == dto.IdService, ct);
         if (service == null) throw new Exception("Service not Found");
         var clientService = _mapper.Map<ClientServicesPersistence>(dto);
         _context.ClientServices.Add(clientService);

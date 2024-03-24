@@ -1,10 +1,12 @@
 ﻿using APIAeropuerto.Application.DTOs.Client;
 using APIAeropuerto.Application.DTOs.Services;
 using APIAeropuerto.Domain.Entities;
+using APIAeropuerto.Domain.Enums;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Exception = System.Exception;
 
 namespace APIAeropuerto.Persistence.Repositories;
 
@@ -14,9 +16,39 @@ public class ServiceRepository : BaseRepository<ServicesEntity,ServicesPersisten
     {
     }
 
+    public async Task<ServiceDTO> CreateRepairService(CreateRepairServiceDTO dto, CancellationToken ct)
+    {
+        var i = await _context
+            .Installations
+            .Include(x => x.Services)
+            .FirstOrDefaultAsync(x => x.Id == dto.InstallationId, ct);
+        
+        if (i is null) throw new Exception("Installation not Found");
+        var service = ServicesEntity.CreateRepairService(dto.Code, dto.Description, dto.Price, _mapper.Map<InstallationsEntity>(i), ServiceType.Repair);
+        if (!service.IsSuccess) throw new Exception(service.ErrorMessage);
+        var all = await _context.Services.ToListAsync(ct);
+        if (all.Any(x => x.Code == service.Value?.Code)) throw new Exception("Code already exists");
+        service.Value!.Installation = null!;
+        var mapper = _mapper.Map<ServicesPersistence>(service.Value);
+        _context.Services.Add(mapper);
+        var temp = i.Services?.ToList() ?? new List<ServicesPersistence>();
+        temp.Add(mapper);
+        i.Services = temp;
+        foreach (var s in dto.RepairService)
+        {
+            if(!all.Any(x => x.Id == s)) throw new Exception("Service not Found");
+            var serviceService = ServiceServiceEntity.Create(service.Value!.Id, s);
+            _context.RepairServices.Add(_mapper.Map<ServiceServicePersistence>(serviceService));
+        }
+        await _context.SaveChangesAsync(ct);
+        return _mapper.Map<ServiceDTO>(service.Value);
+    }
+
     public virtual async Task<ServicesEntity> CreateService(ServicesPersistence entity, CancellationToken ct)
     {
-        var i = await _context.Installations.Include(x => x.Services)
+        var i = await _context
+            .Installations
+            .Include(x => x.Services)
             .FirstOrDefaultAsync(x => x.Id == entity.Installation.Id, ct);
         
         if (i is null) throw new Exception("Installation not Found");

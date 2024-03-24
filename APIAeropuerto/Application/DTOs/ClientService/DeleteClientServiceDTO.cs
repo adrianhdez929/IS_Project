@@ -3,5 +3,5 @@
 public class DeleteClientServiceDTO
 {
     public Guid IdClient { get; set; }
-    public string IdService { get; set; }
+    public Guid IdService { get; set; }
 }
