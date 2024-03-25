@@ -18,5 +18,10 @@ public class FlightMapper : Profile
             .ForMember(x => x.Destination, opt => opt.MapFrom(src => src.AirportDestination));
         CreateMap<FlightEntity, FlightDTO>();
         CreateMap<FlightDTO, FlightEntity>();
+        CreateMap<FlightPersistence, GetAllFlightDTO>()
+            .ForMember(x => x.Ship, opt => opt.MapFrom(src => src.Ship))
+            .ForMember(x => x.Origin, opt => opt.MapFrom(src => src.AirportOrigin))
+            .ForMember(x => x.Destination, opt => opt.MapFrom(src => src.AirportDestination));
+        CreateMap<GetAllFlightDTO, FlightPersistence>();
     }
 }

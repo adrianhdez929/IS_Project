@@ -17,9 +17,9 @@ public class UpdateServiceUseCase : IUseCase<ServiceDTO,UpdateServiceDTO>
     }
     public async Task<ServiceDTO> Execute(UpdateServiceDTO dto, CancellationToken ct = default)
     {
-        var temp = await _repository.GetOneService(dto.Code);
+        var temp = await _repository.GetOneService(dto.Id);
         temp.Update(dto.Description,dto.Precio);
-        await _repository.UpdateService(dto.Code,temp, ct);
+        await _repository.UpdateService(dto.Id,temp, ct);
         return _mapper.Map<ServiceDTO>(temp);
     }
 }

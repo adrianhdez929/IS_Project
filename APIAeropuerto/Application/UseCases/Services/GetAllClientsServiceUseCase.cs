@@ -16,7 +16,7 @@ public class GetAllClientsServiceUseCase : IUseCase<GetAllClientsServiceDTO,GetO
     }
     public async Task<GetAllClientsServiceDTO> Execute(GetOneServiceDTO dto, CancellationToken ct = default)
     {
-        var temp = await _repository.GetAllClientsService(dto.Code,ct);
+        var temp = await _repository.GetAllClientsService(dto.Id,ct);
         if (temp == null) throw new Exception("Service not Found");
         return temp;
     }

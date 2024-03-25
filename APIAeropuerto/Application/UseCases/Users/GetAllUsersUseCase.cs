@@ -15,9 +15,9 @@ public class GetAllUsersUseCase
         _userManager = userManager;
         _mapper = mapper;
     }
-    public async Task<IEnumerable<UsersDTO>> Execute(CancellationToken ct = default)
+    public async Task<IEnumerable<GetAllUsersDTO>> Execute(CancellationToken ct = default)
     {
         var users = await _userManager.Users.ToListAsync();
-        return _mapper.Map<IEnumerable<UsersDTO>>(users);
+        return _mapper.Map<IEnumerable<GetAllUsersDTO>>(users);
     }
 }

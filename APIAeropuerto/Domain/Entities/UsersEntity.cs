@@ -39,6 +39,19 @@ public class UsersEntity : IdentityUser<Guid>
                 ErrorMessage = "Name is required and must be at least 3 characters long",
                 Value = null!
             };
+        var check = CheckEmail(email);
+        if (!check.IsSuccess) return check;
+        var user = new UsersEntity(Guid.NewGuid(), name, email, password);
+        return new UsersWrapper
+        {
+            IsSuccess = true,
+            ErrorMessage = string.Empty,
+            Value = user
+        };
+    }
+
+    public static UsersWrapper CheckEmail(string email)
+    {
         if(string.IsNullOrWhiteSpace(email)) 
             return new UsersWrapper()
             {
@@ -60,18 +73,16 @@ public class UsersEntity : IdentityUser<Guid>
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            throw new Exception(e.Message);
         }
-        var user = new UsersEntity(Guid.NewGuid(), name, email, password);
-        return new UsersWrapper
+
+        return new UsersWrapper()
         {
             IsSuccess = true,
-            ErrorMessage = string.Empty,
-            Value = user
+            ErrorMessage = null,
+            Value = null,
         };
     }
-
     private static string DomainMapper(Match match)
     {
         var idn = new IdnMapping();

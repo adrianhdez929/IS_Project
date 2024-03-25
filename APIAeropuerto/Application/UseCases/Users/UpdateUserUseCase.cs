@@ -1,5 +1,7 @@
 ﻿using APIAeropuerto.Application.DTOs.Users;
+using APIAeropuerto.Domain.Entities;
 using APIAeropuerto.Domain.Interfaces;
+using APIAeropuerto.Domain.Shared;
 using APIAeropuerto.Persistence.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
@@ -19,8 +21,13 @@ public class UpdateUserUseCase : IUseCase<UsersDTO,UpdateUserDTO>
     {
         var user = await _userManager.FindByIdAsync(dto.Id.ToString());
         if (user is null) throw new Exception("User not found");
+        var wrapper = UsersEntity.CheckEmail(dto.Email);
+        if(!wrapper.IsSuccess) throw new Exception(wrapper.ErrorMessage);
         user.Email = dto.Email;
-        user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, dto.Password);
+        var passwordChecked = CheckPassword.Check(dto.Password);
+        if(!String.IsNullOrEmpty(passwordChecked)) throw new Exception(passwordChecked);
+        var d = _userManager.PasswordHasher.HashPassword(user, dto.Password);
+        user.PasswordHash = d;
         var result = await _userManager.UpdateAsync(user);
         if (result.Succeeded) return _mapper.Map<UsersDTO>(user);
         return null!;

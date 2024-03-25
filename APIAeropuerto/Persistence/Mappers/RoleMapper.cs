@@ -16,5 +16,7 @@ public class RoleMapper : Profile
         CreateMap<CreateRoleDTO, RoleDTO>();
         CreateMap<CreateRoleDTO, RolePersistence>();
         CreateMap<UpdateRoleDTO, RoleEntity>();
+        CreateMap<RolePersistence, GetAllRolesDTO>();
+        CreateMap<GetAllRolesDTO, RolePersistence>();
     }
 }

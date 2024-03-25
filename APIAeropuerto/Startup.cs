@@ -105,7 +105,6 @@ public class Startup
                 opt.AddPolicy(claim, policy => policy.RequireClaim("Auth", claim));
             }
         });
-
         //UsesCases
         //Airport UseCases
         services.AddScoped<IUseCase<AirportDTO,CreateAirportDTO>, CreateAirportUseCase>();
@@ -213,6 +212,7 @@ public class Startup
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        app.ConfigureDatabase();
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();

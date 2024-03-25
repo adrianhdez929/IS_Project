@@ -6,15 +6,15 @@ namespace APIAeropuerto.Application.UseCases.Services;
 
 public class DeleteServiceUseCase : IUseCase<string,DeleteServiceDTO>
 {
-    private readonly IServiceRepository _repository;
+    private readonly IBaseRepository<ServicesEntity> _repository;
 
-    public DeleteServiceUseCase(IServiceRepository repository)
+    public DeleteServiceUseCase(IBaseRepository<ServicesEntity> repository)
     {
         _repository = repository;
     }
     public async Task<string> Execute(DeleteServiceDTO dto, CancellationToken ct = default)
     {
-        await _repository.DeleteService(dto.Code);
+        await _repository.Delete(dto.Id);
         return null!;
     }
 }

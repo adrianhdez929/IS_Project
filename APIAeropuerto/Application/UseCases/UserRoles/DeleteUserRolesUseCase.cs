@@ -14,7 +14,7 @@ public class DeleteUserRolesUseCase : IUseCase<string,DeleteUserRolesDTO>
     }
     public async Task<string> Execute(DeleteUserRolesDTO dto, CancellationToken ct = default)
     {
-        var user = await _userManager.FindByIdAsync(dto.Id.ToString());
+        var user = await _userManager.FindByNameAsync(dto.Name);
         if (user is null) throw new Exception("User not found");
         var roles = await _userManager.GetRolesAsync(user);
         foreach (var role in roles)

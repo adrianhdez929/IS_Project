@@ -53,11 +53,11 @@ public class ShipRepository : BaseRepository<ShipEntity,ShipPersistence,CoreDbCo
         return _mapper.Map<ShipDTO>(p);
     }
 
-    public async Task<IEnumerable<ShipDTO>> GetAllShips(CancellationToken ct = default)
+    public async Task<IEnumerable<GetAllShipDTO>> GetAllShips(CancellationToken ct = default)
     {
         var p = await _context.Ships
             .Include(x => x.Propietary)
             .ToListAsync(ct);
-        return _mapper.Map<IEnumerable<ShipDTO>>(p);
+        return _mapper.Map<IEnumerable<GetAllShipDTO>>(p);
     }
 }

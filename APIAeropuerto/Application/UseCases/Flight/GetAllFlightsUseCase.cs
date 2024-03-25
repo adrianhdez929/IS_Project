@@ -15,9 +15,9 @@ public class GetAllFlightsUseCase
         _repository = repository;
         _mapper = mapper;
     }
-    public async Task<IEnumerable<FlightDTO>> Execute(CancellationToken ct = default)
+    public async Task<IEnumerable<GetAllFlightDTO>> Execute(CancellationToken ct = default)
     {
         var result = await _repository.GetAllFlights(ct);
-        return _mapper.Map<IEnumerable<FlightDTO>>(result);
+        return result;
     }
 }

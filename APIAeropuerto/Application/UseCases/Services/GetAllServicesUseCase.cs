@@ -16,9 +16,9 @@ public class GetAllServicesUseCase
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ServiceDTO>> Execute()
+    public async Task<IEnumerable<GetAllServicesDTO>> Execute()
     {
         var temp = await _repository.GetAll();
-        return _mapper.Map<IEnumerable<ServiceDTO>>(temp);
+        return _mapper.Map<IEnumerable<GetAllServicesDTO>>(temp);
     }
 }

@@ -17,7 +17,7 @@ public class GetOneServiceUseCase : IUseCase<ServiceDTO,GetOneServiceDTO>
 
     public async Task<ServiceDTO> Execute(GetOneServiceDTO dto, CancellationToken ct = default)
     {
-        var temp = await _repository.GetOneService(dto.Code);
+        var temp = await _repository.GetOneService(dto.Id);
         return _mapper.Map<ServiceDTO>(temp);
     }    
 }

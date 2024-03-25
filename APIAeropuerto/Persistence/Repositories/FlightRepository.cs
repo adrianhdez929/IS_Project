@@ -107,9 +107,9 @@ public class FlightRepository : BaseRepository<FlightEntity,FlightPersistence,Co
         return _mapper.Map<FlightDTO>(flight);
     }
 
-    public async Task<IEnumerable<FlightDTO>> GetAllFlights(CancellationToken ct = default)
+    public async Task<IEnumerable<GetAllFlightDTO>> GetAllFlights(CancellationToken ct = default)
     {
         var flights = await _context.Flights.Include(x=> x.AirportOrigin ).Include(x=> x.AirportDestination).Include(x=> x.Ship).ToListAsync(ct);
-        return _mapper.Map<IEnumerable<FlightDTO>>(flights);
+        return _mapper.Map<IEnumerable<GetAllFlightDTO>>(flights);
     }
 }

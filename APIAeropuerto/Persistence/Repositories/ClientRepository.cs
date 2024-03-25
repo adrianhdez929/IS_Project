@@ -30,7 +30,7 @@ public class ClientRepository : BaseRepository<ClientEntity,ClientPersistence,Co
         var services = temp.ClientServices?.Select(x => x.Service);
         return new GetlAllServicesClientDTO()
         {
-            Services = _mapper.Map<List<ServiceDTO>>(services)
+            Services = _mapper.Map<List<GetAllServicesDTO>>(services)
         };
     }
 

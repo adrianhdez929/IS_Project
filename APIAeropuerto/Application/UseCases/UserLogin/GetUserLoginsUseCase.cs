@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace APIAeropuerto.Application.UseCases.UserLogin;
 
-public class GetUserLoginsUseCase : IUseCase<IEnumerable<UserLoginDTO>,GetUserLoginsDTO>
+public class GetUserLoginsUseCase : IUseCase<IEnumerable<GetUserLoginsDTO>,GetUserLoginsDTO>
 {
     private readonly UserManager<UserPersistence> _userManager;
     private readonly IMapper _mapper;
@@ -15,7 +15,7 @@ public class GetUserLoginsUseCase : IUseCase<IEnumerable<UserLoginDTO>,GetUserLo
         _userManager = userManager;
         _mapper = mapper;
     }
-    public async Task<IEnumerable<UserLoginDTO>> Execute(GetUserLoginsDTO dto, CancellationToken ct = default)
+    public async Task<IEnumerable<GetUserLoginsDTO>> Execute(GetUserLoginsDTO dto, CancellationToken ct = default)
     {
         var user = await _userManager.FindByIdAsync(dto.UserId.ToString());
         if (user == null)
@@ -23,6 +23,6 @@ public class GetUserLoginsUseCase : IUseCase<IEnumerable<UserLoginDTO>,GetUserLo
             throw new Exception("User not found");
         }
         var userLogins = await _userManager.GetLoginsAsync(user);
-        return _mapper.Map<IEnumerable<UserLoginDTO>>(userLogins);
+        return _mapper.Map<IEnumerable<GetUserLoginsDTO>>(userLogins);
     }
 }

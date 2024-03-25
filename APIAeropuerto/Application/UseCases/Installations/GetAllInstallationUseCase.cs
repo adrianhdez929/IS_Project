@@ -16,9 +16,9 @@ public class GetAllInstallationUseCase
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<InstallationDTO>> Execute(CancellationToken ct = default)
+    public async Task<IEnumerable<GetAllInstallationsDTO>> Execute(CancellationToken ct = default)
     {
         var temp = await _repository.GetAll(ct);
-        return _mapper.Map<IEnumerable<InstallationDTO>>(temp);
+        return _mapper.Map<IEnumerable<GetAllInstallationsDTO>>(temp);
     }
 }

@@ -19,5 +19,9 @@ public class ClientMapper : Profile
         CreateMap<UpdateInstallationDTO, ClientEntity>();
         CreateMap<List<ServicesPersistence>, GetlAllServicesClientDTO>();
         CreateMap<ClientServicesEntity, ClientServicesPersistence>();
+        CreateMap<GetAllClientDTO, ClientEntity>();
+        CreateMap<ClientEntity, GetAllClientDTO>();
+        CreateMap<ClientPersistence, GetAllClientDTO>();
+        CreateMap<GetAllClientDTO, ClientPersistence>();
     }
 }

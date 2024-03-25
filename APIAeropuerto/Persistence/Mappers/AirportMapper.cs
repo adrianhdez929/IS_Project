@@ -16,6 +16,8 @@ public class AirportMapper : Profile
         CreateMap<CreateAirportDTO, AirportDTO>();
         CreateMap<UpdateAirportDTO, AirportEntity>();
         CreateMap<AirportPersistence, GetAirportInstDTO>();
+        CreateMap<AirportEntity, GetAllAirpotDTO>();
+        CreateMap<GetAllAirpotDTO, AirportEntity>();
     }
 }
 

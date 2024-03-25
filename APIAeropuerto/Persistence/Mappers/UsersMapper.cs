@@ -16,5 +16,6 @@ public class UsersMapper : Profile
         CreateMap<CreateUserDTO, UsersDTO>();
         CreateMap<CreateUserDTO, UsersEntity>();
         CreateMap<UpdateUserDTO, UsersEntity>();
+        CreateMap<UserPersistence, GetAllUsersDTO>();
     }
 }

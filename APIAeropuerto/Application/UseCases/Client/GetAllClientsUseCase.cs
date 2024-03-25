@@ -1,4 +1,5 @@
-﻿using APIAeropuerto.Application.DTOs.Client;
+﻿using System.Formats.Tar;
+using APIAeropuerto.Application.DTOs.Client;
 using APIAeropuerto.Domain.Entities;
 using APIAeropuerto.Domain.Interfaces;
 using AutoMapper;
@@ -16,9 +17,9 @@ public class GetAllClientsUseCase
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ClientDTO>> Execute()
+    public async Task<IEnumerable<GetAllClientDTO>> Execute()
     {
         var temp = await _repository.GetAll();
-        return _mapper.Map<IEnumerable<ClientDTO>>(temp);
+        return _mapper.Map<IEnumerable<GetAllClientDTO>>(temp);
     }
 }

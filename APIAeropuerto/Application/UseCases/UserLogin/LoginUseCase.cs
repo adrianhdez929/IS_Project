@@ -27,6 +27,7 @@ public class LoginUseCase : IUseCase<UserLoginDTO,CredentialModelDTO>
         if (token is null) throw new Exception("Error creating token");
         return new UserLoginDTO
         {
+            Id = user.Id,
             Token = token
         };
     }

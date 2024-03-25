@@ -8,9 +8,8 @@ public interface IServiceRepository
 {
     Task<ServiceDTO> CreateRepairService(CreateRepairServiceDTO dto, CancellationToken ct);
     Task<ServicesEntity> CreateService(ServicesPersistence entity, CancellationToken ct);
-    Task DeleteService(string code);
-    Task<ServicesEntity> GetOneService(string code);
-    Task UpdateService(string code, ServicesEntity entity,CancellationToken ct);
+    Task<ServicesEntity> GetOneService(Guid id);
+    Task UpdateService(Guid id, ServicesEntity entity,CancellationToken ct);
     
-    Task<GetAllClientsServiceDTO> GetAllClientsService(string code,CancellationToken ct);
+    Task<GetAllClientsServiceDTO> GetAllClientsService(Guid id,CancellationToken ct);
 }

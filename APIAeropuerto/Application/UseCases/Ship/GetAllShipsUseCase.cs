@@ -11,7 +11,7 @@ public class GetAllShipsUseCase
     {
         _repository = repository;
     }
-    public async Task<IEnumerable<ShipDTO>> Execute(CancellationToken ct = default)
+    public async Task<IEnumerable<GetAllShipDTO>> Execute(CancellationToken ct = default)
     {
         return await _repository.GetAllShips(ct);
     }

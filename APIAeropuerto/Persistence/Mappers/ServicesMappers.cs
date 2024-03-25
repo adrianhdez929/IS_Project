@@ -18,5 +18,9 @@ public class ServicesMappers : Profile
         CreateMap<UpdateServiceDTO, ServicesEntity>();
         CreateMap<List<ClientPersistence>, GetAllClientsServiceDTO>();
         CreateMap<ServicesPersistence, GetAllClientsServiceDTO>();
+        CreateMap<ServicesEntity, GetAllServicesDTO>();
+        CreateMap<GetAllServicesDTO, ServicesEntity>();
+        CreateMap<ServicesPersistence, GetAllServicesDTO>();
+        CreateMap<GetAllServicesDTO, ServicesPersistence>();
     }
 }

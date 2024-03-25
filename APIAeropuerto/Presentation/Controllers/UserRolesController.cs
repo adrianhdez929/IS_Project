@@ -35,11 +35,11 @@ public class UserRolesController : Controller
     }
     
     [HttpDelete]
-    [Route("{id}")]
+    [Route("{name}")]
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy = ClaimsStrings.WriteUserRoles)]
-    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    public async Task<IActionResult> Delete(string name, CancellationToken ct)
     {
-        var result = await _deleteUserRolesUseCase.Execute(new DeleteUserRolesDTO() { Id = id });
+        var result = await _deleteUserRolesUseCase.Execute(new DeleteUserRolesDTO() { Name = name });
         return Ok(result);
     }
     

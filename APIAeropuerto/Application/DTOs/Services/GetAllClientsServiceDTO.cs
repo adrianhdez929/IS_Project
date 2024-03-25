@@ -4,5 +4,5 @@ namespace APIAeropuerto.Application.DTOs.Services;
 
 public class GetAllClientsServiceDTO
 {
-    public IEnumerable<ClientDTO> Clients { get; set; }
+    public IEnumerable<GetAllClientDTO> Clients { get; set; }
 }

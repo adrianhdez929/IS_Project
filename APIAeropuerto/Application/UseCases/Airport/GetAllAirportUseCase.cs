@@ -16,9 +16,9 @@ public class GetAllAirportUseCase
         _mapper = mapper;
     }
     
-    public async Task<IEnumerable<AirportDTO>> Execute(CancellationToken ct = default)
+    public async Task<IEnumerable<GetAllAirpotDTO>> Execute(CancellationToken ct = default)
     {
         var airports = await _repository.GetAll(ct);
-        return _mapper.Map<IEnumerable<AirportDTO>>(airports);
+        return _mapper.Map<IEnumerable<GetAllAirpotDTO>>(airports);
     }
 }

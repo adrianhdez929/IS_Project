@@ -15,9 +15,9 @@ public class GetAllRolesUseCase
         _roleManager = roleManager;
         _mapper = mapper;
     }
-    public async Task<IEnumerable<RoleDTO>> Execute(CancellationToken ct = default)
+    public async Task<IEnumerable<GetAllRolesDTO>> Execute(CancellationToken ct = default)
     {
         var roles = await _roleManager.Roles.ToListAsync();
-        return _mapper.Map<IEnumerable<RoleDTO>>(roles);
+        return _mapper.Map<IEnumerable<GetAllRolesDTO>>(roles);
     }
 }

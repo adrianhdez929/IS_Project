@@ -17,5 +17,9 @@ public class InstallationsMapper:Profile
         CreateMap<CreateInstallationsDTO, InstallationsEntity>();
         CreateMap<UpdateInstallationDTO, InstallationsEntity>();
         CreateMap<InstallationsPersistence, GetInstallationServicesDTO>();
+        CreateMap<InstallationsEntity, GetAllInstallationsDTO>();
+        CreateMap<GetAllInstallationsDTO, InstallationsEntity>();
+        CreateMap<InstallationsPersistence, GetAllInstallationsDTO>();
+        CreateMap<GetAllInstallationsDTO, InstallationsPersistence>();
     }
 }

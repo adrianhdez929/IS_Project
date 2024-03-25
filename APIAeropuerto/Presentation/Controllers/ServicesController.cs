@@ -39,10 +39,10 @@ public class ServicesController : Controller
     }
 
     [HttpDelete]
-    [Route("{code}")]
-    public async Task<IActionResult> DeleteService(string code)
+    [Route("{id}")]
+    public async Task<IActionResult> DeleteService(Guid id)
     {
-        var result = await _deleteServiceUseCase.Execute(new DeleteServiceDTO() { Code = code });
+        var result = await _deleteServiceUseCase.Execute(new DeleteServiceDTO() { Id = id });
         return Ok(result);
     }
 
@@ -55,10 +55,10 @@ public class ServicesController : Controller
     }
 
     [HttpGet]
-    [Route("{code}")]
-    public async Task<IActionResult> GetOneService(string code)
+    [Route("{id}")]
+    public async Task<IActionResult> GetOneService(Guid id)
     {
-        var result = await _getOneServiceUseCase.Execute(new GetOneServiceDTO() { Code = code });
+        var result = await _getOneServiceUseCase.Execute(new GetOneServiceDTO() { Id = id });
         return Ok(result);
     }
 
@@ -69,10 +69,10 @@ public class ServicesController : Controller
         return Ok(result);
     }
     [HttpGet]
-    [Route("{code}/clients")]
-    public async Task<IActionResult> GetAllClientsService(string code)
+    [Route("{id}/clients")]
+    public async Task<IActionResult> GetAllClientsService(Guid id)
     {
-        var result = await _getAllClientsServiceUseCase.Execute(new GetOneServiceDTO() { Code = code });
+        var result = await _getAllClientsServiceUseCase.Execute(new GetOneServiceDTO() { Id = id });
         return Ok(result);
     }
 }

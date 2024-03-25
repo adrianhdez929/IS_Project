@@ -4,5 +4,5 @@ namespace APIAeropuerto.Application.DTOs.Airport;
 
 public class GetAirportInstDTO
 {
-    public List<InstallationDTO> Installations { get; set; }
+    public List<GetAllInstallationsDTO> Installations { get; set; }
 }

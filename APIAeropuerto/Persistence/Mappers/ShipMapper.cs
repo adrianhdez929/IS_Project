@@ -16,5 +16,7 @@ public class ShipMapper : Profile
             .ForMember(x=>x.PropietaryName, y=>y.MapFrom(z=>z.Propietary.Name));
         CreateMap<ShipEntity, ShipDTO>();
         CreateMap<UpdateShipDTO, ShipEntity>();
+        CreateMap<ShipPersistence, GetAllShipDTO>();
+        CreateMap<GetAllShipDTO, ShipPersistence>();
     }
 }

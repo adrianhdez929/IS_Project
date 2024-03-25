@@ -4,6 +4,7 @@ namespace APIAeropuerto.Application.DTOs.Ship;
 
 public class ShipDTO
 {
+    public string Tuition { get; set; }
     public string Clasification { get; set; }
     public int PassengersAmmount { get; set; }
     public int TripulationAmmount { get; set; }
