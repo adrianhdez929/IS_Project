@@ -7,12 +7,10 @@ namespace APIAeropuerto.Application.UseCases.RepairService;
 public class CreateRepairServiceUseCase : IUseCase<ServiceDTO,CreateRepairServiceDTO>
 {
     private readonly IServiceRepository _repository;
-    private readonly IMapper _mapper;
-    
-    public CreateRepairServiceUseCase(IServiceRepository repository, IMapper mapper)
+
+    public CreateRepairServiceUseCase(IServiceRepository repository)
     {
         _repository = repository;
-        _mapper = mapper;
     }
     public async Task<ServiceDTO> Execute(CreateRepairServiceDTO dto, CancellationToken ct = default)
     {

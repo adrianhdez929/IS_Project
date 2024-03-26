@@ -1,4 +1,6 @@
 ﻿using APIAeropuerto.Application.DTOs.Flight;
+using APIAeropuerto.Application.Exceptions.BadRequest;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Entities;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
@@ -58,22 +60,22 @@ public class FlightRepository : BaseRepository<FlightEntity,FlightPersistence,Co
         if (!await AddOriginAirport(result.Entity.Id, dto.AirportOrigin, ct))
         {
             transaction.Rollback();
-            throw new Exception("Error adding origin airport");
+            throw new FlightAddBadRequestException("Error adding origin airport");
         }
         if (!await AddDestinationAirport(result.Entity.Id, dto.AirportDestination, ct))
         {
             transaction.Rollback();
-            throw new Exception("Error adding destination airport");
+            throw new FlightAddBadRequestException("Error adding destination airport");
         }
         if (!await AddShip(result.Entity.Id, dto.Ship, ct))
         {
             transaction.Rollback();
-            throw new Exception("Error adding ship");
+            throw new FlightAddBadRequestException("Error adding ship");
         }
         if (!await AddClient(result.Entity.Id, dto.Client, ct))
         {
             transaction.Rollback();
-            throw new Exception("Error adding client");
+            throw new FlightAddBadRequestException("Error adding client");
         }
         await transaction.CommitAsync(ct);
         await _context.SaveChangesAsync(ct);
@@ -83,13 +85,13 @@ public class FlightRepository : BaseRepository<FlightEntity,FlightPersistence,Co
     public async Task<FlightDTO> UpdateFlight(UpdateFlightDTO dto, CancellationToken ct = default)
     {
         var flight = await _context.Flights.FindAsync(dto.Id, ct);
-        if(flight is null) throw new Exception("Flight not found");
+        if(flight is null) throw new NotFoundException("Flight not found");
         var airportOrigin = await _context.Airports.FindAsync(dto.AirportOrigin, ct);
-        if(airportOrigin is null) throw new Exception("Origin airport not found");
+        if(airportOrigin is null) throw new NotFoundException("Origin airport not found");
         var airportDestination = await _context.Airports.FindAsync(dto.AirportDestination, ct);
-        if(airportDestination is null) throw new Exception("Destination airport not found");
+        if(airportDestination is null) throw new NotFoundException("Destination airport not found");
         var ship = await _context.Ships.FindAsync(dto.Ship, ct);
-        if(ship is null) throw new Exception("Ship not found");
+        if(ship is null) throw new NotFoundException("Ship not found");
         flight.DepartureDate = dto.DepartureDate;
         flight.ArrivalDate = dto.ArrivalDate;
         flight.AirportOrigin = airportOrigin;
@@ -103,7 +105,7 @@ public class FlightRepository : BaseRepository<FlightEntity,FlightPersistence,Co
     public async Task<FlightDTO> GetOneFlight(GetOneFlightDTO dto, CancellationToken ct = default)
     {
         var flight = await _context.Flights.Include(x=> x.AirportOrigin ).Include(x=> x.AirportDestination).Include(x=> x.Ship).FirstOrDefaultAsync(x=> x.Id == dto.Id, ct);
-        if(flight is null) throw new Exception("Flight not found");
+        if(flight is null) throw new NotFoundException("Flight not found");
         return _mapper.Map<FlightDTO>(flight);
     }
 

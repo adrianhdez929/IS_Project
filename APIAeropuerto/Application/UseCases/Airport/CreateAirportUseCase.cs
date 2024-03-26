@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.Airport;
+using APIAeropuerto.Application.Exceptions.BadRequest;
 using APIAeropuerto.Domain.Entities;
 using APIAeropuerto.Domain.Interfaces;
 using AutoMapper;
@@ -18,7 +19,7 @@ public class CreateAirportUseCase : IUseCase<AirportDTO, CreateAirportDTO>
     public async Task<AirportDTO> Execute(CreateAirportDTO dto, CancellationToken ct = default)
     {
         var airports = await _repository.GetAll(ct);
-        if (airports.Any(a => a.Address == dto.Address)) throw new Exception("El aeropuerto ya existe");
+        if (airports.Any(a => a.Address == dto.Address)) throw new RepeatBadRequestException("El aeropuerto ya existe");
         var devices = new List<InstallationsEntity>();
         foreach (var d in dto.Installations)
         {

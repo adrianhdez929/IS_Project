@@ -8,14 +8,10 @@ namespace APIAeropuerto.Application.UseCases.Client;
 public class AddServiceUseCase : IUseCase<string,AddServiceDTO>
 {
     private readonly IClientRepository _repository;
-    private readonly IBaseRepository<ClientServicesEntity> _clientServicesRepository;
-    private readonly IServiceRepository _serviceRepository;
 
-    public AddServiceUseCase(IClientRepository repository, IBaseRepository<ClientServicesEntity> clientServicesRepository, IServiceRepository serviceRepository)
+    public AddServiceUseCase(IClientRepository repository)
     {
         _repository = repository;
-        _clientServicesRepository = clientServicesRepository;
-        _serviceRepository = serviceRepository;
     }
 
     public async Task<string> Execute(AddServiceDTO dto, CancellationToken ct = default)

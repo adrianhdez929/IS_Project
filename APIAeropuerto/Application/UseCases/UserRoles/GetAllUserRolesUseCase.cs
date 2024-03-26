@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.UserRoles;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
 using AutoMapper;
@@ -18,7 +19,7 @@ public class GetAllUserRolesUseCase : IUseCase<IEnumerable<UserRolesDTO>,GetAllU
     public async Task<IEnumerable<UserRolesDTO>> Execute(GetAllUserRolesDTO dto, CancellationToken ct = default)
     {
         var user = await _userManager.FindByIdAsync(dto.Id.ToString());
-        if (user is null) throw new Exception("User not found");
+        if (user is null) throw new NotFoundException("User not found");
         var roles = await _userManager.GetRolesAsync(user);
         return _mapper.Map<IEnumerable<UserRolesDTO>>(roles);
     }

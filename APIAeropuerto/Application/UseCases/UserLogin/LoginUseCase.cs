@@ -1,4 +1,6 @@
 ﻿using APIAeropuerto.Application.DTOs.UserLogin;
+using APIAeropuerto.Application.Exceptions.BadRequest;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Application.UseCases.Token;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
@@ -20,11 +22,11 @@ public class LoginUseCase : IUseCase<UserLoginDTO,CredentialModelDTO>
     public async Task<UserLoginDTO> Execute(CredentialModelDTO dto, CancellationToken ct = default)
     {
         var user = await _userManager.FindByEmailAsync(dto.Email);
-        if (user is null) throw new Exception("User not found");
+        if (user is null) throw new NotFoundException("User not found");
         var result = await _signInManager.PasswordSignInAsync(user, dto.Password, false, false);
-        if (!result.Succeeded) throw new Exception("Invalid credentials");
+        if (!result.Succeeded) throw new InvalidCredentialBadRequestException("Invalid credentials");
         var token = await _createTokenUseCase.Execute(user);
-        if (token is null) throw new Exception("Error creating token");
+        if (token is null) throw new CreatingTokenBadRequestException("Error creating token");
         return new UserLoginDTO
         {
             Id = user.Id,

@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.Client;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Enums;
 using APIAeropuerto.Domain.Interfaces;
 using AutoMapper;
@@ -18,7 +19,7 @@ public class UpdateClientUseCase : IUseCase<ClientDTO,UpdateClientDTO>
     public async Task<ClientDTO> Execute(UpdateClientDTO dto, CancellationToken ct = default)
     {
         var temp = await _repository.GetOneClient(dto.Id,ct);
-        if (temp == null) throw new Exception("Client not Found");
+        if (temp == null) throw new NotFoundException("Client not Found");
         temp.Update(dto.Name, dto.Nationality, dto.Type);
         await _repository.Put(dto.Id,temp,ct);
         return _mapper.Map<ClientDTO>(temp);

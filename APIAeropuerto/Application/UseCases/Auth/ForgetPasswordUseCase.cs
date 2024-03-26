@@ -1,6 +1,7 @@
 ﻿using System.Web;
 using APIAeropuerto.Application.DTOs.Auth;
 using APIAeropuerto.Application.DTOs.Email;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -19,7 +20,7 @@ public class ForgetPasswordUseCase : IUseCase<string,ForgetPasswordDTO>
     public async Task<string> Execute(ForgetPasswordDTO dto, CancellationToken ct = default)
     {
         var user = await _userManager.FindByEmailAsync(dto.Email);
-        if(user is null) throw new Exception("User not found");
+        if(user is null) throw new NotFoundException("User not found");
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         var callbackUrl = $"https://localhost:7016/api/auth/resetpassword/email={dto.Email}&token={HttpUtility.UrlEncode(token)}";
         var body =  $"Por favor, resetea tu contraseña haciendo clic <a href='{callbackUrl}'>aquí</a>.";

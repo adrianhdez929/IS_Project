@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.Roles;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
 using AutoMapper;
@@ -18,7 +19,7 @@ public class GetOneRoleUseCase : IUseCase<RoleDTO,GetOneRoleDTO>
     public async Task<RoleDTO> Execute(GetOneRoleDTO dto, CancellationToken ct = default)
     {
         var role = await _roleManager.FindByIdAsync(dto.Id.ToString());
-        if (role is null) throw new Exception("Role not found");
+        if (role is null) throw new NotFoundException("Role not found");
         return _mapper.Map<RoleDTO>(role);
     }
 }

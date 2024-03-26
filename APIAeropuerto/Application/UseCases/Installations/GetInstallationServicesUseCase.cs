@@ -1,5 +1,6 @@
 ﻿using APIAeropuerto.Application.DTOs.Installations;
 using APIAeropuerto.Application.DTOs.Services;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Interfaces;
 using AutoMapper;
 
@@ -16,7 +17,7 @@ public class GetInstallationServicesUseCase : IUseCase<GetInstallationServicesDT
     public async Task<GetInstallationServicesDTO> Execute(GetOneInstallationDTO dto, CancellationToken ct = default)
     {
         var temp = await _repository.GetServices(dto.Id, ct);
-        if (temp is null) throw new Exception("Services not Exists");
+        if (temp is null) throw new NotFoundException("Services not Exists");
         return temp;
     }
 }

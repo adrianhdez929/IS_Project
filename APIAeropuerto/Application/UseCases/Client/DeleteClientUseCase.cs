@@ -9,7 +9,7 @@ public class DeleteClientUseCase : IUseCase<string, DeleteClientDTO>
 {
     private readonly IBaseRepository<ClientEntity> _repository;
 
-    public DeleteClientUseCase(IBaseRepository<ClientEntity> repository, IMapper mapper)
+    public DeleteClientUseCase(IBaseRepository<ClientEntity> repository)
     {
         _repository = repository;
     }

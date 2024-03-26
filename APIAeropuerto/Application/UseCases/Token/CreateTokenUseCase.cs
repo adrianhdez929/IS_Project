@@ -2,6 +2,8 @@
 using System.Security.Claims;
 using System.Text;
 using APIAeropuerto.Application.DTOs.Users;
+using APIAeropuerto.Application.Exceptions.BadRequest;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Persistence.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -21,7 +23,7 @@ public class CreateTokenUseCase
     public async Task<string> Execute(UserPersistence dto, CancellationToken ct = default)
     {
         var user = await _userManager.FindByIdAsync(dto.Id.ToString());
-        if (user is null) throw new Exception("User not found");
+        if (user is null) throw new NotFoundException("User not found");
         var userClaims = await _userManager.GetClaimsAsync(user);
         var roles = await _userManager.GetRolesAsync(user);
         var userRoles = roles.Select(r => new Claim(ClaimTypes.Role, r)).ToList();
@@ -47,7 +49,7 @@ public class CreateTokenUseCase
         );
         user.LastLogin = DateTime.Now;
         var result = await _userManager.UpdateAsync(user);
-        if (!result.Succeeded) throw new Exception("Error on update user");
+        if (!result.Succeeded) throw new UpdateUserBadRequestException("Error on update user");
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

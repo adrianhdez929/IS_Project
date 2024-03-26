@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.Users;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
 using AutoMapper;
@@ -16,7 +17,7 @@ public class DeleteUserUseCase : IUseCase<string,DeleteUserDTO>
     public async Task<string> Execute(DeleteUserDTO dto, CancellationToken ct = default)
     {
         var user = await _userManager.FindByIdAsync(dto.Id.ToString());
-        if (user is null) throw new Exception("User not found"); 
+        if (user is null) throw new NotFoundException("User not found"); 
         var result = _userManager.DeleteAsync(user).Result;
         if (result.Succeeded) return"User deleted";
         return "Error deleting user";
