@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.Installations;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Entities;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
@@ -17,7 +18,7 @@ public class InstallationsRepository : BaseRepository<InstallationsEntity,Instal
     {
         var a = await _context.Airports.Include(x => x.Installations)
             .FirstOrDefaultAsync(x => x.Id == entity.Airport.Id, ct);
-        if (a is null) throw new Exception("Airport not Found");
+        if (a is null) throw new NotFoundException("Airport not Found");
         entity.Airport = null!;
         _context.Installations.Add(entity);
         var temp = a.Installations?.ToList() ?? new List<InstallationsPersistence>();
@@ -39,7 +40,7 @@ public class InstallationsRepository : BaseRepository<InstallationsEntity,Instal
     {
         var temp = await _context.Installations.Include(x => x.Services).AsNoTracking()
             .FirstOrDefaultAsync(y => y.Id == id, ct);
-        if (temp == null) throw new Exception("Installation not Found");
+        if (temp == null) throw new NotFoundException("Installation not Found");
         return _mapper.Map<InstallationsEntity>(temp);
     }
 }

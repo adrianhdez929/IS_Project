@@ -8,12 +8,10 @@ namespace APIAeropuerto.Application.UseCases.Flight;
 public class GetAllFlightsUseCase
 {
     private readonly IFlightRepository _repository;
-    private readonly IMapper _mapper;
-    
-    public GetAllFlightsUseCase(IFlightRepository repository, IMapper mapper)
+
+    public GetAllFlightsUseCase(IFlightRepository repository)
     {
         _repository = repository;
-        _mapper = mapper;
     }
     public async Task<IEnumerable<GetAllFlightDTO>> Execute(CancellationToken ct = default)
     {

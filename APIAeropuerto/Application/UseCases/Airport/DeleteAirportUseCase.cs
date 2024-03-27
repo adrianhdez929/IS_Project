@@ -9,7 +9,7 @@ public class DeleteAirportUseCase:IUseCase<string,DeleteAirportDTO>
 {
     private readonly IBaseRepository<AirportEntity> _repository;
 
-    public DeleteAirportUseCase(IBaseRepository<AirportEntity> repository, IMapper mapper)
+    public DeleteAirportUseCase(IBaseRepository<AirportEntity> repository)
     {
         _repository = repository;
     }

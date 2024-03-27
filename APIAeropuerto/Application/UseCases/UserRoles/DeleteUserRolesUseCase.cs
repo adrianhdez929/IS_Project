@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.UserRoles;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -15,7 +16,7 @@ public class DeleteUserRolesUseCase : IUseCase<string,DeleteUserRolesDTO>
     public async Task<string> Execute(DeleteUserRolesDTO dto, CancellationToken ct = default)
     {
         var user = await _userManager.FindByNameAsync(dto.Name);
-        if (user is null) throw new Exception("User not found");
+        if (user is null) throw new NotFoundException("User not found");
         var roles = await _userManager.GetRolesAsync(user);
         foreach (var role in roles)
         {

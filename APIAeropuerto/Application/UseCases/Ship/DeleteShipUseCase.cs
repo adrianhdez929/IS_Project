@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.Ship;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Entities;
 using APIAeropuerto.Domain.Interfaces;
 
@@ -16,7 +17,7 @@ public class DeleteShipUseCase : IUseCase<string,DeleteShipDTO>
     {
         var ship = await _repository.GetOne(dto.Id, ct);
         if (ship is null)
-            throw new Exception("Ship not found");
+            throw new NotFoundException("Ship not found");
         await _repository.Delete(dto.Id, ct);
         return "Ship deleted";
     }

@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Interfaces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +28,7 @@ public class BaseRepository<TEntity,TPEntity,TContext> : IBaseRepository<TEntity
     public virtual async Task<TEntity> GetOne(Guid id, CancellationToken cancellationToken)
     {
         var temp = await _table.FindAsync(id);
-        return _mapper.Map<TPEntity, TEntity>(temp??throw new KeyNotFoundException($"Error: Entity with ID {id} Not Found"));
+        return _mapper.Map<TPEntity, TEntity>(temp??throw new NotFoundException($"Error: Entity with ID {id} Not Found"));
     }
 
     public virtual async Task<TEntity> Create(TEntity entity, CancellationToken cancellationToken)
@@ -54,7 +55,7 @@ public class BaseRepository<TEntity,TPEntity,TContext> : IBaseRepository<TEntity
         if (entity is null) throw new ArgumentNullException(nameof(entity), "Entity cannot be null");
 
         var existingEntity = await _table.FindAsync(id);
-        if (existingEntity is null) throw new KeyNotFoundException($"Error: Entity with ID {id} Not Found");
+        if (existingEntity is null) throw new NotFoundException($"Error: Entity with ID {id} Not Found");
 
         var updatedEntity = _mapper.Map<TEntity, TPEntity>(entity);
         _table.Entry(existingEntity).CurrentValues.SetValues(updatedEntity);
@@ -77,7 +78,7 @@ public class BaseRepository<TEntity,TPEntity,TContext> : IBaseRepository<TEntity
     public virtual async Task Delete(Guid id, CancellationToken cancellationToken)
     {
         var temp = await _table.FindAsync(id);
-        if(temp is null) throw new KeyNotFoundException($"Error: Entity with ID {id} Not Found");
+        if(temp is null) throw new NotFoundException($"Error: Entity with ID {id} Not Found");
         _table.Remove(temp);
         await _context.SaveChangesAsync(cancellationToken);
     }
@@ -96,7 +97,7 @@ public class BaseRepository<TEntity,TPEntity,TContext> : IBaseRepository<TEntity
 
         if (temp == null)
         {
-            throw new KeyNotFoundException($"Error: Entity with {primaryKeyName} {primaryKeyValue} Not Found");
+            throw new NotFoundException($"Error: Entity with {primaryKeyName} {primaryKeyValue} Not Found");
         }
 
         return _mapper.Map<TPEntity, TEntity>(temp);

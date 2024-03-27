@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
 using APIAeropuerto.Application.DTOs.Roles;
+using APIAeropuerto.Application.Exceptions.BadRequest;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Entities;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Domain.Shared;
@@ -22,11 +24,11 @@ public class CreateRoleUseCase : IUseCase<RoleDTO,CreateRoleDTO>
     public async Task<RoleDTO> Execute(CreateRoleDTO dto, CancellationToken ct = default)
     {
         foreach (var claim in dto.Claims)
-            if (!ClaimsStrings.BasePermissions.Contains(claim)) throw new Exception($"Invalid claim {claim}");
+            if (!ClaimsStrings.BasePermissions.Contains(claim)) throw new InvalidClaimBadRequestException($"Invalid claim {claim}");
         var role = RoleEntity.Create(dto.Name, dto.Description);
         if(!role.IsSuccess) throw new Exception(role.ErrorMessage);
         var roleExists = await _roleManager.FindByNameAsync(dto.Name);
-        if(roleExists is not null) throw new Exception("Role already exists");
+        if(roleExists is not null) throw new NotFoundException("Role already exists");
         var roleMapper = _mapper.Map<RolePersistence>(role.Value);
         var result = await _roleManager.CreateAsync(roleMapper);
         if (result.Succeeded)

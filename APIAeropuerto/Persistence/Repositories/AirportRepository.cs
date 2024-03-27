@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.Airport;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Entities;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
@@ -24,7 +25,7 @@ public class AirportRepository : BaseRepository<AirportEntity,AirportPersistence
     {
         var a = await _context.Airports.Include(x => x.Installations).AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, ct);
-        if (a == null) throw new Exception("Airport not Found");
+        if (a == null) throw new NotFoundException("Airport not Found");
         return _mapper.Map<AirportEntity>(a);
     }
 }

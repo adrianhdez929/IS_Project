@@ -7,12 +7,10 @@ namespace APIAeropuerto.Application.UseCases.Flight;
 public class CreateFlightUseCase : IUseCase<FlightDTO,CreateFlightDTO>
 {
     private readonly IFlightRepository _repository;
-    private readonly IMapper _mapper;
-    
-    public CreateFlightUseCase(IFlightRepository repository, IMapper mapper)
+
+    public CreateFlightUseCase(IFlightRepository repository)
     {
         _repository = repository;
-        _mapper = mapper;
     }
     public async Task<FlightDTO> Execute(CreateFlightDTO dto, CancellationToken ct = default)
     {

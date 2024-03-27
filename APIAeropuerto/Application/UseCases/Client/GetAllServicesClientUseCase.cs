@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.Client;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Interfaces;
 using AutoMapper;
 
@@ -17,7 +18,7 @@ public class GetAllServicesClientUseCase : IUseCase<GetlAllServicesClientDTO,Get
     public async Task<GetlAllServicesClientDTO> Execute(GetOneClientDTO dto, CancellationToken ct = default)
     {
         var temp = await _repository.GetServicesClient(dto.Id, ct);
-        if (temp == null) throw new Exception("Client not Found");
+        if (temp == null) throw new NotFoundException("Client not Found");
         return temp;
     }
 }

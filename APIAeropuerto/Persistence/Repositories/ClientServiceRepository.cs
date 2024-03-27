@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.ClientService;
+using APIAeropuerto.Application.Exceptions.BadRequest;
 using APIAeropuerto.Domain.Entities;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
@@ -15,7 +16,7 @@ public class ClientServiceRepository : BaseRepository<ClientServicesEntity,Clien
     public async Task DeleteClientService(DeleteClientServiceDTO dto, CancellationToken ct)
     {
         var temp = await _table.FindAsync(dto.IdClient, dto.IdService);
-        if (temp is null) throw new Exception("El servicio no esta asignado al ciente indicado");
+        if (temp is null) throw new ServiceBadRequestException("El servicio no esta asignado al ciente indicado");
         _table.Remove(temp);
         await _context.SaveChangesAsync(ct);
     }

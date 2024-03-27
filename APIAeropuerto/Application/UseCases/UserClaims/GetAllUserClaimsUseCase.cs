@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.UserClaims;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
 using AutoMapper;
@@ -18,7 +19,7 @@ public class GetAllUserClaimsUseCase : IUseCase<IEnumerable<UserClaimsDTO>,GetAl
     public async Task<IEnumerable<UserClaimsDTO>> Execute(GetAllUserClaimsDTO dto, CancellationToken ct = default)
     {
         var user = await _userManager.FindByIdAsync(dto.Id.ToString());
-        if (user is null) throw new Exception("User not found");
+        if (user is null) throw new NotFoundException("User not found");
         var claims = await _userManager.GetClaimsAsync(user);
         return _mapper.Map<IEnumerable<UserClaimsDTO>>(claims);
     }

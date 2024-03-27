@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.Ship;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Entities;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
@@ -16,7 +17,7 @@ public class ShipRepository : BaseRepository<ShipEntity,ShipPersistence,CoreDbCo
     public async Task<ShipDTO> CreateShip(CreateShipDTO entity, CancellationToken ct = default)
     {
         var propietary = await _context.Clients.FirstOrDefaultAsync(x => x.Id == entity.PropietaryId, ct);
-        if (propietary == null) throw new Exception("Propietary not found");
+        if (propietary == null) throw new NotFoundException("Propietary not found");
         await using var transaction = await _context.Database.BeginTransactionAsync(ct);
         try
         {
@@ -49,7 +50,7 @@ public class ShipRepository : BaseRepository<ShipEntity,ShipPersistence,CoreDbCo
         var p = await _context.Ships
             .Include(x => x.Propietary)
             .FirstOrDefaultAsync(x => x.Id == entity.Id, ct);
-        if (p == null) throw new Exception("Ship not found");
+        if (p == null) throw new NotFoundException("Ship not found");
         return _mapper.Map<ShipDTO>(p);
     }
 

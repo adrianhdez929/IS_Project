@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.Ship;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Entities;
 using APIAeropuerto.Domain.Interfaces;
 using AutoMapper;
@@ -18,7 +19,6 @@ public class UpdateShipUseCase : IUseCase<ShipDTO,UpdateShipDTO>
     public async Task<ShipDTO> Execute(UpdateShipDTO dto, CancellationToken ct = default)
     {
         var ship = await _repository.GetOne(dto.Id, ct);
-        if(ship is null) throw new Exception("Ship not found");
         ship.Update(dto.Clasification,dto.PassengersAmmount,dto.TripulationAmmount,dto.Capacity);
         await _repository.Put(ship.Id,ship, ct);
         return _mapper.Map<ShipDTO>(ship);

@@ -1,6 +1,8 @@
 ﻿using System.Security.Claims;
 using APIAeropuerto.Application.DTOs.Roles;
 using APIAeropuerto.Application.DTOs.UserRoles;
+using APIAeropuerto.Application.Exceptions.BadRequest;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Domain.Shared;
 using APIAeropuerto.Persistence.Entities;
@@ -23,12 +25,12 @@ public class RoleRepository : IRoleRepository
     public async Task<RolePersistence> Update(UpdateRoleDTO dto, CancellationToken cancellationToken)
     {
         var role = await _roleManager.FindByIdAsync(dto.Id.ToString());
-        if (role is null) throw new Exception("Role not found");
+        if (role is null) throw new NotFoundException("Role not found");
         var existRole = await _roleManager.FindByNameAsync(dto.Name);
         existRole = existRole?.Id == dto.Id ? null : existRole;
-        if (existRole != null) throw new Exception("Role already exist");
+        if (existRole != null) throw new RepeatBadRequestException("Role already exist");
         foreach (var claim in dto.Claims)
-            if (!ClaimsStrings.BasePermissions.Contains(claim)) throw new Exception($"Invalid claim {claim}");
+            if (!ClaimsStrings.BasePermissions.Contains(claim)) throw new InvalidClaimBadRequestException($"Invalid claim {claim}");
         await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
         try
         {
@@ -53,7 +55,7 @@ public class RoleRepository : IRoleRepository
             foreach (var userRole in userRoles)
             {
                 var user = await _userManager.FindByIdAsync(userRole.UserId.ToString());
-                if (user is null) throw new Exception("User not found");
+                if (user is null) throw new NotFoundException("User not found");
                 var userClaims = await _userManager.GetClaimsAsync(user);
                 var userRoleClaims = await _roleManager.GetClaimsAsync(role);
                 var claimsToRemoveUser = userClaims.Where(c => !userRoleClaims.Any(rc => rc.Value == c.Value)).ToList();
@@ -82,9 +84,9 @@ public class RoleRepository : IRoleRepository
     public async Task<string> AddRolesToUser(AddRolesToUserDTO dto, CancellationToken ct = default)
     {
         var user = await _userManager.FindByIdAsync(dto.UserId.ToString());
-        if (user == null) throw new Exception("User not found");
+        if (user == null) throw new NotFoundException("User not found");
         var roles = await _roleManager.Roles.Where(r => dto.RoleIds.Contains(r.Id)).ToListAsync();
-        if (roles.Count != dto.RoleIds.Count) throw new Exception("Role not found");
+        if (roles.Count != dto.RoleIds.Count) throw new NotFoundException("Role not found");
         foreach (var role in roles)
         {
             var roleClaims = await _roleManager.GetClaimsAsync(role);

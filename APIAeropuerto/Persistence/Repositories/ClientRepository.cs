@@ -1,5 +1,6 @@
 ﻿using APIAeropuerto.Application.DTOs.Client;
 using APIAeropuerto.Application.DTOs.Services;
+using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Entities;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
@@ -26,7 +27,7 @@ public class ClientRepository : BaseRepository<ClientEntity,ClientPersistence,Co
         var temp = await _context.Clients.Include(x => x.ClientServices)
             .ThenInclude(x => x.Service)
             .FirstOrDefaultAsync(x => x.Id == id, ct);
-        if (temp == null) throw new Exception("Client not Found");
+        if (temp == null) throw new NotFoundException("Client not Found");
         var services = temp.ClientServices?.Select(x => x.Service);
         return new GetlAllServicesClientDTO()
         {
@@ -37,7 +38,7 @@ public class ClientRepository : BaseRepository<ClientEntity,ClientPersistence,Co
     public async Task AddService(ClientServicesEntity dto, CancellationToken ct)
     {
         var service = await _context.Services.FirstOrDefaultAsync(x => x.Id == dto.IdService, ct);
-        if (service == null) throw new Exception("Service not Found");
+        if (service == null) throw new NotFoundException("Service not Found");
         var clientService = _mapper.Map<ClientServicesPersistence>(dto);
         _context.ClientServices.Add(clientService);
         await _context.SaveChangesAsync(ct);

@@ -8,12 +8,9 @@ namespace APIAeropuerto.Application.UseCases.Ship;
 public class GetOneShipUseCase : IUseCase<ShipDTO,GetOneShipDTO>
 {
     private readonly  IShipRepository _repository;
-    private readonly IMapper _mapper;
-    
-    public GetOneShipUseCase(IShipRepository repository, IMapper mapper)
+    public GetOneShipUseCase(IShipRepository repository)
     {
         _repository = repository;
-        _mapper = mapper;
     }
     public async Task<ShipDTO> Execute(GetOneShipDTO dto, CancellationToken ct = default)
     {
