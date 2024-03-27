@@ -12,14 +12,18 @@ public class InstallationsMapper:Profile
         CreateMap<InstallationsEntity, InstallationsPersistence>();
         CreateMap<InstallationsPersistence, InstallationsEntity>();
         CreateMap<InstallationsPersistence, InstallationDTO>();
-        CreateMap<InstallationsEntity, InstallationDTO>();
+        CreateMap<InstallationsEntity, InstallationDTO>()
+            .ForMember(dest => dest.IdAirport, opt => opt.MapFrom(y => y.Airport.Id))
+            .ForMember(dest => dest.NameAirport, opt => opt.MapFrom(x => x.Airport.Name));
         CreateMap<CreateInstallationsDTO, InstallationDTO>();
         CreateMap<CreateInstallationsDTO, InstallationsEntity>();
         CreateMap<UpdateInstallationDTO, InstallationsEntity>();
         CreateMap<InstallationsPersistence, GetInstallationServicesDTO>();
         CreateMap<InstallationsEntity, GetAllInstallationsDTO>();
         CreateMap<GetAllInstallationsDTO, InstallationsEntity>();
-        CreateMap<InstallationsPersistence, GetAllInstallationsDTO>();
+        CreateMap<InstallationsPersistence, GetAllInstallationsDTO>()
+            .ForMember(dest => dest.IdAirport, opt => opt.MapFrom(y => y.Airport.Id))
+            .ForMember(dest => dest.NameAirport, opt => opt.MapFrom(x => x.Airport.Name));
         CreateMap<GetAllInstallationsDTO, InstallationsPersistence>();
     }
 }

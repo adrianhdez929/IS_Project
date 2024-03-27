@@ -38,9 +38,17 @@ public class InstallationsRepository : BaseRepository<InstallationsEntity,Instal
 
     public virtual async Task<InstallationsEntity> GetOneInstallation(Guid id, CancellationToken ct)
     {
-        var temp = await _context.Installations.Include(x => x.Services).AsNoTracking()
-            .FirstOrDefaultAsync(y => y.Id == id, ct);
+        var temp = await _context.Installations.Include(x => x.Services)
+            .Include(x => x.Airport).AsNoTracking()
+            .FirstOrDefaultAsync(y => y.Id == id);
         if (temp == null) throw new NotFoundException("Installation not Found");
         return _mapper.Map<InstallationsEntity>(temp);
+    }
+
+    public async Task<IEnumerable<GetAllInstallationsDTO>> GetAllInstallations(CancellationToken ct)
+    {
+        var temp = await _context.Installations.Include(x => x.Airport)
+            .ToListAsync();
+        return _mapper.Map<IEnumerable<GetAllInstallationsDTO>>(temp);
     }
 }

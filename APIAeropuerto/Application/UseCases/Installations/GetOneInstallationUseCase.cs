@@ -7,17 +7,17 @@ namespace APIAeropuerto.Application.UseCases.Installations;
 
 public class GetOneInstallationUseCase : IUseCase<InstallationDTO,GetOneInstallationDTO>
 {
-    private readonly IBaseRepository<InstallationsEntity> _repository;
+    private readonly IInstallationRepository _repository;
     private readonly IMapper _mapper;
 
-    public GetOneInstallationUseCase(IBaseRepository<InstallationsEntity> repository, IMapper mapper)
+    public GetOneInstallationUseCase(IInstallationRepository repository, IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;
     }
     public async Task<InstallationDTO> Execute(GetOneInstallationDTO dto, CancellationToken ct = default)
     {
-        var temp = await _repository.GetOne(dto.Id, ct);
+        var temp = await _repository.GetOneInstallation(dto.Id, ct);
         return _mapper.Map<InstallationDTO>(temp);
     }
 }
