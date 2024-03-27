@@ -42,8 +42,9 @@ public static class ServicesExtensions
             var context = services.GetRequiredService<CoreDbContext>();
             context.Database.Migrate();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            System.Console.WriteLine("Error: {0}", ex.ToString());
             throw new Exception("An error occurred while creating the database.");
         }
     }
