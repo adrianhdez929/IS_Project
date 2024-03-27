@@ -45,6 +45,8 @@ public class ClientEntity : BaseEntity
     public string Name { get; set; }
     public string Nationality { get; set; }
     public ClientType Type { get; set; }
+    public Guid IdUser { get; set; }
+    public virtual UsersEntity User { get; set; }
     public virtual IEnumerable<ClientServicesEntity> ClientServices { get; set; }
     public virtual IEnumerable<FlightEntity> Flights { get; set; }
 }

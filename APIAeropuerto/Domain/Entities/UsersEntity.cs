@@ -11,6 +11,7 @@ public class UsersEntity : IdentityUser<Guid>
     public DateTime LastLogin { get; set; }
     public DateTime Created { get; set; }
     public DateTime Updated { get; set; }
+    public virtual ClientEntity Client { get; set; }
     public virtual ICollection<UserRoleEntity> UserRoles { get; set; }
     public virtual ICollection<UserClaimEntity> UserClaims { get; set; }
     public virtual ICollection<UserLoginEntity> UserLogins { get; set; }

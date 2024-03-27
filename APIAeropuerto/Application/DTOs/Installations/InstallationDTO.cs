@@ -6,4 +6,6 @@ public class InstallationDTO
     public string Description { get; set; }
     public string Location { get; set; }
     public string Type { get; set; }
+    public Guid IdAirport { get; set; }
+    public string NameAirport { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.Client;
+using APIAeropuerto.Application.DTOs.Users;
 using APIAeropuerto.Application.UseCases.Client;
 using APIAeropuerto.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace APIAeropuerto.Presentation.Controllers;
 [Route("api/[controller]")]
 public class ClientController : Controller
 {
-    private readonly IUseCase<ClientDTO,CreateClientDTO> _createClientUseCase;
+    private readonly IUseCase<UsersDTO,CreateUserDTO> _createClientUseCase;
     private readonly IUseCase<ClientDTO,UpdateClientDTO> _updateClientUseCase;
     private readonly IUseCase<ClientDTO,GetOneClientDTO> _getOneClientUseCase;
     private readonly IUseCase<string,DeleteClientDTO> _deleteClientUseCase;
@@ -17,8 +18,8 @@ public class ClientController : Controller
     private readonly IUseCase<string,AddServiceDTO> _addServiceUseCase;
     private readonly GetAllClientsUseCase _getAllClientsUseCase;
     
-    public ClientController(IUseCase<ClientDTO,
-        CreateClientDTO> createClientUseCase,
+    public ClientController(IUseCase<UsersDTO,
+        CreateUserDTO> createClientUseCase,
         IUseCase<ClientDTO,UpdateClientDTO> updateClientUseCase,
         IUseCase<ClientDTO,GetOneClientDTO> getOneClientUseCase,
         IUseCase<string,DeleteClientDTO> deleteClientUseCase, 
@@ -36,7 +37,7 @@ public class ClientController : Controller
     }
     
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateClientDTO dto, CancellationToken ct = default)
+    public async Task<IActionResult> Create([FromBody] CreateUserDTO dto, CancellationToken ct = default)
     {
         var result = await _createClientUseCase.Execute(dto,ct);
         return Ok(result);

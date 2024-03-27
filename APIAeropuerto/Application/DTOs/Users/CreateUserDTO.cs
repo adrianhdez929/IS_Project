@@ -1,6 +1,8 @@
-﻿namespace APIAeropuerto.Application.DTOs.Users;
+﻿using APIAeropuerto.Application.DTOs.Client;
 
-public class CreateUserDTO
+namespace APIAeropuerto.Application.DTOs.Users;
+
+public class CreateUserDTO : CreateClientDTO
 {
     public string UserName { get; set; }
     public string PasswordHash { get; set; }

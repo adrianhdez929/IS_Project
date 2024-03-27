@@ -13,11 +13,16 @@ public class LoginUseCase : IUseCase<UserLoginDTO,CredentialModelDTO>
     private readonly UserManager<UserPersistence> _userManager;
     private readonly SignInManager<UserPersistence> _signInManager;
     private readonly CreateTokenUseCase _createTokenUseCase;
-    public LoginUseCase(UserManager<UserPersistence> userManager, SignInManager<UserPersistence> signInManager, CreateTokenUseCase createTokenUseCase)
+    private readonly IUserRepository _userRepository;
+    public LoginUseCase(UserManager<UserPersistence> userManager, 
+        SignInManager<UserPersistence> signInManager, 
+        CreateTokenUseCase createTokenUseCase,
+        IUserRepository userRepository)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _createTokenUseCase = createTokenUseCase;
+        _userRepository = userRepository;
     }
     public async Task<UserLoginDTO> Execute(CredentialModelDTO dto, CancellationToken ct = default)
     {
@@ -27,9 +32,11 @@ public class LoginUseCase : IUseCase<UserLoginDTO,CredentialModelDTO>
         if (!result.Succeeded) throw new InvalidCredentialBadRequestException("Invalid credentials");
         var token = await _createTokenUseCase.Execute(user);
         if (token is null) throw new CreatingTokenBadRequestException("Error creating token");
+        var clientId = await _userRepository.FindClientByUser(user.Id);
         return new UserLoginDTO
         {
             Id = user.Id,
+            IdClient = clientId,
             Token = token
         };
     }

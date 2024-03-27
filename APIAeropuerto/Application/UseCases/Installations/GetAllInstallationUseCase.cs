@@ -7,10 +7,10 @@ namespace APIAeropuerto.Application.UseCases.Installations;
 
 public class GetAllInstallationUseCase
 {
-    private readonly IBaseRepository<InstallationsEntity> _repository;
+    private readonly IInstallationRepository _repository;
     private readonly IMapper _mapper;
 
-    public GetAllInstallationUseCase(IBaseRepository<InstallationsEntity> repository,IMapper mapper)
+    public GetAllInstallationUseCase(IInstallationRepository repository,IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;
@@ -18,7 +18,7 @@ public class GetAllInstallationUseCase
 
     public async Task<IEnumerable<GetAllInstallationsDTO>> Execute(CancellationToken ct = default)
     {
-        var temp = await _repository.GetAll(ct);
+        var temp = await _repository.GetAllInstallations(ct);
         return _mapper.Map<IEnumerable<GetAllInstallationsDTO>>(temp);
     }
 }
