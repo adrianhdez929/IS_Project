@@ -129,7 +129,6 @@ public class Startup
         services.AddScoped<IUseCase<GetAllClientsServiceDTO, GetOneServiceDTO>, GetAllClientsServiceUseCase>();
         services.AddScoped<GetAllServicesUseCase>();
         //Clients UseCases
-        services.AddScoped<IUseCase<ClientDTO, CreateClientDTO>, CreateClientUseCase>();
         services.AddScoped<IUseCase<ClientDTO, UpdateClientDTO>, UpdateClientUseCase>();
         services.AddScoped<IUseCase<string, DeleteClientDTO>, DeleteClientUseCase>();
         services.AddScoped<IUseCase<ClientDTO, GetOneClientDTO>, GetOneClientUseCase>();
@@ -198,7 +197,7 @@ public class Startup
         services.AddScoped<IFlightRepository, FlightRepository>();
         services.AddScoped<RoleManager<RolePersistence>>();
         services.AddScoped<UserManager<UserPersistence>>();
-        
+        services.AddScoped<IUserRepository, UserRepository>();
         
         services.AddSingleton<SmtpClient>(s => new SmtpClient(Configuration["Smtp:Host"])
         {

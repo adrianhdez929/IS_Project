@@ -74,22 +74,6 @@ namespace APIAeropuerto.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Clients",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nationality = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clients", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Installations",
                 columns: table => new
                 {
@@ -228,26 +212,24 @@ namespace APIAeropuerto.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ships",
+                name: "Clients",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Tuition = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Clasification = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PassengersAmmount = table.Column<int>(type: "int", nullable: false),
-                    TripulationAmmount = table.Column<int>(type: "int", nullable: false),
-                    Capacity = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nationality = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PropietaryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    IdUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ships", x => x.Id);
+                    table.PrimaryKey("PK_Clients", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ships_Clients_PropietaryId",
-                        column: x => x.PropietaryId,
-                        principalTable: "Clients",
+                        name: "FK_Clients_AspNetUsers_IdUser",
+                        column: x => x.IdUser,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -277,42 +259,28 @@ namespace APIAeropuerto.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Flights",
+                name: "Ships",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DepartureDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ArrivalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Tuition = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Clasification = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PassengersAmmount = table.Column<int>(type: "int", nullable: false),
+                    TripulationAmmount = table.Column<int>(type: "int", nullable: false),
+                    Capacity = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdAirportOrigin = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdAirportDestination = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdClient = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdShip = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PropietaryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Flights", x => x.Id);
+                    table.PrimaryKey("PK_Ships", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Flights_Airports_IdAirportDestination",
-                        column: x => x.IdAirportDestination,
-                        principalTable: "Airports",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Flights_Airports_IdAirportOrigin",
-                        column: x => x.IdAirportOrigin,
-                        principalTable: "Airports",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Flights_Clients_IdClient",
-                        column: x => x.IdClient,
+                        name: "FK_Ships_Clients_PropietaryId",
+                        column: x => x.PropietaryId,
                         principalTable: "Clients",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Flights_Ships_IdShip",
-                        column: x => x.IdShip,
-                        principalTable: "Ships",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -367,6 +335,45 @@ namespace APIAeropuerto.Persistence.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Flights",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DepartureDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ArrivalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IdAirportOrigin = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdAirportDestination = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdClient = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdShip = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Flights", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Flights_Airports_IdAirportDestination",
+                        column: x => x.IdAirportDestination,
+                        principalTable: "Airports",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Flights_Airports_IdAirportOrigin",
+                        column: x => x.IdAirportOrigin,
+                        principalTable: "Airports",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Flights_Clients_IdClient",
+                        column: x => x.IdClient,
+                        principalTable: "Clients",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Flights_Ships_IdShip",
+                        column: x => x.IdShip,
+                        principalTable: "Ships",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -405,6 +412,12 @@ namespace APIAeropuerto.Persistence.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clients_IdUser",
+                table: "Clients",
+                column: "IdUser",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientServices_IdService",
@@ -483,9 +496,6 @@ namespace APIAeropuerto.Persistence.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Ships");
 
             migrationBuilder.DropTable(
@@ -496,6 +506,9 @@ namespace APIAeropuerto.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Installations");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Airports");

@@ -99,5 +99,9 @@ public class CoreDbContext : IdentityDbContext<UserPersistence,IdentityRole<Guid
             .WithMany()
             .HasForeignKey(x => x.IdService2)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<UserPersistence>().HasOne(x => x.Client)
+            .WithOne(x => x.User)
+            .HasForeignKey<ClientPersistence>(x => x.IdUser);
     }
 }

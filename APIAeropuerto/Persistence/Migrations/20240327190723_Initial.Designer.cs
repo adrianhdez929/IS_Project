@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIAeropuerto.Persistence.Migrations
 {
     [DbContext(typeof(CoreDbContext))]
-    [Migration("20240324000137_Initial")]
+    [Migration("20240327190723_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -63,6 +63,9 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("IdUser")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -78,6 +81,9 @@ namespace APIAeropuerto.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdUser")
+                        .IsUnique();
 
                     b.ToTable("Clients");
                 });
@@ -571,6 +577,17 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.HasDiscriminator().HasValue("UserRolePersistence");
                 });
 
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ClientPersistence", b =>
+                {
+                    b.HasOne("APIAeropuerto.Persistence.Entities.UserPersistence", "User")
+                        .WithOne("Client")
+                        .HasForeignKey("APIAeropuerto.Persistence.Entities.ClientPersistence", "IdUser")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ClientServicesPersistence", b =>
                 {
                     b.HasOne("APIAeropuerto.Persistence.Entities.ClientPersistence", "Client")
@@ -792,6 +809,9 @@ namespace APIAeropuerto.Persistence.Migrations
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.UserPersistence", b =>
                 {
+                    b.Navigation("Client")
+                        .IsRequired();
+
                     b.Navigation("UserClaims");
 
                     b.Navigation("UserLogins");
