@@ -193,6 +193,46 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.ToTable("Installations");
                 });
 
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.RepairPersistence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Cost")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("DateEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateEstimated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateInit")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("IdService")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdShip")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdService");
+
+                    b.HasIndex("IdShip");
+
+                    b.ToTable("Repairs");
+                });
+
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ServiceServicePersistence", b =>
                 {
                     b.Property<Guid>("IdService1")
@@ -650,6 +690,25 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.Navigation("Airport");
                 });
 
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.RepairPersistence", b =>
+                {
+                    b.HasOne("APIAeropuerto.Persistence.Entities.ServicesPersistence", "Service")
+                        .WithMany("Repairs")
+                        .HasForeignKey("IdService")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("APIAeropuerto.Persistence.Entities.ShipPersistence", "Ship")
+                        .WithMany("Repairs")
+                        .HasForeignKey("IdShip")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+
+                    b.Navigation("Ship");
+                });
+
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ServiceServicePersistence", b =>
                 {
                     b.HasOne("APIAeropuerto.Persistence.Entities.ServicesPersistence", "RepairService1")
@@ -796,12 +855,16 @@ namespace APIAeropuerto.Persistence.Migrations
                 {
                     b.Navigation("ClientServices");
 
+                    b.Navigation("Repairs");
+
                     b.Navigation("ServiceService");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ShipPersistence", b =>
                 {
                     b.Navigation("Flights");
+
+                    b.Navigation("Repairs");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.UserPersistence", b =>

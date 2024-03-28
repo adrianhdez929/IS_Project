@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.Airport;
+using APIAeropuerto.Application.DTOs.SpecifyConsults;
 using APIAeropuerto.Application.UseCases.Airport;
 using APIAeropuerto.Domain.Entities;
 using APIAeropuerto.Persistence.Entities;
@@ -18,6 +19,7 @@ public class AirportMapper : Profile
         CreateMap<AirportPersistence, GetAirportInstDTO>();
         CreateMap<AirportEntity, GetAllAirpotDTO>();
         CreateMap<GetAllAirpotDTO, AirportEntity>();
+        CreateMap<AirportPersistence, GetAirportWithRepairServicesDTO>();
     }
 }
 

@@ -11,5 +11,6 @@ public class ShipPersistence
     public DateTime Created { get; set; }
     public DateTime Updated { get; set; }
     public virtual ClientPersistence Propietary { get; set; }
+    public virtual IEnumerable<RepairPersistence> Repairs { get; set; }
     public virtual IEnumerable<FlightPersistence> Flights { get; set; }
 }

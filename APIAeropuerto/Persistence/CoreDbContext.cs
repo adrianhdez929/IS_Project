@@ -20,6 +20,7 @@ public class CoreDbContext : IdentityDbContext<UserPersistence,IdentityRole<Guid
     public DbSet<ShipPersistence> Ships { get; set; }
     public DbSet<FlightPersistence> Flights { get; set; }
     public DbSet<ServiceServicePersistence> RepairServices { get; set; }
+    public DbSet<RepairPersistence> Repairs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -103,5 +104,19 @@ public class CoreDbContext : IdentityDbContext<UserPersistence,IdentityRole<Guid
         modelBuilder.Entity<UserPersistence>().HasOne(x => x.Client)
             .WithOne(x => x.User)
             .HasForeignKey<ClientPersistence>(x => x.IdUser);
+
+        modelBuilder.Entity<RepairPersistence>()
+            .HasOne(x => x.Service)
+            .WithMany(x => x.Repairs)
+            .HasForeignKey(x => x.IdService)
+            .HasPrincipalKey(x => x.Id)
+            .OnDelete(DeleteBehavior.NoAction);
+        
+        modelBuilder.Entity<RepairPersistence>()
+            .HasOne(x => x.Ship)
+            .WithMany(x => x.Repairs)
+            .HasForeignKey(x => x.IdShip)
+            .HasPrincipalKey(x => x.Id)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

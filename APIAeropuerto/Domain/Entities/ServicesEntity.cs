@@ -101,6 +101,7 @@ public class ServicesEntity : BaseEntity
     public float Price { get; set; }
     public ServiceType  ServiceType { get; set; }
     public virtual InstallationsEntity Installation { get;set; }
+    public virtual IEnumerable<RepairEntity> Repairs { get; set; }
     public virtual IEnumerable<ServiceServiceEntity> ServiceServices { get; set; }
     public virtual IEnumerable<ClientServicesEntity> ClientServices { get; set; }
 }

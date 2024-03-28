@@ -51,4 +51,14 @@ public class InstallationsRepository : BaseRepository<InstallationsEntity,Instal
             .ToListAsync();
         return _mapper.Map<IEnumerable<GetAllInstallationsDTO>>(temp);
     }
+
+    public async Task<IEnumerable<InstallationDTO>> GetAllInstallationsWithRepairServices(CancellationToken ct)
+    {
+        var installations = await _context.Installations.Include(x => x.Services)
+            .Include(x => x.Airport)
+            .Where(x =>x.Services.Any(z => z.ServiceType == 0))
+            .ToListAsync();
+        
+        return _mapper.Map<IEnumerable<InstallationDTO>>(installations);
+    }
 }

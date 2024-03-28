@@ -10,6 +10,7 @@ public class ShipEntity : BaseEntity
     public int TripulationAmmount { get; set; }
     public int Capacity { get; set; }
     public virtual ClientEntity Propietary { get; set; }
+    public virtual IEnumerable<RepairEntity> Repairs { get; set; }
     public virtual IEnumerable<FlightEntity> Flights { get; set; }
 
     public ShipEntity()
