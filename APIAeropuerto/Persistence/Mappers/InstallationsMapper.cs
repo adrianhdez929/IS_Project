@@ -11,7 +11,9 @@ public class InstallationsMapper:Profile
     {
         CreateMap<InstallationsEntity, InstallationsPersistence>();
         CreateMap<InstallationsPersistence, InstallationsEntity>();
-        CreateMap<InstallationsPersistence, InstallationDTO>();
+        CreateMap<InstallationsPersistence, InstallationDTO>()
+            .ForMember(dest => dest.IdAirport, opt => opt.MapFrom(y => y.Airport.Id))
+            .ForMember(dest => dest.NameAirport, opt => opt.MapFrom(x => x.Airport.Name));
         CreateMap<InstallationsEntity, InstallationDTO>()
             .ForMember(dest => dest.IdAirport, opt => opt.MapFrom(y => y.Airport.Id))
             .ForMember(dest => dest.NameAirport, opt => opt.MapFrom(x => x.Airport.Name));
@@ -25,5 +27,9 @@ public class InstallationsMapper:Profile
             .ForMember(dest => dest.IdAirport, opt => opt.MapFrom(y => y.Airport.Id))
             .ForMember(dest => dest.NameAirport, opt => opt.MapFrom(x => x.Airport.Name));
         CreateMap<GetAllInstallationsDTO, InstallationsPersistence>();
+        CreateMap<InstallationsEntity , GetOneInstallationDTO>()
+            .ForMember(dest => dest.IdAirport, opt => opt.MapFrom(y => y.Airport.Id))
+            .ForMember(dest => dest.NameAirport, opt => opt.MapFrom(x => x.Airport.Name))
+            .ForMember(dest => dest.Services, opt => opt.MapFrom(x => x.Services));
     }
 }

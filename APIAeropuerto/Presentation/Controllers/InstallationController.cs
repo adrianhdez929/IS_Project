@@ -12,15 +12,17 @@ public class InstallationController : Controller
     private readonly IUseCase<InstallationDTO,CreateInstallationsDTO> _createInstallationUseCase;
     private readonly IUseCase<InstallationDTO,UpdateInstallationDTO> _updateInstallationUseCase;
     private readonly IUseCase<string,DeleteInstallationDTO> _deleteInstallationUseCase;
-    private readonly IUseCase<InstallationDTO,GetOneInstallationDTO> _getOneInstallationUseCase;
+    private readonly IUseCase<GetOneInstallationDTO,GetOneInstallationDTO> _getOneInstallationUseCase;
     private readonly IUseCase<GetInstallationServicesDTO, GetOneInstallationDTO> _getInstallationServicesUseCase;
+    private readonly GetInstallationsWithRepairServiceUseCase _getInstallationsWithRepairServiceUseCase;
     private readonly GetAllInstallationUseCase _getAllInstallationUseCase;
     public InstallationController(
         IUseCase<InstallationDTO,CreateInstallationsDTO> createInstallationUseCase,
         IUseCase<InstallationDTO,UpdateInstallationDTO> updateInstallationUseCase,
         IUseCase<string,DeleteInstallationDTO> deleteInstallationUseCase,
-        IUseCase<InstallationDTO,GetOneInstallationDTO> getOneInstallationUseCase,
+        IUseCase<GetOneInstallationDTO,GetOneInstallationDTO> getOneInstallationUseCase,
         IUseCase<GetInstallationServicesDTO, GetOneInstallationDTO> getInstallationServicesUseCase,
+        GetInstallationsWithRepairServiceUseCase getInstallationsWithRepairServiceUseCase,
         GetAllInstallationUseCase getAllInstallationUseCase
         )
     {
@@ -29,6 +31,7 @@ public class InstallationController : Controller
         _deleteInstallationUseCase = deleteInstallationUseCase;
         _getOneInstallationUseCase = getOneInstallationUseCase;
         _getInstallationServicesUseCase = getInstallationServicesUseCase;
+        _getInstallationsWithRepairServiceUseCase = getInstallationsWithRepairServiceUseCase;
         _getAllInstallationUseCase = getAllInstallationUseCase;
     }
     
@@ -71,6 +74,14 @@ public class InstallationController : Controller
     public async Task<IActionResult> DeleteInstallation(Guid id)
     {
         var result = await _deleteInstallationUseCase.Execute(new DeleteInstallationDTO { Id = id });
+        return Ok(result);
+    }
+    
+    [HttpGet]
+    [Route("InstallationWithRepairServices")]
+    public async Task<IActionResult> GetInstallationsWithRepairServices()
+    {
+        var result = await _getInstallationsWithRepairServiceUseCase.Execute();
         return Ok(result);
     }
 }

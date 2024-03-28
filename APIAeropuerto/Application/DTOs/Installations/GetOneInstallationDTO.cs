@@ -1,6 +1,9 @@
-﻿namespace APIAeropuerto.Application.DTOs.Installations;
+﻿using APIAeropuerto.Application.DTOs.Services;
 
-public class GetOneInstallationDTO
+namespace APIAeropuerto.Application.DTOs.Installations;
+
+public class GetOneInstallationDTO : InstallationDTO
 {
     public Guid Id { get; set; }
+    public IEnumerable<ServiceDTO> Services { get; set; }
 }

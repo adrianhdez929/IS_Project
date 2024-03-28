@@ -374,6 +374,35 @@ namespace APIAeropuerto.Persistence.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Repairs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cost = table.Column<float>(type: "real", nullable: false),
+                    DateInit = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateEstimated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IdService = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdShip = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Repairs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Repairs_Services_IdService",
+                        column: x => x.IdService,
+                        principalTable: "Services",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Repairs_Ships_IdShip",
+                        column: x => x.IdShip,
+                        principalTable: "Ships",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -450,6 +479,16 @@ namespace APIAeropuerto.Persistence.Migrations
                 column: "AirportId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Repairs_IdService",
+                table: "Repairs",
+                column: "IdService");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Repairs_IdShip",
+                table: "Repairs",
+                column: "IdShip");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RepairServices_IdService2",
                 table: "RepairServices",
                 column: "IdService2");
@@ -488,6 +527,9 @@ namespace APIAeropuerto.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Flights");
+
+            migrationBuilder.DropTable(
+                name: "Repairs");
 
             migrationBuilder.DropTable(
                 name: "RepairServices");

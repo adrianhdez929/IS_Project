@@ -14,6 +14,7 @@ public class ServicesPersistence
     public DateTime Updated { get; set; }
     public ServiceType ServiceType { get; set; }
     public virtual InstallationsPersistence Installation { get; set; }
+    public virtual IEnumerable<RepairPersistence> Repairs { get; set; }
     public virtual IEnumerable<ServiceServicePersistence> ServiceService { get; set; }
     public virtual IEnumerable<ClientServicesPersistence> ClientServices { get; set; }
 }

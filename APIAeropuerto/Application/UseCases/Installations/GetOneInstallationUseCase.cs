@@ -5,7 +5,7 @@ using AutoMapper;
 
 namespace APIAeropuerto.Application.UseCases.Installations;
 
-public class GetOneInstallationUseCase : IUseCase<InstallationDTO,GetOneInstallationDTO>
+public class GetOneInstallationUseCase : IUseCase<GetOneInstallationDTO,GetOneInstallationDTO>
 {
     private readonly IInstallationRepository _repository;
     private readonly IMapper _mapper;
@@ -15,9 +15,9 @@ public class GetOneInstallationUseCase : IUseCase<InstallationDTO,GetOneInstalla
         _repository = repository;
         _mapper = mapper;
     }
-    public async Task<InstallationDTO> Execute(GetOneInstallationDTO dto, CancellationToken ct = default)
+    public async Task<GetOneInstallationDTO> Execute(GetOneInstallationDTO dto, CancellationToken ct = default)
     {
         var temp = await _repository.GetOneInstallation(dto.Id, ct);
-        return _mapper.Map<InstallationDTO>(temp);
+        return _mapper.Map<GetOneInstallationDTO>(temp);
     }
 }

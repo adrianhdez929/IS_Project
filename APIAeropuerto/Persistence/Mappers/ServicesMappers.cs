@@ -2,6 +2,7 @@
 using APIAeropuerto.Domain.Entities;
 using APIAeropuerto.Persistence.Entities;
 using AutoMapper;
+using Microsoft.OpenApi.Extensions;
 
 namespace APIAeropuerto.Persistence.Mappers;
 
@@ -12,7 +13,8 @@ public class ServicesMappers : Profile
         CreateMap<ServicesEntity, ServicesPersistence>();
         CreateMap<ServicesPersistence, ServicesEntity>();
         CreateMap<ServicesPersistence, ServiceDTO>();
-        CreateMap<ServicesEntity, ServiceDTO>();
+        CreateMap<ServicesEntity, ServiceDTO>()
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.ServiceType.GetDisplayName()));
         CreateMap<CreateServiceDTO, ServiceDTO>();
         CreateMap<CreateServiceDTO, ServicesEntity>();
         CreateMap<UpdateServiceDTO, ServicesEntity>();
