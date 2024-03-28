@@ -1,4 +1,6 @@
-﻿namespace APIAeropuerto.Persistence.Entities;
+﻿using APIAeropuerto.Domain.Enums;
+
+namespace APIAeropuerto.Persistence.Entities;
 
 public class FlightPersistence
 {
@@ -15,4 +17,6 @@ public class FlightPersistence
     public virtual ClientPersistence Client { get; set; }
     public Guid IdShip { get; set; }
     public virtual ShipPersistence Ship { get; set; }
+    
+    public ArrivedClientType ArrivedClientType { get; set; }
 }

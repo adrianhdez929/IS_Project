@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIAeropuerto.Persistence.Migrations
 {
     [DbContext(typeof(CoreDbContext))]
-    [Migration("20240327213053_Initial")]
+    [Migration("20240328205410_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -124,6 +124,9 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.Property<DateTime>("ArrivalDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ArrivedClientType")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -182,9 +185,8 @@ namespace APIAeropuerto.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");

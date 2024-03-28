@@ -1,4 +1,6 @@
-﻿namespace APIAeropuerto.Application.DTOs.Flight;
+﻿using APIAeropuerto.Domain.Enums;
+
+namespace APIAeropuerto.Application.DTOs.Flight;
 
 public class CreateFlightDTO
 {
@@ -8,4 +10,5 @@ public class CreateFlightDTO
     public Guid AirportDestination { get; set; }
     public Guid Ship { get; set; }
     public Guid Client { get; set; }
+    public ArrivedClientType ArrivedClientType { get; set; }
 }

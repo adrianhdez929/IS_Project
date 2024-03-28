@@ -2,6 +2,7 @@
 using APIAeropuerto.Application.Exceptions.BadRequest;
 using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Entities;
+using APIAeropuerto.Domain.Enums;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
 using AutoMapper;
@@ -53,8 +54,13 @@ public class FlightRepository : BaseRepository<FlightEntity,FlightPersistence,Co
 
     public async Task<FlightDTO> CreateFlight(CreateFlightDTO dto, CancellationToken ct = default)
     {
-        var flight = FlightEntity.Create(dto.DepartureDate, dto.ArrivalDate);
+        var flight = FlightEntity.Create(dto.DepartureDate, dto.ArrivalDate, dto.ArrivedClientType);
         if(!flight.IsSuccess) throw new Exception(flight.ErrorMessage);
+        var ship = await _context.Ships.Include(x => x.Propietary)
+            .FirstOrDefaultAsync(x => x.Id == dto.Ship, ct);
+        if(ship is null) throw new NotFoundException("Ship not found");
+        if (dto.ArrivedClientType is ArrivedClientType.Captain && ship.Propietary.Id != dto.Client)
+            throw new ArrivedTyperBadRequestException("The client is not the propietary of the ship");
         await using var transaction = await _context.Database.BeginTransactionAsync(ct);
         var result = await _context.Flights.AddAsync(_mapper.Map<FlightPersistence>(flight.Value), ct);
         if (!await AddOriginAirport(result.Entity.Id, dto.AirportOrigin, ct))

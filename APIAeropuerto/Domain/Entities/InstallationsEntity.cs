@@ -1,4 +1,5 @@
-﻿using APIAeropuerto.Domain.Shared;
+﻿using APIAeropuerto.Domain.Enums;
+using APIAeropuerto.Domain.Shared;
 
 namespace APIAeropuerto.Domain.Entities;
 
@@ -8,7 +9,7 @@ public class InstallationsEntity : BaseEntity
     {
         
     }
-    private InstallationsEntity(Guid id ,string name, string description, string location, string type, AirportEntity airport)
+    private InstallationsEntity(Guid id ,string name, string description, string location, InstallationType type, AirportEntity airport)
     {
         Id = id;
         Name = name;
@@ -19,7 +20,7 @@ public class InstallationsEntity : BaseEntity
         Created = DateTime.Now;
         Updated = DateTime.Now;
     }
-    private InstallationsEntity(Guid id,string name, string description, string location, string type)
+    private InstallationsEntity(Guid id,string name, string description, string location, InstallationType type)
     {
         Id = id;
         Name = name;
@@ -30,7 +31,7 @@ public class InstallationsEntity : BaseEntity
         Updated = DateTime.Now;
     }
     
-    public static InstallationsWrapper Create(string name, string description, string location, string type, AirportEntity airport)
+    public static InstallationsWrapper Create(string name, string description, string location, InstallationType type, AirportEntity airport)
     {
         var entity = new InstallationsEntity(Guid.NewGuid(),name, description, location, type, airport);
         return new InstallationsWrapper
@@ -40,7 +41,7 @@ public class InstallationsEntity : BaseEntity
             ErrorMessage = string.Empty
         };
     }
-    public static InstallationsWrapper Create(string name, string description, string location, string type)
+    public static InstallationsWrapper Create(string name, string description, string location, InstallationType type)
     {
         var entity = new InstallationsEntity(Guid.NewGuid(),name, description, location, type);
         return new InstallationsWrapper
@@ -51,7 +52,7 @@ public class InstallationsEntity : BaseEntity
         };
     }
 
-    public void Update(string name, string description, string location, string type)
+    public void Update(string name, string description, string location, InstallationType type)
     {
         Name = name;
         Description = description;
@@ -63,7 +64,7 @@ public class InstallationsEntity : BaseEntity
     public string? Name { get; set; }
     public string? Description { get; set; }
     public string Location { get; set; }
-    public string Type { get; set; }
+    public InstallationType Type { get; set; }
     public virtual AirportEntity Airport { get; set; }
     public virtual IEnumerable<ServicesEntity> Services { get; set; }
 }

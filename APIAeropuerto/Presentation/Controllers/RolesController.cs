@@ -33,6 +33,7 @@ public class RolesController : Controller
     }
     
     [HttpGet]
+    [Route("all")]
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy = ClaimsStrings.ReadRole)]
     public async Task<IActionResult> GetAll(CancellationToken ct)
     {

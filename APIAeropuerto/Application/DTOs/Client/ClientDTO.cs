@@ -6,5 +6,5 @@ public class ClientDTO
 {
     public string Name { get; set; }
     public string Nationality { get; set;}
-    public ClientType Type { get; set; }
+    public string Type { get; set; }
 }

@@ -20,7 +20,8 @@ public class ServicesMappers : Profile
         CreateMap<UpdateServiceDTO, ServicesEntity>();
         CreateMap<List<ClientPersistence>, GetAllClientsServiceDTO>();
         CreateMap<ServicesPersistence, GetAllClientsServiceDTO>();
-        CreateMap<ServicesEntity, GetAllServicesDTO>();
+        CreateMap<ServicesEntity, GetAllServicesDTO>()
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.ServiceType.GetDisplayName()));
         CreateMap<GetAllServicesDTO, ServicesEntity>();
         CreateMap<ServicesPersistence, GetAllServicesDTO>();
         CreateMap<GetAllServicesDTO, ServicesPersistence>();

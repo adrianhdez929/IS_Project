@@ -26,10 +26,11 @@ public class ServiceRepository : BaseRepository<ServicesEntity,ServicesPersisten
             .FirstOrDefaultAsync(x => x.Id == dto.InstallationId, ct);
         
         if (i is null) throw new NotFoundException("Installation not Found");
-        var service = ServicesEntity.CreateRepairService(dto.Code, dto.Description, dto.Price, _mapper.Map<InstallationsEntity>(i), ServiceType.Repair);
-        if (!service.IsSuccess) throw new ServiceBadRequestException(service.ErrorMessage!);
         var all = await _context.Services.ToListAsync(ct);
-        if (all.Any(x => x.Code == service.Value?.Code)) throw new RepeatBadRequestException("Code already exists");
+        if (all.Any(x => x.Code == dto.Code)) throw new RepeatBadRequestException("Code already exists");
+        var servicesToAdd = all.Where(x => dto.RepairService.Contains(x.Id)).ToList();
+        var service = ServicesEntity.CreateRepairService(dto.Code, dto.Description, dto.Price, _mapper.Map<InstallationsEntity>(i), ServiceType.Repair,servicesToAdd);
+        if (!service.IsSuccess) throw new ServiceBadRequestException(service.ErrorMessage!);
         service.Value!.Installation = null!;
         var mapper = _mapper.Map<ServicesPersistence>(service.Value);
         _context.Services.Add(mapper);

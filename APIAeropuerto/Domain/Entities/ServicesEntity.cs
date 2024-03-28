@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using APIAeropuerto.Domain.Enums;
 using APIAeropuerto.Domain.Shared;
+using APIAeropuerto.Persistence.Entities;
 
 namespace APIAeropuerto.Domain.Entities;
 
@@ -60,7 +61,7 @@ public class ServicesEntity : BaseEntity
             ErrorMessage = string.Empty
         };
     }
-    public static ServicesWrapper CreateRepairService(string code, string description, float price, InstallationsEntity installation,ServiceType serviceType)
+    public static ServicesWrapper CreateRepairService(string code, string description, float price, InstallationsEntity installation,ServiceType serviceType,List<ServicesPersistence> servicesToAdd)
     {
         if(code.Length != 4)
         {
@@ -71,7 +72,7 @@ public class ServicesEntity : BaseEntity
                 ErrorMessage = "El código debe tener 4 caracteres"
             };
         }
-        if(price <= 0)
+        if(price < 0)
         {
             return new ServicesWrapper()
             {
@@ -80,6 +81,18 @@ public class ServicesEntity : BaseEntity
                 ErrorMessage = "El precio debe ser mayor a 0"
             };
         }
+        if(price == 0 && servicesToAdd.Count == 0)
+        {
+            return new ServicesWrapper()
+            {
+                IsSuccess = false,
+                Value = null,
+                ErrorMessage = "El precio debe ser mayor a 0"
+            };
+        }
+
+        foreach (var s in servicesToAdd)
+            price += s.Price;
         var service = new ServicesEntity(Guid.NewGuid(),code, description, price, installation,serviceType);
         return new ServicesWrapper()
         {

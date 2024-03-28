@@ -51,6 +51,7 @@ public class ShipController: Controller
     }
     
     [HttpGet]
+    [Route("all")]
     public async Task<IActionResult> GetAllShips(CancellationToken ct = default)
     {
         var result = await _getAllShipsUseCase.Execute(ct);

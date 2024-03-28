@@ -56,6 +56,7 @@ public class FlightController : Controller
     }
     
     [HttpGet]
+    [Route("all")]
     public async Task<IActionResult> GetAllFlights(CancellationToken ct = default)
     {
         var result = await _getAllFlightsUseCase.Execute();

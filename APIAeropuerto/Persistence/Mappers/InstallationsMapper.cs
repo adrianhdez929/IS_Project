@@ -1,7 +1,9 @@
 ﻿using APIAeropuerto.Application.DTOs.Installations;
 using APIAeropuerto.Domain.Entities;
+using APIAeropuerto.Domain.Enums;
 using APIAeropuerto.Persistence.Entities;
 using AutoMapper;
+using Microsoft.OpenApi.Extensions;
 
 namespace APIAeropuerto.Persistence.Mappers;
 
@@ -13,10 +15,12 @@ public class InstallationsMapper:Profile
         CreateMap<InstallationsPersistence, InstallationsEntity>();
         CreateMap<InstallationsPersistence, InstallationDTO>()
             .ForMember(dest => dest.IdAirport, opt => opt.MapFrom(y => y.Airport.Id))
-            .ForMember(dest => dest.NameAirport, opt => opt.MapFrom(x => x.Airport.Name));
+            .ForMember(dest => dest.NameAirport, opt => opt.MapFrom(x => x.Airport.Name))
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.Type.GetDisplayName()));
         CreateMap<InstallationsEntity, InstallationDTO>()
             .ForMember(dest => dest.IdAirport, opt => opt.MapFrom(y => y.Airport.Id))
-            .ForMember(dest => dest.NameAirport, opt => opt.MapFrom(x => x.Airport.Name));
+            .ForMember(dest => dest.NameAirport, opt => opt.MapFrom(x => x.Airport.Name))
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.Type.GetDisplayName()));
         CreateMap<CreateInstallationsDTO, InstallationDTO>();
         CreateMap<CreateInstallationsDTO, InstallationsEntity>();
         CreateMap<UpdateInstallationDTO, InstallationsEntity>();
@@ -25,11 +29,13 @@ public class InstallationsMapper:Profile
         CreateMap<GetAllInstallationsDTO, InstallationsEntity>();
         CreateMap<InstallationsPersistence, GetAllInstallationsDTO>()
             .ForMember(dest => dest.IdAirport, opt => opt.MapFrom(y => y.Airport.Id))
-            .ForMember(dest => dest.NameAirport, opt => opt.MapFrom(x => x.Airport.Name));
+            .ForMember(dest => dest.NameAirport, opt => opt.MapFrom(x => x.Airport.Name))
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.Type.GetDisplayName()));
         CreateMap<GetAllInstallationsDTO, InstallationsPersistence>();
         CreateMap<InstallationsEntity , GetOneInstallationDTO>()
             .ForMember(dest => dest.IdAirport, opt => opt.MapFrom(y => y.Airport.Id))
             .ForMember(dest => dest.NameAirport, opt => opt.MapFrom(x => x.Airport.Name))
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.Type.GetDisplayName()))
             .ForMember(dest => dest.Services, opt => opt.MapFrom(x => x.Services));
     }
 }

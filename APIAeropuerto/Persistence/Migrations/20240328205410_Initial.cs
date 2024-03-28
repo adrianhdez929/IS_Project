@@ -82,7 +82,7 @@ namespace APIAeropuerto.Persistence.Migrations
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AirportId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -347,7 +347,8 @@ namespace APIAeropuerto.Persistence.Migrations
                     IdAirportOrigin = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdAirportDestination = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IdClient = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdShip = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    IdShip = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ArrivedClientType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

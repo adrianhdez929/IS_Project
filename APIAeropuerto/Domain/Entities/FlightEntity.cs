@@ -1,4 +1,5 @@
-﻿using APIAeropuerto.Domain.Shared;
+﻿using APIAeropuerto.Domain.Enums;
+using APIAeropuerto.Domain.Shared;
 
 namespace APIAeropuerto.Domain.Entities;
 
@@ -14,19 +15,21 @@ public class FlightEntity : BaseEntity
     public virtual ClientEntity Client { get; set; }
     public Guid IdShip { get; set; }
     public virtual ShipEntity Ship { get; set; }
+    public ArrivedClientType ArrivedClientType { get; set; }
 
-    public FlightEntity(Guid id, DateTime departureDate, DateTime arrivalDate)
+    public FlightEntity(Guid id, DateTime departureDate, DateTime arrivalDate,ArrivedClientType arrivedClientType)
     {
         Id = id;
         DepartureDate = departureDate;
         ArrivalDate = arrivalDate;
+        ArrivedClientType = arrivedClientType;
         Created = DateTime.Now;
         Updated = DateTime.Now;
     }
-   
-    public static FlightWrapper Create(DateTime departureDate, DateTime arrivalDate)
+
+    public static FlightWrapper Create(DateTime departureDate, DateTime arrivalDate, ArrivedClientType arrivedClientType)
     {
-        var temp = new FlightEntity(Guid.NewGuid(), departureDate, arrivalDate);
+        var temp = new FlightEntity(Guid.NewGuid(), departureDate, arrivalDate, arrivedClientType);
         return new FlightWrapper()
         {
             Value = temp,
