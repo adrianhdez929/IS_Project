@@ -9,5 +9,5 @@ public class CreateServiceDTO
     public string Description { get; set; }
     public int Price { get; set; }
     public Guid IdInstallation { get; set; }
-    public ServiceType  ServiceType{ get; set; }
+    public Guid  IdServiceType { get; set; }
 }

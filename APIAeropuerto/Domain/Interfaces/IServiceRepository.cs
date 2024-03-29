@@ -12,4 +12,6 @@ public interface IServiceRepository
     Task UpdateService(Guid id, ServicesEntity entity,CancellationToken ct);
     
     Task<GetAllClientsServiceDTO> GetAllClientsService(Guid id,CancellationToken ct);
+    
+    Task<IEnumerable<GetAllServicesDTO>> GetAllServices(CancellationToken ct = default);
 }

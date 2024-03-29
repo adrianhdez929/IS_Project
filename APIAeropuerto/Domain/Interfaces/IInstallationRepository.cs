@@ -10,6 +10,6 @@ public interface IInstallationRepository : IBaseRepository<InstallationsEntity>
     Task<GetInstallationServicesDTO> GetServices(Guid id, CancellationToken ct);
     Task<InstallationsEntity> GetOneInstallation(Guid id, CancellationToken ct);
     Task<IEnumerable<GetAllInstallationsDTO>> GetAllInstallations(CancellationToken ct);
-    
     Task<IEnumerable<InstallationDTO>> GetAllInstallationsWithRepairServices(CancellationToken ct);
+    Task UpdateInstallation(InstallationsEntity entity, CancellationToken ct);
 }

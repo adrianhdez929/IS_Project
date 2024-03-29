@@ -8,5 +8,6 @@ public class UpdateInstallationDTO
      public string? Name { get; set; }
      public string? Description { get; set; }
      public string? Location { get; set; }
-     public InstallationType Type { get; set; }
+     public Guid IdInstallationType { get; set; }
+     public Guid IdAirport { get; set; }
 }
