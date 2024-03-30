@@ -14,4 +14,6 @@ public interface IServiceRepository
     Task<GetAllClientsServiceDTO> GetAllClientsService(Guid id,CancellationToken ct);
     
     Task<IEnumerable<GetAllServicesDTO>> GetAllServices(CancellationToken ct = default);
+    
+    Task<IEnumerable<GetAllServicesDTO>> GetAllRepairServices(CancellationToken ct = default);
 }

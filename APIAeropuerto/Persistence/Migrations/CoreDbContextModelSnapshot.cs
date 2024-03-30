@@ -57,6 +57,9 @@ namespace APIAeropuerto.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ClientTypeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -71,13 +74,12 @@ namespace APIAeropuerto.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientTypeId");
 
                     b.HasIndex("IdUser")
                         .IsUnique();
@@ -110,6 +112,21 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.HasIndex("IdService");
 
                     b.ToTable("ClientServices");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ClientTypePersistence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClientTypes");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.FlightPersistence", b =>
@@ -652,11 +669,19 @@ namespace APIAeropuerto.Persistence.Migrations
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ClientPersistence", b =>
                 {
+                    b.HasOne("APIAeropuerto.Persistence.Entities.ClientTypePersistence", "ClientType")
+                        .WithMany("Clients")
+                        .HasForeignKey("ClientTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("APIAeropuerto.Persistence.Entities.UserPersistence", "User")
                         .WithOne("Client")
                         .HasForeignKey("APIAeropuerto.Persistence.Entities.ClientPersistence", "IdUser")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ClientType");
 
                     b.Navigation("User");
                 });
@@ -896,6 +921,11 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.Navigation("ClientServices");
 
                     b.Navigation("Flights");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ClientTypePersistence", b =>
+                {
+                    b.Navigation("Clients");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.InstallationTypePersistence", b =>

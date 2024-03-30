@@ -74,6 +74,18 @@ namespace APIAeropuerto.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ClientTypes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClientTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "InstallationTypes",
                 columns: table => new
                 {
@@ -218,10 +230,10 @@ namespace APIAeropuerto.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Nationality = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    IdUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ClientTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -232,6 +244,11 @@ namespace APIAeropuerto.Persistence.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Clients_ClientTypes_ClientTypeId",
+                        column: x => x.ClientTypeId,
+                        principalTable: "ClientTypes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -478,6 +495,11 @@ namespace APIAeropuerto.Persistence.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Clients_ClientTypeId",
+                table: "Clients",
+                column: "ClientTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Clients_IdUser",
                 table: "Clients",
                 column: "IdUser",
@@ -599,6 +621,9 @@ namespace APIAeropuerto.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "ClientTypes");
 
             migrationBuilder.DropTable(
                 name: "Airports");
