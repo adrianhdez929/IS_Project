@@ -202,6 +202,10 @@ public class Startup
         //SpecifyConsults UseCases
         services.AddScoped<GetAirportWithRepairServicesUseCase>();
         services.AddScoped<GetAmountRepairAirportUseCase>();
+        services.AddScoped<GetClientAirportJMUseCase>();
+        services.AddScoped<GetAirportWithLessShipUseCase>();
+        services.AddScoped<GetAvgServicesPriceJMUseCase>();
+        services.AddScoped<DeleteInneficientServicesUseCase>();
         //ServiceType UseCases
         services.AddScoped<IUseCase<ServiceTypeDTO, CreateServiceTypeDTO>, CreateServiceTypeUseCase>();
         services.AddScoped<IUseCase<ServiceTypeDTO, UpdateServiceTypeDTO>, UpdateServiceTypeUseCase>();
@@ -242,7 +246,7 @@ public class Startup
         services.AddScoped<UserManager<UserPersistence>>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRepairRepository, RepairRepository>();
-        services.AddScoped<RepairRepository, RepairRepository>();
+        services.AddScoped<RepairRepository>();
         services.AddScoped<ServiceTypeRepository, ServiceTypeRepository>();
         services.AddScoped<ISpecifyConsultsRepository, SpecifyConsultsRepository>();
         services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
@@ -250,6 +254,7 @@ public class Startup
         services.AddScoped<IBaseRepository<InstallationTypeEntity> , InstallationTypeRepository>();
         services.AddScoped<IBaseRepository<ClientTypeEntity>, ClientTypeRepository>();
         services.AddScoped<IClientTypeRepository, ClientTypeRepository>();
+        services.AddScoped<FlightRepository>();
 
         services.AddSingleton<SmtpClient>(s => new SmtpClient(Configuration["Smtp:Host"])
         {

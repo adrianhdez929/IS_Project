@@ -49,10 +49,11 @@ public class ShipController: Controller
     }
     
     [HttpDelete]
+    [Route("{id}")]
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteShips)]
-    public async Task<IActionResult> DeleteShip([FromBody] DeleteShipDTO dto, CancellationToken ct = default)
+    public async Task<IActionResult> DeleteShip(Guid id, CancellationToken ct = default)
     {
-        var result = await _deleteShipUseCase.Execute(dto, ct);
+        var result = await _deleteShipUseCase.Execute(new DeleteShipDTO(){Id = id}, ct);
         return Ok(result);
     }
     

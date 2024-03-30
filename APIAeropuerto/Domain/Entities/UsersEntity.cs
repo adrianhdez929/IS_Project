@@ -15,6 +15,11 @@ public class UsersEntity : IdentityUser<Guid>
     public virtual ICollection<UserRoleEntity> UserRoles { get; set; }
     public virtual ICollection<UserClaimEntity> UserClaims { get; set; }
     public virtual ICollection<UserLoginEntity> UserLogins { get; set; }
+    
+    public UsersEntity()
+    {
+        
+    }
     public UsersEntity(Guid id,string name, string email, string password)
     {
         Id = id;

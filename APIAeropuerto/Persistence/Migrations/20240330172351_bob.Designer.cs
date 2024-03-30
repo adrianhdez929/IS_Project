@@ -4,6 +4,7 @@ using APIAeropuerto.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIAeropuerto.Persistence.Migrations
 {
     [DbContext(typeof(CoreDbContext))]
-    partial class CoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240330172351_bob")]
+    partial class bob
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,7 +51,7 @@ namespace APIAeropuerto.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Airports", (string)null);
+                    b.ToTable("Airports");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ClientPersistence", b =>
@@ -84,7 +87,7 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.HasIndex("IdUser")
                         .IsUnique();
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ClientServicesPersistence", b =>
@@ -111,7 +114,7 @@ namespace APIAeropuerto.Persistence.Migrations
 
                     b.HasIndex("IdService");
 
-                    b.ToTable("ClientServices", (string)null);
+                    b.ToTable("ClientServices");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ClientTypePersistence", b =>
@@ -126,7 +129,7 @@ namespace APIAeropuerto.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClientTypes", (string)null);
+                    b.ToTable("ClientTypes");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.FlightPersistence", b =>
@@ -172,7 +175,7 @@ namespace APIAeropuerto.Persistence.Migrations
 
                     b.HasIndex("IdShip");
 
-                    b.ToTable("Flights", (string)null);
+                    b.ToTable("Flights");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.InstallationTypePersistence", b =>
@@ -187,7 +190,7 @@ namespace APIAeropuerto.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InstallationTypes", (string)null);
+                    b.ToTable("InstallationTypes");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.InstallationsPersistence", b =>
@@ -226,7 +229,7 @@ namespace APIAeropuerto.Persistence.Migrations
 
                     b.HasIndex("InstallationTypeId");
 
-                    b.ToTable("Installations", (string)null);
+                    b.ToTable("Installations");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.RepairPersistence", b =>
@@ -266,7 +269,7 @@ namespace APIAeropuerto.Persistence.Migrations
 
                     b.HasIndex("IdShip");
 
-                    b.ToTable("Repairs", (string)null);
+                    b.ToTable("Repairs");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ServiceServicePersistence", b =>
@@ -281,7 +284,7 @@ namespace APIAeropuerto.Persistence.Migrations
 
                     b.HasIndex("IdService2");
 
-                    b.ToTable("RepairServices", (string)null);
+                    b.ToTable("RepairServices");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ServiceTypePersistence", b =>
@@ -296,7 +299,7 @@ namespace APIAeropuerto.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceTypes", (string)null);
+                    b.ToTable("ServiceTypes");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ServicesPersistence", b =>
@@ -334,7 +337,7 @@ namespace APIAeropuerto.Persistence.Migrations
 
                     b.HasIndex("ServiceTypeId");
 
-                    b.ToTable("Services", (string)null);
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ShipPersistence", b =>
@@ -373,7 +376,7 @@ namespace APIAeropuerto.Persistence.Migrations
 
                     b.HasIndex("PropietaryId");
 
-                    b.ToTable("Ships", (string)null);
+                    b.ToTable("Ships");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.UserPersistence", b =>

@@ -69,9 +69,9 @@ public class SpecifyConsultsRepository : ISpecifyConsultsRepository
 
     public async Task<IEnumerable<GetClientAirportJMDTO>> GetClientAirportJM()
     {
-        //Por tipo de cliente, obtener los nombres y el tipo de los clientes del aeropuerto internacional José Martí que han arribado a la misma en sus propias naves como capitanes. 
         var flights = await _context.Flights
             .Include(x => x.Client)
+            .ThenInclude(x => x.ClientType)
             .Where(x => x.AirportDestination.Name == "Jose Marti" && x.ArrivedClientType == ArrivedClientType.Captain)
             .ToListAsync();
         
@@ -88,10 +88,107 @@ public class SpecifyConsultsRepository : ISpecifyConsultsRepository
         return result;
     }
 
+    public async Task<IEnumerable<GetAirportWithLessShipDTO>> GetAirportWithLessShip()
+    {
+        var aux = new Dictionary<string, int>();
+        var aux1 = new Dictionary<string, int>();
+        var airports = await _context.Flights
+            .Include(x => x.AirportDestination)
+            .ThenInclude(x => x.Installations)
+            .ThenInclude(x => x.Services)
+            .Where(x => x.ArrivalDate.Year > 2010)
+            .Select(x => x.AirportDestination)
+            .ToListAsync();
+
+        foreach (var airport in airports)
+        {
+            if (aux1.ContainsKey(airport.Name))
+            {
+                aux1[airport.Name] += 1;
+            }
+            else
+            {
+                aux1.Add(airport.Name, 1);
+            }
+
+            foreach (var installation in airport.Installations)
+            {
+                if (aux.ContainsKey(airport.Name))
+                {
+                    aux[airport.Name] += installation.Services.Count();
+                }
+                else
+                {
+                    aux.Add(airport.Name, installation.Services.Count());
+                }
+            }
+        }
+        var result = aux1.OrderBy(x => x.Value).Take(5).Select(x => x.Key).ToList();
+        var result1 = new List<GetAirportWithLessShipDTO>();
+        foreach (var airport in result)
+        {
+            result1.Add(new GetAirportWithLessShipDTO()
+            {
+                AirportName = airport,
+                ServicesCount = aux[airport]
+            });
+        }
+        
+        return result1;
+    }
+
+    public async Task<IEnumerable<GetAvgServicesPriceJMDTO>> GetAvgServicesPriceJM()
+    {
+        var services = await _context.Repairs
+            .Include(x => x.Service)
+            .ThenInclude(x => x.Installation)
+            .ThenInclude(x => x.Airport)
+            .Where(x => x.Service.Installation.Airport.Name == "Jose Marti" && x.Rating < 5 && x.DateEnd.Year == DateTime.Now.Year - 1)
+            .ToListAsync();
+        
+        var aux = new Dictionary<string, double>();
+        var counter = new Dictionary<string, int>();
+        foreach (var service in services)
+        {
+            if (aux.ContainsKey(service.Service.Description))
+            {
+                aux[service.Service.Description] += service.Cost;
+                counter[service.Service.Description] += 1;
+            }
+            else
+            {
+                aux.Add(service.Service.Description, service.Cost);
+                counter.Add(service.Service.Description, 1);
+            }
+        }
+        
+        var result = new List<GetAvgServicesPriceJMDTO>();
+        foreach (var (key, value) in aux)
+        {
+            result.Add(new GetAvgServicesPriceJMDTO()
+            {
+                ServiceDescription = key,
+                AvgPrice = value / counter[key]
+            });
+        }
+        
+        return result;
+    }
+
     public async Task<string> DeleteInneficientServices(DeleteInneficientServicesDTO dto)
     {
         var airport = await _context.Airports.Include(x => x.Installations)
             .ThenInclude(x => x.Services)
+            .ThenInclude(x => x.ServiceType)
+            .Include(x => x.Installations)
+            .ThenInclude(x => x.Services)
+            .ThenInclude(x => x.Repairs)
+            .Include(x => x.Installations)
+            .ThenInclude(x => x.Services)
+            .ThenInclude(x => x.ClientServices)
+            .Include(x => x.Installations)
+            .ThenInclude(x => x.Services)
+            .ThenInclude(x => x.ServiceService)
             .FirstOrDefaultAsync(x => x.Id == dto.Id);
         if (airport == null) return "Airport not found";
         var allClientServices = await _context.ClientServices.ToListAsync();
@@ -113,6 +210,10 @@ public class SpecifyConsultsRepository : ISpecifyConsultsRepository
                     var repairService = allRepairServices.Where(x => x.IdService == service.Id);
                     if(repairService.Average(x => x.Rating) <= 3)
                     {
+                        foreach (var repair in repairService)
+                        {
+                            _context.Repairs.Remove(repair);
+                        }
                         _context.Services.Remove(service);
                     }
                 }

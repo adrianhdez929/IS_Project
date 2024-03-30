@@ -70,25 +70,25 @@ public class CoreDbContext : IdentityDbContext<UserPersistence,IdentityRole<Guid
             .WithMany(x => x.OriginFlights)
             .HasForeignKey(k => k.IdAirportOrigin)
             .HasPrincipalKey(x => x.Id)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<FlightPersistence>()
             .HasOne(x => x.AirportDestination)
             .WithMany(x => x.DestinationFlights)
             .HasForeignKey(k => k.IdAirportDestination)
             .HasPrincipalKey(x => x.Id)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<FlightPersistence>()
             .HasOne(x => x.Client)
             .WithMany(x => x.Flights)
             .HasForeignKey(k => k.IdClient)
             .HasPrincipalKey(x => x.Id)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<FlightPersistence>()
             .HasOne(x => x.Ship)
             .WithMany(x => x.Flights)
             .HasForeignKey(k => k.IdShip)
             .HasPrincipalKey(x => x.Id)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<ServiceServicePersistence>()
             .HasKey(x => new { x.IdService1, x.IdService2 });
 
@@ -96,13 +96,13 @@ public class CoreDbContext : IdentityDbContext<UserPersistence,IdentityRole<Guid
             .HasOne(x => x.RepairService1)
             .WithMany(x => x.ServiceService)
             .HasForeignKey(pr => pr.IdService1)
-            .OnDelete(DeleteBehavior.Restrict); // Para evitar la eliminación en cascada
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<ServiceServicePersistence>()
             .HasOne(x => x.RepairService2)
             .WithMany()
             .HasForeignKey(x => x.IdService2)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<UserPersistence>().HasOne(x => x.Client)
             .WithOne(x => x.User)
