@@ -1,5 +1,6 @@
 ﻿using APIAeropuerto.Application.DTOs.SpecifyConsults;
 using APIAeropuerto.Application.UseCases.Installations;
+using APIAeropuerto.Domain.Enums;
 using APIAeropuerto.Domain.Interfaces;
 using APIAeropuerto.Persistence.Entities;
 using AutoMapper;
@@ -66,13 +67,58 @@ public class SpecifyConsultsRepository : ISpecifyConsultsRepository
         return result;
     }
 
-    public Task<IEnumerable<GetClientAirportJMDTO>> GetClientAirportJM()
+    public async Task<IEnumerable<GetClientAirportJMDTO>> GetClientAirportJM()
     {
-        throw new NotImplementedException();
+        //Por tipo de cliente, obtener los nombres y el tipo de los clientes del aeropuerto internacional José Martí que han arribado a la misma en sus propias naves como capitanes. 
+        var flights = await _context.Flights
+            .Include(x => x.Client)
+            .Where(x => x.AirportDestination.Name == "Jose Marti" && x.ArrivedClientType == ArrivedClientType.Captain)
+            .ToListAsync();
+        
+        var result = new List<GetClientAirportJMDTO>();
+        foreach (var flight in flights)
+        {
+            result.Add(new GetClientAirportJMDTO()
+            {
+                NameClient = flight.Client.Name,
+                ClientType = flight.Client.ClientType.Type
+            });
+        }
+        
+        return result;
     }
 
-    public Task<string> DeleteInneficientServices()
+    public async Task<string> DeleteInneficientServices(DeleteInneficientServicesDTO dto)
     {
-        throw new NotImplementedException();
+        var airport = await _context.Airports.Include(x => x.Installations)
+            .ThenInclude(x => x.Services)
+            .FirstOrDefaultAsync(x => x.Id == dto.Id);
+        if (airport == null) return "Airport not found";
+        var allClientServices = await _context.ClientServices.ToListAsync();
+        var allRepairServices = await _context.Repairs.ToListAsync();
+        foreach (var installation in airport.Installations)
+        {
+            foreach (var service in installation.Services)
+            {
+                if(allClientServices.Any(x => x.IdService == service.Id))
+                {
+                    var clientService = allClientServices.Where(x => x.IdService == service.Id);
+                    if (clientService.Average(x => x.Rating) <= 3)
+                    {
+                        _context.Services.Remove(service);
+                    }
+                }
+                else if (allRepairServices.Any(x => x.IdService == service.Id))
+                {
+                    var repairService = allRepairServices.Where(x => x.IdService == service.Id);
+                    if(repairService.Average(x => x.Rating) <= 3)
+                    {
+                        _context.Services.Remove(service);
+                    }
+                }
+            }
+        }
+        await _context.SaveChangesAsync();
+        return "Inneficient services deleted";
     }
 }

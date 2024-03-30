@@ -1,9 +1,6 @@
 ﻿using APIAeropuerto.Application.DTOs.Airport;
 using APIAeropuerto.Application.UseCases.Airport;
 using APIAeropuerto.Domain.Interfaces;
-using APIAeropuerto.Domain.Shared;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIAeropuerto.Presentation.Controllers;
@@ -35,13 +32,14 @@ public class AirportController : Controller
     }
     
     [HttpPost]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadAirport)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteAirport)]
     public async Task<IActionResult> CreateAirport([FromBody] CreateAirportDTO dto)
     {
         var result = await _createAirportUseCase.Execute(dto);
         return Ok(result);
     }
     [HttpPut]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteAirport)]
     public async Task<IActionResult> UpdateAirport([FromBody] UpdateAirportDTO dto)
     {
         var result = await _updateAirportUseCase.Execute(dto);
@@ -49,6 +47,7 @@ public class AirportController : Controller
     }
     [HttpDelete]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteAirport)]
     public async Task<IActionResult> DeleteAirport(Guid id)
     {
         var result = await _deleteAirportUseCase.Execute(new DeleteAirportDTO(){Id = id});
@@ -56,6 +55,7 @@ public class AirportController : Controller
     }
     [HttpGet]
     [Route("all")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadAirport)]
     public async Task<IActionResult> GetAllAirports()
     {
         var result = await _getAllAirportsUseCase.Execute();
@@ -63,6 +63,7 @@ public class AirportController : Controller
     }
     [HttpGet]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadAirport)]
     public async Task<IActionResult> GetAirportById(Guid id)
     {
         var result = await _getOneAirportUseCase.Execute(new GetOneAirportDTO(){Id = id});
@@ -71,6 +72,7 @@ public class AirportController : Controller
 
     [HttpGet]
     [Route("installations/{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadAirport)]
     public async Task<IActionResult> GetAirportInstallations(Guid id)
     {
         var result = await _getAirportInstUseCase.Execute(new GetOneAirportDTO() { Id = id });

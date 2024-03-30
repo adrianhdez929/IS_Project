@@ -1,5 +1,8 @@
 ﻿using APIAeropuerto.Application.DTOs.ClientService;
 using APIAeropuerto.Domain.Interfaces;
+using APIAeropuerto.Domain.Shared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIAeropuerto.Presentation.Controllers;
@@ -17,6 +20,7 @@ public class ClientServiceController : Controller
 
     [HttpDelete]
     [Route("{idClient},{idService}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteClientServices)]
     public async Task<IActionResult> Delete(Guid idClient, Guid idService)
     {
         var result = await _deleteClientServiceUseCase.Execute(new DeleteClientServiceDTO()

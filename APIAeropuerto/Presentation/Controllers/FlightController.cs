@@ -1,6 +1,9 @@
 ﻿using APIAeropuerto.Application.DTOs.Flight;
 using APIAeropuerto.Application.UseCases.Flight;
 using APIAeropuerto.Domain.Interfaces;
+using APIAeropuerto.Domain.Shared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIAeropuerto.Presentation.Controllers;
@@ -26,6 +29,7 @@ public class FlightController : Controller
     }
  
     [HttpPost]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteFlights)]
     public async Task<IActionResult> CreateFlight([FromBody] CreateFlightDTO dto, CancellationToken ct = default)
     {
         var result = await _createFlightUseCase.Execute(dto, ct);
@@ -33,6 +37,7 @@ public class FlightController : Controller
     }
     
     [HttpPut]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteFlights)]
     public async Task<IActionResult> UpdateFlight([FromBody] UpdateFlightDTO dto, CancellationToken ct = default)
     {
         var result = await _updateFlightUseCase.Execute(dto, ct);
@@ -41,6 +46,7 @@ public class FlightController : Controller
     
     [HttpGet]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadFlights)]
     public async Task<IActionResult> GetOneFlight(Guid id, CancellationToken ct = default)
     {
         var result = await _getOneFlightUseCase.Execute(new GetOneFlightDTO(){Id = id}, ct);
@@ -49,6 +55,7 @@ public class FlightController : Controller
     
     [HttpDelete]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteFlights)]
     public async Task<IActionResult> DeleteFlight(Guid id, CancellationToken ct = default)
     {
         var result = await _deleteFlightUseCase.Execute(new DeleteFlightDTO(){Id = id}, ct);
@@ -57,6 +64,7 @@ public class FlightController : Controller
     
     [HttpGet]
     [Route("all")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadFlights)]
     public async Task<IActionResult> GetAllFlights(CancellationToken ct = default)
     {
         var result = await _getAllFlightsUseCase.Execute();

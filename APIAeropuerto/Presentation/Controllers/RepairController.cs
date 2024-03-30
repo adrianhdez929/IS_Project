@@ -1,6 +1,9 @@
 ﻿using APIAeropuerto.Application.DTOs.Repair;
 using APIAeropuerto.Application.UseCases.Repair;
 using APIAeropuerto.Domain.Interfaces;
+using APIAeropuerto.Domain.Shared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIAeropuerto.Presentation.Controllers;
@@ -38,6 +41,7 @@ public class RepairController : Controller
     }
 
     [HttpPost]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteRepairs)]
     public async Task<IActionResult> Create([FromBody] CreateRepairDTO dto, CancellationToken ct = default)
     {
         var result = await _createRepairUseCase.Execute(dto, ct);
@@ -45,6 +49,7 @@ public class RepairController : Controller
     }
     
     [HttpPut]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteRepairs)]
     public async Task<IActionResult> Update([FromBody] UpdateRepairDTO dto, CancellationToken ct = default)
     {
         var result = await _updateRepairUseCase.Execute(dto, ct);
@@ -53,6 +58,7 @@ public class RepairController : Controller
     
     [HttpGet]
     [Route("all")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadRepairs)]
     public async Task<IActionResult> GetAll(CancellationToken ct = default)
     {
         var result = await _getAllRepairUseCase.Execute(ct);
@@ -61,6 +67,7 @@ public class RepairController : Controller
     
     [HttpGet]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadRepairs)]
     public async Task<IActionResult> GetOne(Guid id, CancellationToken ct = default)
     {
         var dto = new GetOneRepairDTO { Id = id };
@@ -70,6 +77,7 @@ public class RepairController : Controller
     
     [HttpGet]
     [Route("repairs/{idShip}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadRepairs)]
     public async Task<IActionResult> GetAllRepairsShip(Guid idShip, CancellationToken ct = default)
     {
         var dto = new GetAllRepairsShipDTO { IdShip = idShip };
@@ -79,6 +87,7 @@ public class RepairController : Controller
     
     [HttpGet]
     [Route("ships/{idRepair}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadRepairs)]
     public async Task<IActionResult> GetAllShipsRepair(Guid idRepair, CancellationToken ct = default)
     {
         var dto = new GetAllShipsRepairDTO { IdRepair = idRepair };
@@ -88,6 +97,7 @@ public class RepairController : Controller
     
     [HttpDelete]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteRepairs)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct = default)
     {
         var dto = new DeleteRepairDTO { Id = id };
@@ -97,6 +107,7 @@ public class RepairController : Controller
     
     [HttpGet]
     [Route("services/{idShip}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadRepairs)]
     public async Task<IActionResult> GetAllServicesShip(Guid idShip, CancellationToken ct = default)
     {
         var dto = new GetAllServicesShipDTO { IdShip = idShip };

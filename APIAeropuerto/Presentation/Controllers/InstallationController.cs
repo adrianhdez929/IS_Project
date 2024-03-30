@@ -1,6 +1,9 @@
 ﻿using APIAeropuerto.Application.DTOs.Installations;
 using APIAeropuerto.Application.UseCases.Installations;
 using APIAeropuerto.Domain.Interfaces;
+using APIAeropuerto.Domain.Shared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIAeropuerto.Presentation.Controllers;
@@ -36,6 +39,7 @@ public class InstallationController : Controller
     }
     
     [HttpPost]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteInstallations)]
     public async Task<IActionResult> CreateInstallation([FromBody] CreateInstallationsDTO dto)
     {
         var result = await _createInstallationUseCase.Execute(dto);
@@ -43,6 +47,7 @@ public class InstallationController : Controller
     }
     [HttpGet]
     [Route("all")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadInstallations)]
     public async Task<IActionResult> GetAllInstallations()
     {
         var result = await _getAllInstallationUseCase.Execute();
@@ -50,6 +55,7 @@ public class InstallationController : Controller
     }
     [HttpGet]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadInstallations)]
     public async Task<IActionResult> GetOneInstallation(Guid id)
     {
         var result = await _getOneInstallationUseCase.Execute(new GetOneInstallationDTO { Id = id });
@@ -58,12 +64,15 @@ public class InstallationController : Controller
 
     [HttpGet]
     [Route("Services/{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadInstallations)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadService)]
     public async Task<IActionResult> GetInstallationServices(Guid id)
     {
         var result = await _getInstallationServicesUseCase.Execute(new GetOneInstallationDTO() { Id = id });
         return Ok(result);
     }
     [HttpPut]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteInstallations)]
     public async Task<IActionResult> UpdateInstallation([FromBody] UpdateInstallationDTO dto)
     {
         var result = await _updateInstallationUseCase.Execute(dto);
@@ -71,6 +80,7 @@ public class InstallationController : Controller
     }
     [HttpDelete]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteInstallations)]
     public async Task<IActionResult> DeleteInstallation(Guid id)
     {
         var result = await _deleteInstallationUseCase.Execute(new DeleteInstallationDTO { Id = id });
@@ -79,6 +89,8 @@ public class InstallationController : Controller
     
     [HttpGet]
     [Route("InstallationWithRepairServices")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadInstallations)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadService)]
     public async Task<IActionResult> GetInstallationsWithRepairServices()
     {
         var result = await _getInstallationsWithRepairServiceUseCase.Execute();

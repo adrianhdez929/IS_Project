@@ -1,6 +1,9 @@
 ﻿using APIAeropuerto.Application.DTOs.InstallationType;
 using APIAeropuerto.Application.UseCases.InstallationType;
 using APIAeropuerto.Domain.Interfaces;
+using APIAeropuerto.Domain.Shared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIAeropuerto.Presentation.Controllers;
@@ -25,6 +28,7 @@ public class InstallationTypeController : Controller
     }
     
     [HttpPost]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteInstallationTypes)]
     public async Task<IActionResult> CreateInstallationType([FromBody] CreateInstallationTypeDTO dto)
     {
         var result = await _createInstallationTypeUseCase.Execute(dto);
@@ -32,6 +36,7 @@ public class InstallationTypeController : Controller
     }
     
     [HttpPut]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteInstallationTypes)]
     public async Task<IActionResult> UpdateInstallationType([FromBody] UpdateInstallationTypeDTO dto)
     {
         var result = await _updateInstallationTypeUseCase.Execute(dto);
@@ -39,7 +44,8 @@ public class InstallationTypeController : Controller
     }
     
     [HttpDelete]
-    [Route("{id}")]
+    //[Route("{id}")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteInstallationTypes)]
     public async Task<IActionResult> DeleteInstallationType(Guid id)
     {
         var result = await _deleteInstallationTypeUseCase.Execute(new DeleteInstallationTypeDTO(){Id = id});
@@ -48,6 +54,7 @@ public class InstallationTypeController : Controller
     
     [HttpGet]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadInstallationTypes)]
     public async Task<IActionResult> GetOneInstallationType(Guid id)
     {
         var result = await _getOneInstallationTypeUseCase.Execute(new GetOneInstallationTypeDTO(){Id = id});
@@ -56,6 +63,7 @@ public class InstallationTypeController : Controller
     
     [HttpGet]
     [Route("all")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadInstallationTypes)]
     public async Task<IActionResult> GetAllInstallationType()
     {
         var result = await _getAllInstallationTypeUseCase.Execute();

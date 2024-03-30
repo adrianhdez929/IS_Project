@@ -1,6 +1,9 @@
 ﻿using APIAeropuerto.Application.DTOs.Services;
 using APIAeropuerto.Application.UseCases.Services;
 using APIAeropuerto.Domain.Interfaces;
+using APIAeropuerto.Domain.Shared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIAeropuerto.Presentation.Controllers;
@@ -32,6 +35,7 @@ public class ServicesController : Controller
     }
 
     [HttpPost]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteService)]
     public async Task<IActionResult> CreateService([FromBody] CreateServiceDTO dto)
     {
         var result = await _createServiceUseCase.Execute(dto);
@@ -40,6 +44,7 @@ public class ServicesController : Controller
 
     [HttpDelete]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteService)]
     public async Task<IActionResult> DeleteService(Guid id)
     {
         var result = await _deleteServiceUseCase.Execute(new DeleteServiceDTO() { Id = id });
@@ -48,6 +53,7 @@ public class ServicesController : Controller
 
     [HttpGet]
     [Route("all")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadService)]
     public async Task<IActionResult> GetAllServices()
     {
         var result = await _getAllServicesUseCase.Execute();
@@ -56,6 +62,7 @@ public class ServicesController : Controller
 
     [HttpGet]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadService)]
     public async Task<IActionResult> GetOneService(Guid id)
     {
         var result = await _getOneServiceUseCase.Execute(new GetOneServiceDTO() { Id = id });
@@ -63,6 +70,7 @@ public class ServicesController : Controller
     }
 
     [HttpPut]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteService)]
     public async Task<IActionResult> UpdateService([FromBody] UpdateServiceDTO dto)
     {
         var result = await _updateServiceUseCase.Execute(dto);
@@ -70,6 +78,7 @@ public class ServicesController : Controller
     }
     [HttpGet]
     [Route("{id}/clients")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadService)]
     public async Task<IActionResult> GetAllClientsService(Guid id)
     {
         var result = await _getAllClientsServiceUseCase.Execute(new GetOneServiceDTO() { Id = id });

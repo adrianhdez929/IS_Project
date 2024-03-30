@@ -1,6 +1,9 @@
 ﻿using APIAeropuerto.Application.DTOs.ClientType;
 using APIAeropuerto.Application.UseCases.ClientType;
 using APIAeropuerto.Domain.Interfaces;
+using APIAeropuerto.Domain.Shared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIAeropuerto.Presentation.Controllers;
@@ -25,6 +28,7 @@ public class ClientTypeController : Controller
     }
     
     [HttpPost]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteClientTypes)]
     public async Task<IActionResult> CreateClientType([FromBody] CreateClientTypeDTO dto)
     {
         var result = await _createClientTypeUseCase.Execute(dto);
@@ -33,6 +37,7 @@ public class ClientTypeController : Controller
     
     [HttpGet]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadClientTypes)]
     public async Task<IActionResult> GetOneClientType(Guid id)
     {
         var dto = new GetOneClientTypeDTO { Id = id };
@@ -41,6 +46,7 @@ public class ClientTypeController : Controller
     }
     
     [HttpPut]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteClientTypes)]
     public async Task<IActionResult> UpdateClientType([FromBody] UpdateClientTypeDTO dto)
     {
         var result = await _updateClientTypeUseCase.Execute(dto);
@@ -49,6 +55,7 @@ public class ClientTypeController : Controller
     
     [HttpDelete]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteClientTypes)]
     public async Task<IActionResult> DeleteClientType(Guid id)
     {
         var dto = new DeleteClientTypeDTO { Id = id };
@@ -58,6 +65,7 @@ public class ClientTypeController : Controller
     
     [HttpGet]
     [Route("all")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadClientTypes)]
     public async Task<IActionResult> GetAllClientType()
     {
         var result = await _getAllClientTypeUseCase.Execute();

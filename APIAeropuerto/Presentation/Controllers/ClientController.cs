@@ -2,6 +2,9 @@
 using APIAeropuerto.Application.DTOs.Users;
 using APIAeropuerto.Application.UseCases.Client;
 using APIAeropuerto.Domain.Interfaces;
+using APIAeropuerto.Domain.Shared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIAeropuerto.Presentation.Controllers;
@@ -37,6 +40,7 @@ public class ClientController : Controller
     }
     
     [HttpPost]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy = ClaimsStrings.WriteClient)]
     public async Task<IActionResult> Create([FromBody] CreateUserDTO dto, CancellationToken ct = default)
     {
         var result = await _createClientUseCase.Execute(dto,ct);
@@ -44,6 +48,7 @@ public class ClientController : Controller
     }
     
     [HttpPut]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy = ClaimsStrings.WriteClient)]
     public async Task<IActionResult> Update([FromBody] UpdateClientDTO dto, CancellationToken ct = default)
     {
         var result = await _updateClientUseCase.Execute(dto,ct);
@@ -52,6 +57,7 @@ public class ClientController : Controller
     
     [HttpGet]
     [Route("all")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy = ClaimsStrings.ReadClient)]
     public async Task<IActionResult> GetAll(CancellationToken ct = default)
     {
         var result = await _getAllClientsUseCase.Execute();
@@ -60,6 +66,7 @@ public class ClientController : Controller
     
     [HttpGet]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy = ClaimsStrings.ReadClient)]
     public async Task<IActionResult> GetOne(Guid id, CancellationToken ct = default)
     {
         var result = await _getOneClientUseCase.Execute(new GetOneClientDTO(){Id = id},ct);
@@ -68,6 +75,7 @@ public class ClientController : Controller
     
     [HttpDelete]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy = ClaimsStrings.WriteClient)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct = default)
     {
         var result = await _deleteClientUseCase.Execute(new DeleteClientDTO(){Id = id},ct);
@@ -76,6 +84,7 @@ public class ClientController : Controller
     
     [HttpGet]
     [Route("{id}/services")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy = ClaimsStrings.ReadClient)]
     public async Task<IActionResult> GetServices(Guid id, CancellationToken ct = default)
     {
         var result = await _getAllServicesClientUseCase.Execute(new GetOneClientDTO(){Id = id},ct);
@@ -84,6 +93,7 @@ public class ClientController : Controller
     
     [HttpPost]
     [Route("add/services")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Policy = ClaimsStrings.WriteClientServices)]
     public async Task<IActionResult> AddService([FromBody]AddServiceDTO addServiceDto, CancellationToken ct = default)
     {
         var result = await _addServiceUseCase.Execute(addServiceDto,ct);
