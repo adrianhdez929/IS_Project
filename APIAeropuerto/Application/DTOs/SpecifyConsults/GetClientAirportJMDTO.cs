@@ -2,6 +2,6 @@
 
 public class GetClientAirportJMDTO
 {
-    string NameClient { get; set; }
-    private string ClientType { get; set; }
+    public string NameClient { get; set; }
+    public string ClientType { get; set; }
 }

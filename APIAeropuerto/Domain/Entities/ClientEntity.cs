@@ -10,17 +10,17 @@ public class ClientEntity : BaseEntity
         
     }
 
-    public ClientEntity(Guid id,string name, string nationality, ClientType type)
+    public ClientEntity(Guid id,string name, string nationality, ClientTypeEntity type)
     {
         Id = id;
         Name = name;
         Nationality = nationality;
-        Type = type;
+        ClientType = type;
         Created = DateTime.Now;
         Updated = DateTime.Now;
     }
 
-    public static ClientWrapper Create(string name, string nationality, ClientType type)
+    public static ClientWrapper Create(string name, string nationality, ClientTypeEntity type)
     {
         var temp = new ClientEntity(Guid.NewGuid(), name, nationality, type);
         return new ClientWrapper()
@@ -31,11 +31,11 @@ public class ClientEntity : BaseEntity
         };
     }
 
-    public void Update (string name, string nationality, ClientType type)
+    public void Update (string name, string nationality, ClientTypeEntity type)
     {
         Name = name;
         Nationality = nationality;
-        Type = type;
+        ClientType = type;
         Updated = DateTime.Now;
     }
     public void AddService(ClientServicesEntity clientServicesEntity)
@@ -44,9 +44,9 @@ public class ClientEntity : BaseEntity
     }
     public string Name { get; set; }
     public string Nationality { get; set; }
-    public ClientType Type { get; set; }
     public Guid IdUser { get; set; }
     public virtual UsersEntity User { get; set; }
+    public virtual ClientTypeEntity ClientType { get; set; }
     public virtual IEnumerable<ClientServicesEntity> ClientServices { get; set; }
     public virtual IEnumerable<FlightEntity> Flights { get; set; }
 }

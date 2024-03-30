@@ -7,5 +7,5 @@ public interface ISpecifyConsultsRepository
     Task<IEnumerable<GetAirportWithRepairServicesDTO>> GetAirportWithRepairServices();
     Task<IEnumerable<GetAmountRepairAirportDTO>> GetAmountRepairAirport();
     Task<IEnumerable<GetClientAirportJMDTO>> GetClientAirportJM();
-    Task<string> DeleteInneficientServices();
+    Task<string> DeleteInneficientServices(DeleteInneficientServicesDTO dto);
 }

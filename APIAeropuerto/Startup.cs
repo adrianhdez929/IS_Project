@@ -5,6 +5,7 @@ using APIAeropuerto.Application.DTOs.Airport;
 using APIAeropuerto.Application.DTOs.Auth;
 using APIAeropuerto.Application.DTOs.Client;
 using APIAeropuerto.Application.DTOs.ClientService;
+using APIAeropuerto.Application.DTOs.ClientType;
 using APIAeropuerto.Application.DTOs.Email;
 using APIAeropuerto.Application.DTOs.Flight;
 using APIAeropuerto.Application.DTOs.Installations;
@@ -23,6 +24,7 @@ using APIAeropuerto.Application.UseCases.Airport;
 using APIAeropuerto.Application.UseCases.Auth;
 using APIAeropuerto.Application.UseCases.Client;
 using APIAeropuerto.Application.UseCases.ClientService;
+using APIAeropuerto.Application.UseCases.ClientType;
 using APIAeropuerto.Application.UseCases.Email;
 using APIAeropuerto.Application.UseCases.Flight;
 using APIAeropuerto.Application.UseCases.Installations;
@@ -181,6 +183,7 @@ public class Startup
         services.AddScoped<GetAllShipsUseCase>();
         //RepairService UseCases
         services.AddScoped<IUseCase<ServiceDTO, CreateRepairServiceDTO>, CreateRepairServiceUseCase>();
+        services.AddScoped<GetAllRepairServicesUseCase>();
         //Flights UseCases
         services.AddScoped<IUseCase<FlightDTO, CreateFlightDTO>, CreateFlightUseCase>();
         services.AddScoped<IUseCase<FlightDTO, UpdateFlightDTO>, UpdateFlightUseCase>();
@@ -211,6 +214,12 @@ public class Startup
         services.AddScoped<IUseCase<string, DeleteInstallationTypeDTO>, DeleteInstallationTypeUseCase>();
         services.AddScoped<IUseCase<InstallationTypeDTO, GetOneInstallationTypeDTO>, GetOneInstallationTypeUseCase>();
         services.AddScoped<GetAllInstallationTypeUseCase>();
+        //ClientType UseCases
+        services.AddScoped<IUseCase<ClientTypeDTO, CreateClientTypeDTO>, CreateClientTypeUseCase>();
+        services.AddScoped<IUseCase<ClientTypeDTO, UpdateClientTypeDTO>, UpdateClientTypeUseCase>();
+        services.AddScoped<IUseCase<string, DeleteClientTypeDTO>, DeleteClientTypeUseCase>();
+        services.AddScoped<IUseCase<ClientTypeDTO, GetOneClientTypeDTO>, GetOneClientTypeUseCase>();
+        services.AddScoped<GetAllClientTypeUseCase>();
         //Repositories
         services.AddScoped<IBaseRepository<AirportEntity>, AirportRepository>();
         services.AddScoped<IBaseRepository<InstallationsEntity>, InstallationsRepository>();
@@ -239,6 +248,8 @@ public class Startup
         services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
         services.AddScoped<IInstallationTypeRepository, InstallationTypeRepository>();
         services.AddScoped<IBaseRepository<InstallationTypeEntity> , InstallationTypeRepository>();
+        services.AddScoped<IBaseRepository<ClientTypeEntity>, ClientTypeRepository>();
+        services.AddScoped<IClientTypeRepository, ClientTypeRepository>();
 
         services.AddSingleton<SmtpClient>(s => new SmtpClient(Configuration["Smtp:Host"])
         {

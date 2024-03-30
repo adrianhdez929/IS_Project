@@ -1,6 +1,9 @@
 ﻿using APIAeropuerto.Application.DTOs.Ship;
 using APIAeropuerto.Application.UseCases.Ship;
 using APIAeropuerto.Domain.Interfaces;
+using APIAeropuerto.Domain.Shared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIAeropuerto.Presentation.Controllers;
@@ -30,6 +33,7 @@ public class ShipController: Controller
     }
     
     [HttpPost]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteShips)]
     public async Task<IActionResult> CreateShip([FromBody] CreateShipDTO dto, CancellationToken ct = default)
     {
         var result = await _createShipUseCase.Execute(dto, ct);
@@ -37,6 +41,7 @@ public class ShipController: Controller
     }
     
     [HttpPut]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteShips)]
     public async Task<IActionResult> UpdateShip([FromBody] UpdateShipDTO dto, CancellationToken ct = default)
     {
         var result = await _updateShipUseCase.Execute(dto, ct);
@@ -44,6 +49,7 @@ public class ShipController: Controller
     }
     
     [HttpDelete]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteShips)]
     public async Task<IActionResult> DeleteShip([FromBody] DeleteShipDTO dto, CancellationToken ct = default)
     {
         var result = await _deleteShipUseCase.Execute(dto, ct);
@@ -52,6 +58,7 @@ public class ShipController: Controller
     
     [HttpGet]
     [Route("all")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadShips)]
     public async Task<IActionResult> GetAllShips(CancellationToken ct = default)
     {
         var result = await _getAllShipsUseCase.Execute(ct);
@@ -60,6 +67,7 @@ public class ShipController: Controller
     
     [HttpGet]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadShips)]
     public async Task<IActionResult> GetOneShip([FromRoute] Guid id, CancellationToken ct = default)
     {
         var dto = new GetOneShipDTO {Id = id};

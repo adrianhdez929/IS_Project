@@ -60,7 +60,7 @@ public class ServicesEntity : BaseEntity
             ErrorMessage = string.Empty
         };
     }
-    public static ServicesWrapper CreateRepairService(string code, string description, float price, InstallationsEntity installation,ServiceType serviceType,List<ServicesPersistence> servicesToAdd)
+    public static ServicesWrapper CreateRepairService(string code, string description, float price, InstallationsEntity installation,string serviceType,List<ServicesPersistence> servicesToAdd)
     {
         if(code.Length != 4)
         {

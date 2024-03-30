@@ -13,11 +13,15 @@ namespace APIAeropuerto.Persistence.Repositories;
 public class UserRepository: IUserRepository
 {
     private readonly UserManager<UserPersistence> _userManager;
+    private readonly IClientTypeRepository _clientTypeRepository;
     private readonly CoreDbContext _context;
     private readonly IMapper _mapper;
-    public UserRepository(UserManager<UserPersistence> userManager,CoreDbContext context, IMapper mapper)
+    public UserRepository(UserManager<UserPersistence> userManager,
+        IClientTypeRepository clientTypeRepository,
+        CoreDbContext context, IMapper mapper)
     {
         _userManager = userManager;
+        _clientTypeRepository = clientTypeRepository;
         _context = context;
         _mapper = mapper;
     }
@@ -28,7 +32,9 @@ public class UserRepository: IUserRepository
         if (!user.IsSuccess) throw new EmailNotValidBadRequestException(user.ErrorMessage!);
         var userExists = await _userManager.FindByEmailAsync(dto.Email);
         if(userExists is not null) throw new RepeatBadRequestException("User already exists");
-        var client = ClientEntity.Create(dto.Name, dto.Nationality, dto.Type);
+        var clt = await _context.ClientTypes.FirstOrDefaultAsync(x => x.Id == dto.IdClientType, ct);
+        if (clt == null) throw new NotFoundException("Client type not found");
+        var client = ClientEntity.Create(dto.Name, dto.Nationality, _mapper.Map<ClientTypeEntity>(clt));
         if (!client.IsSuccess) throw new Exception(client.ErrorMessage);
         using var transaction = await _context.Database.BeginTransactionAsync(ct);
         try
@@ -45,7 +51,11 @@ public class UserRepository: IUserRepository
             }
             var clientPersistence = _mapper.Map<ClientPersistence>(client.Value);
             clientPersistence.IdUser = createdUser.Id;
+            clientPersistence.ClientType = null!;
             await _context.Clients.AddAsync(clientPersistence, ct);
+            var temp = clt.Clients?.ToList() ?? new List<ClientPersistence>();
+            temp.Add(clientPersistence);
+            clt.Clients = temp;
             await _context.SaveChangesAsync(ct);
             await transaction.CommitAsync(ct);
             return _mapper.Map<UsersDTO>(user.Value);

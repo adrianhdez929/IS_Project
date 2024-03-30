@@ -6,5 +6,5 @@ public class CreateClientDTO
 {
     public string Name { get; set; }
     public string Nationality { get; set; }
-    public ClientType Type { get; set; }
+    public Guid IdClientType { get; set; }
 }

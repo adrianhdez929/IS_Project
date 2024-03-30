@@ -1,6 +1,9 @@
 ﻿using APIAeropuerto.Application.DTOs.ServiceType;
 using APIAeropuerto.Application.UseCases.ServiceType;
 using APIAeropuerto.Domain.Interfaces;
+using APIAeropuerto.Domain.Shared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIAeropuerto.Presentation.Controllers;
@@ -25,6 +28,7 @@ public class ServiceTypeController : Controller
     }
     
     [HttpPost]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteServiceTypes)]
     public async Task<IActionResult> CreateServiceType([FromBody] CreateServiceTypeDTO dto)
     {
         var result = await _createServiceTypeUseCase.Execute(dto);
@@ -32,6 +36,7 @@ public class ServiceTypeController : Controller
     }
     
     [HttpPut]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteServiceTypes)]
     public async Task<IActionResult> UpdateServiceType([FromBody] UpdateServiceTypeDTO dto)
     {
         var result = await _updateServiceTypeUseCase.Execute(dto);
@@ -40,6 +45,7 @@ public class ServiceTypeController : Controller
     
     [HttpDelete]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteServiceTypes)]
     public async Task<IActionResult> DeleteServiceType(Guid id)
     {
         var result = await _deleteServiceTypeUseCase.Execute(new DeleteServiceTypeDTO(){Id = id});
@@ -48,6 +54,7 @@ public class ServiceTypeController : Controller
     
     [HttpGet]
     [Route("{id}")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadServiceTypes)]
     public async Task<IActionResult> GetOneServiceType(Guid id)
     {
         var result = await _getOneServiceTypeUseCase.Execute(new GetOneServiceTypeDTO(){Id = id});
@@ -56,6 +63,7 @@ public class ServiceTypeController : Controller
     
     [HttpGet]
     [Route("all")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadServiceTypes)]
     public async Task<IActionResult> GetAllServiceType()
     {
         var result = await _getAllServiceTypeUseCase.Execute();

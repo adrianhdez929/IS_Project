@@ -8,18 +8,18 @@ namespace APIAeropuerto.Application.UseCases.Client;
 
 public class GetAllClientsUseCase
 {
-    private readonly IBaseRepository<ClientEntity> _repository;
+    private readonly IClientRepository _repository;
     private readonly IMapper _mapper;
 
-    public GetAllClientsUseCase(IBaseRepository<ClientEntity> repository,IMapper mapper)
+    public GetAllClientsUseCase(IClientRepository repository,IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<GetAllClientDTO>> Execute()
+    public async Task<IEnumerable<GetAllClientDTO>> Execute(CancellationToken ct = default)
     {
-        var temp = await _repository.GetAll();
+        var temp = await _repository.GetAllClients(ct);
         return _mapper.Map<IEnumerable<GetAllClientDTO>>(temp);
     }
 }

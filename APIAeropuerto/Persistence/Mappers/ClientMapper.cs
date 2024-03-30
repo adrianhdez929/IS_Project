@@ -14,9 +14,9 @@ public class ClientMapper : Profile
         CreateMap<ClientEntity, ClientPersistence>();
         CreateMap<ClientPersistence, ClientEntity>();
         CreateMap<ClientPersistence, ClientDTO>()
-            .ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.Type.GetDisplayName()));
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.ClientType.Type));
         CreateMap<ClientEntity, ClientDTO>()
-            .ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.Type.GetDisplayName()));
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.ClientType.Type));
         CreateMap<CreateClientDTO, ClientDTO>();
         CreateMap<CreateClientDTO, ClientEntity>();
         CreateMap<UpdateInstallationDTO, ClientEntity>();
@@ -24,9 +24,9 @@ public class ClientMapper : Profile
         CreateMap<ClientServicesEntity, ClientServicesPersistence>();
         CreateMap<GetAllClientDTO, ClientEntity>();
         CreateMap<ClientEntity, GetAllClientDTO>()
-            .ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.Type.GetDisplayName()));
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.ClientType.Type));
         CreateMap<ClientPersistence, GetAllClientDTO>()
-            .ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.Type.GetDisplayName()));
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.ClientType.Type));
         CreateMap<GetAllClientDTO, ClientPersistence>();
     }
 }

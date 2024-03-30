@@ -23,6 +23,7 @@ public class CoreDbContext : IdentityDbContext<UserPersistence,IdentityRole<Guid
     public DbSet<RepairPersistence> Repairs { get; set; }
     public DbSet<ServiceTypePersistence> ServiceTypes { get; set; }
     public DbSet<InstallationTypePersistence> InstallationTypes { get; set; }
+    public DbSet<ClientTypePersistence> ClientTypes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -129,6 +130,11 @@ public class CoreDbContext : IdentityDbContext<UserPersistence,IdentityRole<Guid
         modelBuilder.Entity<InstallationsPersistence>()
             .HasOne(x => x.InstallationType)
             .WithMany(x => x.Installations)
+            .OnDelete(DeleteBehavior.NoAction);
+        
+        modelBuilder.Entity<ClientPersistence>()
+            .HasOne(x => x.ClientType)
+            .WithMany(x => x.Clients)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

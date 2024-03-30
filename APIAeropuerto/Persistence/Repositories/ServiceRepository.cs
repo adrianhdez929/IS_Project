@@ -29,14 +29,19 @@ public class ServiceRepository : BaseRepository<ServicesEntity,ServicesPersisten
         var all = await _context.Services.ToListAsync(ct);
         if (all.Any(x => x.Code == dto.Code)) throw new RepeatBadRequestException("Code already exists");
         var servicesToAdd = all.Where(x => dto.RepairService.Contains(x.Id)).ToList();
-        var service = ServicesEntity.CreateRepairService(dto.Code, dto.Description, dto.Price, _mapper.Map<InstallationsEntity>(i), ServiceType.Repair,servicesToAdd);
+        var st = await _context.ServiceTypes.FirstOrDefaultAsync(x => x.Type == "Repair", ct);
+        if (st is null) throw new NotFoundException("Service Type not Found");
+        var service = ServicesEntity.CreateRepairService(dto.Code, dto.Description, dto.Price, _mapper.Map<InstallationsEntity>(i), st.Type,servicesToAdd);
         if (!service.IsSuccess) throw new ServiceBadRequestException(service.ErrorMessage!);
         service.Value!.Installation = null!;
         var mapper = _mapper.Map<ServicesPersistence>(service.Value);
         _context.Services.Add(mapper);
         var temp = i.Services?.ToList() ?? new List<ServicesPersistence>();
+        var temp1 = st!.Services?.ToList() ?? new List<ServicesPersistence>();
         temp.Add(mapper);
+        temp1.Add(mapper);
         i.Services = temp;
+        st.Services = temp1;
         foreach (var s in dto.RepairService)
         {
             if(!all.Any(x => x.Id == s)) throw new NotFoundException("Service not Found");
@@ -44,6 +49,8 @@ public class ServiceRepository : BaseRepository<ServicesEntity,ServicesPersisten
             _context.RepairServices.Add(_mapper.Map<ServiceServicePersistence>(serviceService));
         }
         await _context.SaveChangesAsync(ct);
+        service.Value!.ServiceTypeEntity = _mapper.Map<ServiceTypeEntity>(st);
+        service.Value!.Installation = _mapper.Map<InstallationsEntity>(i);
         return _mapper.Map<ServiceDTO>(service.Value);
     }
 
@@ -137,6 +144,15 @@ public class ServiceRepository : BaseRepository<ServicesEntity,ServicesPersisten
             .Include(x => x.ServiceType)
             .ToListAsync();
 
+        return _mapper.Map<IEnumerable<GetAllServicesDTO>>(result);
+    }
+
+    public async Task<IEnumerable<GetAllServicesDTO>> GetAllRepairServices(CancellationToken ct = default)
+    {
+        var services = await _table.Include(x => x.ServiceType)
+            .Include(x => x.Installation)
+            .ToListAsync();
+        var result = services.Where(x => x.ServiceType.Type == "Repair");
         return _mapper.Map<IEnumerable<GetAllServicesDTO>>(result);
     }
 }
