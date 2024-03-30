@@ -35,6 +35,8 @@ public class CreateRepairUseCase : IUseCase<RepairDTO,CreateRepairDTO>
         repair.Value!.IdShip = dto.IdShip;
         repair.Value!.IdService = dto.IdService;
         await _repairRepository.Create(repair.Value, ct);
+        repair.Value!.Service = service;
+        repair.Value!.Ship = ship;
         return _mapper.Map<RepairDTO>(repair.Value);
     }
 }
