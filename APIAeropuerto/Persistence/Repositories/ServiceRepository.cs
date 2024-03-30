@@ -26,10 +26,11 @@ public class ServiceRepository : BaseRepository<ServicesEntity,ServicesPersisten
             .FirstOrDefaultAsync(x => x.Id == dto.InstallationId, ct);
         
         if (i is null) throw new NotFoundException("Installation not Found");
-        var service = ServicesEntity.CreateRepairService(dto.Code, dto.Description, dto.Price, _mapper.Map<InstallationsEntity>(i), ServiceType.Repair);
-        if (!service.IsSuccess) throw new ServiceBadRequestException(service.ErrorMessage!);
         var all = await _context.Services.ToListAsync(ct);
-        if (all.Any(x => x.Code == service.Value?.Code)) throw new RepeatBadRequestException("Code already exists");
+        if (all.Any(x => x.Code == dto.Code)) throw new RepeatBadRequestException("Code already exists");
+        var servicesToAdd = all.Where(x => dto.RepairService.Contains(x.Id)).ToList();
+        var service = ServicesEntity.CreateRepairService(dto.Code, dto.Description, dto.Price, _mapper.Map<InstallationsEntity>(i), ServiceType.Repair,servicesToAdd);
+        if (!service.IsSuccess) throw new ServiceBadRequestException(service.ErrorMessage!);
         service.Value!.Installation = null!;
         var mapper = _mapper.Map<ServicesPersistence>(service.Value);
         _context.Services.Add(mapper);
@@ -52,13 +53,18 @@ public class ServiceRepository : BaseRepository<ServicesEntity,ServicesPersisten
             .Installations
             .Include(x => x.Services)
             .FirstOrDefaultAsync(x => x.Id == entity.Installation.Id, ct);
+        var st = await _context.ServiceTypes.FirstOrDefaultAsync(x => x.Id == entity.ServiceType.Id, ct);
         
         if (i is null) throw new NotFoundException("Installation not Found");
         entity.Installation = null!;
+        entity.ServiceType = null!;
         _context.Services.Add(entity);
         var temp = i.Services?.ToList() ?? new List<ServicesPersistence>();
+        var temp1 = st!.Services?.ToList() ?? new List<ServicesPersistence>();
+        temp1.Add(entity);
         temp.Add(entity);
         i.Services = temp;
+        st.Services = temp1;
         
         await _context.SaveChangesAsync(ct);
         return _mapper.Map<ServicesEntity>(entity);
@@ -74,7 +80,9 @@ public class ServiceRepository : BaseRepository<ServicesEntity,ServicesPersisten
 
     public virtual async Task<ServicesEntity> GetOneService(Guid id)
     {
-        var temp = await _table.FindAsync(id);
+        var temp = await _table.Include(x => x.ServiceType)
+            .Include(x => x.Installation)
+            .FirstOrDefaultAsync(x => x.Id == id);
         if(temp is null) throw new NotFoundException("Service not Found");
         return _mapper.Map<ServicesEntity>(temp);
     }
@@ -83,11 +91,18 @@ public class ServiceRepository : BaseRepository<ServicesEntity,ServicesPersisten
     {
         if (entity is null) throw new ArgumentNullException(nameof(entity), "Service cannot be null");
 
-        var existingEntity = await _table.FindAsync(id);
+        var existingEntity = await _table.Include(x => x.ServiceType)
+            .Include(x => x.Installation)
+            .FirstOrDefaultAsync(x => x.Id == id, ct);
         if (existingEntity is null) throw new NotFoundException($"Error: Service with id {id} Not Found");
 
         var updatedEntity = _mapper.Map<ServicesEntity, ServicesPersistence>(entity);
-        _table.Entry(existingEntity).CurrentValues.SetValues(updatedEntity);
+        updatedEntity.Id = id;
+        _context.Entry(existingEntity).CurrentValues.SetValues(updatedEntity);
+        if(existingEntity.ServiceType.Id != updatedEntity.ServiceType.Id)
+            existingEntity.ServiceType = updatedEntity.ServiceType;
+        if(existingEntity.Installation.Id != updatedEntity.Installation.Id)
+            existingEntity.Installation = updatedEntity.Installation;
         _table.Entry(existingEntity).State = EntityState.Modified;
 
         try
@@ -114,5 +129,14 @@ public class ServiceRepository : BaseRepository<ServicesEntity,ServicesPersisten
         {
             Clients = _mapper.Map<List<GetAllClientDTO>>(result)
         };
+    }
+
+    public async Task<IEnumerable<GetAllServicesDTO>> GetAllServices(CancellationToken ct)
+    {
+        var result = await _table.Include(x => x.Installation)
+            .Include(x => x.ServiceType)
+            .ToListAsync();
+
+        return _mapper.Map<IEnumerable<GetAllServicesDTO>>(result);
     }
 }

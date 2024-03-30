@@ -1,6 +1,7 @@
 ﻿using APIAeropuerto.Application.DTOs.Airport;
 using APIAeropuerto.Application.DTOs.Client;
 using APIAeropuerto.Application.DTOs.Ship;
+using APIAeropuerto.Domain.Enums;
 
 namespace APIAeropuerto.Application.DTOs.Flight;
 
@@ -11,4 +12,6 @@ public class FlightDTO
     public AirportDTO Origin { get; set; }
     public AirportDTO Destination { get; set; }
     public ShipDTO Ship { get; set; }
+    
+    public string ArrivedClientType { get; set; }
 }

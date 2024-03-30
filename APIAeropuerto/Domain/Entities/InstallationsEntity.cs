@@ -1,4 +1,5 @@
-﻿using APIAeropuerto.Domain.Shared;
+﻿using APIAeropuerto.Domain.Enums;
+using APIAeropuerto.Domain.Shared;
 
 namespace APIAeropuerto.Domain.Entities;
 
@@ -8,31 +9,30 @@ public class InstallationsEntity : BaseEntity
     {
         
     }
-    private InstallationsEntity(Guid id ,string name, string description, string location, string type, AirportEntity airport)
+    private InstallationsEntity(Guid id ,string name, string description, string location, AirportEntity airport)
     {
         Id = id;
         Name = name;
         Description = description;
         Location = location;
-        Type = type;
         Airport = airport;
         Created = DateTime.Now;
         Updated = DateTime.Now;
     }
-    private InstallationsEntity(Guid id,string name, string description, string location, string type)
+    private InstallationsEntity(Guid id,string name, string description, string location,InstallationTypeEntity installationTypeEntity)
     {
         Id = id;
         Name = name;
         Description = description;
         Location = location;
-        Type = type;
+        InstallationType = installationTypeEntity;
         Created = DateTime.Now;
         Updated = DateTime.Now;
     }
     
-    public static InstallationsWrapper Create(string name, string description, string location, string type, AirportEntity airport)
+    public static InstallationsWrapper Create(string name, string description, string location, AirportEntity airport)
     {
-        var entity = new InstallationsEntity(Guid.NewGuid(),name, description, location, type, airport);
+        var entity = new InstallationsEntity(Guid.NewGuid(),name, description, location, airport);
         return new InstallationsWrapper
         {
             IsSuccess = true,
@@ -40,9 +40,9 @@ public class InstallationsEntity : BaseEntity
             ErrorMessage = string.Empty
         };
     }
-    public static InstallationsWrapper Create(string name, string description, string location, string type)
+    public static InstallationsWrapper Create(string name, string description, string location,InstallationTypeEntity installationType)
     {
-        var entity = new InstallationsEntity(Guid.NewGuid(),name, description, location, type);
+        var entity = new InstallationsEntity(Guid.NewGuid(),name, description, location,installationType);
         return new InstallationsWrapper
         {
             IsSuccess = true,
@@ -51,19 +51,20 @@ public class InstallationsEntity : BaseEntity
         };
     }
 
-    public void Update(string name, string description, string location, string type)
+    public void Update(string name, string description, string location,AirportEntity airport,InstallationTypeEntity installation)
     {
         Name = name;
         Description = description;
         Location = location;
-        Type = type;
+        Airport = airport;
+        InstallationType = installation;
         Updated = DateTime.Now;
     }
 
     public string? Name { get; set; }
     public string? Description { get; set; }
     public string Location { get; set; }
-    public string Type { get; set; }
     public virtual AirportEntity Airport { get; set; }
+    public virtual InstallationTypeEntity InstallationType { get; set; }
     public virtual IEnumerable<ServicesEntity> Services { get; set; }
 }

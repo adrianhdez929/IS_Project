@@ -24,7 +24,7 @@ public class SpecifyConsultsRepository : ISpecifyConsultsRepository
     {
         var airports = await _context.Airports.Include(x => x.Installations)
             .ThenInclude(x => x.Services)
-            .Where(x => x.Installations.Any(y => y.Services.Any(z => z.ServiceType == 0)))
+            .Where(x => x.Installations.Any(y => y.Services.Any(z => z.ServiceType.Type == "Repair")))
             .ToListAsync();
         
         return _mapper.Map<IEnumerable<GetAirportWithRepairServicesDTO>>(airports);
@@ -35,7 +35,7 @@ public class SpecifyConsultsRepository : ISpecifyConsultsRepository
         var aux = new Dictionary<string, int>();
         var installations = await _context.Installations.Include(x => x.Services)
             .Include(x => x.Airport)
-            .Where(x =>x.Services.Any(z => z.ServiceType == 0))
+            .Where(x =>x.Services.Any(z => z.ServiceType.Type == "Repair"))
             .ToListAsync();
         foreach (var installation in installations)
         {

@@ -6,4 +6,6 @@ public class UpdateServiceDTO
     public string Code { get; set; }
     public string Description { get; set; }
     public int Precio { get; set; }
+    public Guid IdInstallation { get; set; }
+    public Guid IdServiceType { get; set; }
 }

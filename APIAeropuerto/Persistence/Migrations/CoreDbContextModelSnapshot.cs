@@ -121,6 +121,9 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.Property<DateTime>("ArrivalDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ArrivedClientType")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -155,6 +158,21 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.ToTable("Flights");
                 });
 
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.InstallationTypePersistence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InstallationTypes");
+                });
+
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.InstallationsPersistence", b =>
                 {
                     b.Property<Guid>("Id")
@@ -171,15 +189,14 @@ namespace APIAeropuerto.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("InstallationTypeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -189,6 +206,8 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AirportId");
+
+                    b.HasIndex("InstallationTypeId");
 
                     b.ToTable("Installations");
                 });
@@ -248,6 +267,21 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.ToTable("RepairServices");
                 });
 
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ServiceTypePersistence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServiceTypes");
+                });
+
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ServicesPersistence", b =>
                 {
                     b.Property<Guid>("Id")
@@ -271,8 +305,8 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<int>("ServiceType")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ServiceTypeId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");
@@ -280,6 +314,8 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("InstallationId");
+
+                    b.HasIndex("ServiceTypeId");
 
                     b.ToTable("Services");
                 });
@@ -687,7 +723,15 @@ namespace APIAeropuerto.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("APIAeropuerto.Persistence.Entities.InstallationTypePersistence", "InstallationType")
+                        .WithMany("Installations")
+                        .HasForeignKey("InstallationTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Airport");
+
+                    b.Navigation("InstallationType");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.RepairPersistence", b =>
@@ -736,7 +780,15 @@ namespace APIAeropuerto.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("APIAeropuerto.Persistence.Entities.ServiceTypePersistence", "ServiceType")
+                        .WithMany("Services")
+                        .HasForeignKey("ServiceTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Installation");
+
+                    b.Navigation("ServiceType");
                 });
 
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ShipPersistence", b =>
@@ -846,7 +898,17 @@ namespace APIAeropuerto.Persistence.Migrations
                     b.Navigation("Flights");
                 });
 
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.InstallationTypePersistence", b =>
+                {
+                    b.Navigation("Installations");
+                });
+
             modelBuilder.Entity("APIAeropuerto.Persistence.Entities.InstallationsPersistence", b =>
+                {
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("APIAeropuerto.Persistence.Entities.ServiceTypePersistence", b =>
                 {
                     b.Navigation("Services");
                 });

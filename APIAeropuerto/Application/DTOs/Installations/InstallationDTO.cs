@@ -1,4 +1,6 @@
-﻿namespace APIAeropuerto.Application.DTOs.Installations;
+﻿using APIAeropuerto.Domain.Enums;
+
+namespace APIAeropuerto.Application.DTOs.Installations;
 
 public class InstallationDTO
 {

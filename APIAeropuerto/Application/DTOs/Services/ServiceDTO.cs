@@ -6,4 +6,6 @@ public class ServiceDTO
     public string Description { get; set; }
     public int Price { get; set; }
     public string Type { get; set; }
+    public Guid IdInstallations { get; set; }
+    public string InstallationName { get; set; }
 }

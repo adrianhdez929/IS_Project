@@ -79,6 +79,7 @@ public class UserController : Controller
     }
     
     [HttpGet]
+    [Route("all")]
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.ReadUser)]
     public async Task<IActionResult> GetAll(CancellationToken ct)
     {

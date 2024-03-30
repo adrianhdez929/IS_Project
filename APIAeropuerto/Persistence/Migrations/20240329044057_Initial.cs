@@ -74,27 +74,27 @@ namespace APIAeropuerto.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Installations",
+                name: "InstallationTypes",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AirportId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Installations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Installations_Airports_AirportId",
-                        column: x => x.AirportId,
-                        principalTable: "Airports",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_InstallationTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceTypes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -235,27 +235,32 @@ namespace APIAeropuerto.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Services",
+                name: "Installations",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<float>(type: "real", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ServiceType = table.Column<int>(type: "int", nullable: false),
-                    InstallationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AirportId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    InstallationTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.PrimaryKey("PK_Installations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Services_Installations_InstallationId",
-                        column: x => x.InstallationId,
-                        principalTable: "Installations",
+                        name: "FK_Installations_Airports_AirportId",
+                        column: x => x.AirportId,
+                        principalTable: "Airports",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Installations_InstallationTypes_InstallationTypeId",
+                        column: x => x.InstallationTypeId,
+                        principalTable: "InstallationTypes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -281,6 +286,75 @@ namespace APIAeropuerto.Persistence.Migrations
                         principalTable: "Clients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Services",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    InstallationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ServiceTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Services_Installations_InstallationId",
+                        column: x => x.InstallationId,
+                        principalTable: "Installations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Services_ServiceTypes_ServiceTypeId",
+                        column: x => x.ServiceTypeId,
+                        principalTable: "ServiceTypes",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Flights",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DepartureDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ArrivalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IdAirportOrigin = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdAirportDestination = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdClient = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdShip = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ArrivedClientType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Flights", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Flights_Airports_IdAirportDestination",
+                        column: x => x.IdAirportDestination,
+                        principalTable: "Airports",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Flights_Airports_IdAirportOrigin",
+                        column: x => x.IdAirportOrigin,
+                        principalTable: "Airports",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Flights_Clients_IdClient",
+                        column: x => x.IdClient,
+                        principalTable: "Clients",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Flights_Ships_IdShip",
+                        column: x => x.IdShip,
+                        principalTable: "Ships",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -312,69 +386,6 @@ namespace APIAeropuerto.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RepairServices",
-                columns: table => new
-                {
-                    IdService1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdService2 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RepairServices", x => new { x.IdService1, x.IdService2 });
-                    table.ForeignKey(
-                        name: "FK_RepairServices_Services_IdService1",
-                        column: x => x.IdService1,
-                        principalTable: "Services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_RepairServices_Services_IdService2",
-                        column: x => x.IdService2,
-                        principalTable: "Services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Flights",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DepartureDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ArrivalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdAirportOrigin = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdAirportDestination = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdClient = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IdShip = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Flights", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Flights_Airports_IdAirportDestination",
-                        column: x => x.IdAirportDestination,
-                        principalTable: "Airports",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Flights_Airports_IdAirportOrigin",
-                        column: x => x.IdAirportOrigin,
-                        principalTable: "Airports",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Flights_Clients_IdClient",
-                        column: x => x.IdClient,
-                        principalTable: "Clients",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Flights_Ships_IdShip",
-                        column: x => x.IdShip,
-                        principalTable: "Ships",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Repairs",
                 columns: table => new
                 {
@@ -401,6 +412,30 @@ namespace APIAeropuerto.Persistence.Migrations
                         column: x => x.IdShip,
                         principalTable: "Ships",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RepairServices",
+                columns: table => new
+                {
+                    IdService1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IdService2 = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RepairServices", x => new { x.IdService1, x.IdService2 });
+                    table.ForeignKey(
+                        name: "FK_RepairServices_Services_IdService1",
+                        column: x => x.IdService1,
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RepairServices_Services_IdService2",
+                        column: x => x.IdService2,
+                        principalTable: "Services",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -479,6 +514,11 @@ namespace APIAeropuerto.Persistence.Migrations
                 column: "AirportId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Installations_InstallationTypeId",
+                table: "Installations",
+                column: "InstallationTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Repairs_IdService",
                 table: "Repairs",
                 column: "IdService");
@@ -497,6 +537,11 @@ namespace APIAeropuerto.Persistence.Migrations
                 name: "IX_Services_InstallationId",
                 table: "Services",
                 column: "InstallationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Services_ServiceTypeId",
+                table: "Services",
+                column: "ServiceTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ships_PropietaryId",
@@ -550,10 +595,16 @@ namespace APIAeropuerto.Persistence.Migrations
                 name: "Installations");
 
             migrationBuilder.DropTable(
+                name: "ServiceTypes");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Airports");
+
+            migrationBuilder.DropTable(
+                name: "InstallationTypes");
         }
     }
 }

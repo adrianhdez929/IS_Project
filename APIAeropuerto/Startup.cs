@@ -8,10 +8,12 @@ using APIAeropuerto.Application.DTOs.ClientService;
 using APIAeropuerto.Application.DTOs.Email;
 using APIAeropuerto.Application.DTOs.Flight;
 using APIAeropuerto.Application.DTOs.Installations;
+using APIAeropuerto.Application.DTOs.InstallationType;
 using APIAeropuerto.Application.DTOs.Repair;
 using APIAeropuerto.Application.DTOs.RoleClaims;
 using APIAeropuerto.Application.DTOs.Roles;
 using APIAeropuerto.Application.DTOs.Services;
+using APIAeropuerto.Application.DTOs.ServiceType;
 using APIAeropuerto.Application.DTOs.Ship;
 using APIAeropuerto.Application.DTOs.UserClaims;
 using APIAeropuerto.Application.DTOs.UserLogin;
@@ -24,11 +26,13 @@ using APIAeropuerto.Application.UseCases.ClientService;
 using APIAeropuerto.Application.UseCases.Email;
 using APIAeropuerto.Application.UseCases.Flight;
 using APIAeropuerto.Application.UseCases.Installations;
+using APIAeropuerto.Application.UseCases.InstallationType;
 using APIAeropuerto.Application.UseCases.Repair;
 using APIAeropuerto.Application.UseCases.RepairService;
 using APIAeropuerto.Application.UseCases.RoleClaims;
 using APIAeropuerto.Application.UseCases.Roles;
 using APIAeropuerto.Application.UseCases.Services;
+using APIAeropuerto.Application.UseCases.ServiceType;
 using APIAeropuerto.Application.UseCases.Ship;
 using APIAeropuerto.Application.UseCases.SpecifyConsults;
 using APIAeropuerto.Application.UseCases.Token;
@@ -195,6 +199,18 @@ public class Startup
         //SpecifyConsults UseCases
         services.AddScoped<GetAirportWithRepairServicesUseCase>();
         services.AddScoped<GetAmountRepairAirportUseCase>();
+        //ServiceType UseCases
+        services.AddScoped<IUseCase<ServiceTypeDTO, CreateServiceTypeDTO>, CreateServiceTypeUseCase>();
+        services.AddScoped<IUseCase<ServiceTypeDTO, UpdateServiceTypeDTO>, UpdateServiceTypeUseCase>();
+        services.AddScoped<IUseCase<string, DeleteServiceTypeDTO>, DeleteServiceTypeUseCase>();
+        services.AddScoped<IUseCase<ServiceTypeDTO, GetOneServiceTypeDTO>, GetOneServiceTypeUseCase>();
+        services.AddScoped<GetAllServiceTypeUseCase>();
+        //InstallationType UseCases
+        services.AddScoped<IUseCase<InstallationTypeDTO, CreateInstallationTypeDTO>, CreateInstallationTypeUseCase>();
+        services.AddScoped<IUseCase<InstallationTypeDTO, UpdateInstallationTypeDTO>, UpdateInstallationTypeUseCase>();
+        services.AddScoped<IUseCase<string, DeleteInstallationTypeDTO>, DeleteInstallationTypeUseCase>();
+        services.AddScoped<IUseCase<InstallationTypeDTO, GetOneInstallationTypeDTO>, GetOneInstallationTypeUseCase>();
+        services.AddScoped<GetAllInstallationTypeUseCase>();
         //Repositories
         services.AddScoped<IBaseRepository<AirportEntity>, AirportRepository>();
         services.AddScoped<IBaseRepository<InstallationsEntity>, InstallationsRepository>();
@@ -204,6 +220,7 @@ public class Startup
         services.AddScoped<IBaseRepository<ShipEntity>, ShipRepository>();
         services.AddScoped<IBaseRepository<FlightEntity>, FlightRepository>();
         services.AddScoped<IBaseRepository<RepairEntity>, RepairRepository>();
+        services.AddScoped<IBaseRepository<ServiceTypeEntity>, ServiceTypeRepository>();
         services.AddScoped<IAirportRepository, AirportRepository>();
         services.AddScoped<IInstallationRepository, InstallationsRepository>();
         services.AddScoped<IServiceRepository, ServiceRepository>();
@@ -217,7 +234,11 @@ public class Startup
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRepairRepository, RepairRepository>();
         services.AddScoped<RepairRepository, RepairRepository>();
+        services.AddScoped<ServiceTypeRepository, ServiceTypeRepository>();
         services.AddScoped<ISpecifyConsultsRepository, SpecifyConsultsRepository>();
+        services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
+        services.AddScoped<IInstallationTypeRepository, InstallationTypeRepository>();
+        services.AddScoped<IBaseRepository<InstallationTypeEntity> , InstallationTypeRepository>();
 
         services.AddSingleton<SmtpClient>(s => new SmtpClient(Configuration["Smtp:Host"])
         {
