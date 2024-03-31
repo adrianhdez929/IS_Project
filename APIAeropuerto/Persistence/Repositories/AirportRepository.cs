@@ -49,7 +49,9 @@ public class AirportRepository : BaseRepository<AirportEntity,AirportPersistence
 
     public virtual async Task<GetAirportInstDTO> GetInstallations(Guid id, CancellationToken ct)
     {
-        var a = await _context.Airports.Include(x => x.Installations).AsNoTracking()
+        var a = await _context.Airports.Include(x => x.Installations)
+            .ThenInclude(x => x.InstallationType)
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, ct);
         return a == null ? null! : _mapper.Map<GetAirportInstDTO>(a);
     }

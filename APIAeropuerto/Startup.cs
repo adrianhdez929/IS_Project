@@ -26,6 +26,7 @@ using APIAeropuerto.Application.UseCases.Client;
 using APIAeropuerto.Application.UseCases.ClientService;
 using APIAeropuerto.Application.UseCases.ClientType;
 using APIAeropuerto.Application.UseCases.Email;
+using APIAeropuerto.Application.UseCases.ExportPdf;
 using APIAeropuerto.Application.UseCases.Flight;
 using APIAeropuerto.Application.UseCases.Installations;
 using APIAeropuerto.Application.UseCases.InstallationType;
@@ -224,6 +225,8 @@ public class Startup
         services.AddScoped<IUseCase<string, DeleteClientTypeDTO>, DeleteClientTypeUseCase>();
         services.AddScoped<IUseCase<ClientTypeDTO, GetOneClientTypeDTO>, GetOneClientTypeUseCase>();
         services.AddScoped<GetAllClientTypeUseCase>();
+        //ExportPdf UseCases
+        services.AddScoped<ExportPdfUseCase>();
         //Repositories
         services.AddScoped<IBaseRepository<AirportEntity>, AirportRepository>();
         services.AddScoped<IBaseRepository<InstallationsEntity>, InstallationsRepository>();
