@@ -1,7 +1,7 @@
 ﻿using APIAeropuerto.Application.UseCases.ExportPdf;
 using Microsoft.AspNetCore.Mvc;
 
-namespace APIAeropuerto.Presentation;
+namespace APIAeropuerto.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
