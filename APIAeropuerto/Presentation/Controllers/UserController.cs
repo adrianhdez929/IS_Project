@@ -29,6 +29,7 @@ public class UserController : Controller
         _updateUserUseCase = updateUserUseCase;
         _getAllUsersUseCase = getAllUsersUseCase;
     }
+    
     [HttpPost]
     // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteUser)]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserDTO dto, CancellationToken ct = default)
