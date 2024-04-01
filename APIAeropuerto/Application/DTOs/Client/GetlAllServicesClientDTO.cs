@@ -1,8 +1,9 @@
-﻿using APIAeropuerto.Application.DTOs.Services;
+﻿using APIAeropuerto.Application.DTOs.ClientService;
+using APIAeropuerto.Application.DTOs.Services;
 
 namespace APIAeropuerto.Application.DTOs.Client;
 
 public class GetlAllServicesClientDTO
 {
-    public IEnumerable<GetAllServicesDTO> Services { get; set; }
+    public IEnumerable<ClientServicesDTO> Services { get; set; }
 }

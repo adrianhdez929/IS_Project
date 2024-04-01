@@ -130,6 +130,7 @@ public class ServiceRepository : BaseRepository<ServicesEntity,ServicesPersisten
     {
         var temp = await _context.Services.Include(x => x.ClientServices)
             .ThenInclude(x => x.Client)
+            .ThenInclude(x => x.ClientType)
             .FirstOrDefaultAsync(y => y.Id == id);
         var result = temp?.ClientServices.Select(x => x.Client).ToList();
         return new GetAllClientsServiceDTO()

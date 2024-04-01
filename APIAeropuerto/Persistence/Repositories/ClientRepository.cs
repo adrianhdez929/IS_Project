@@ -1,4 +1,5 @@
 ﻿using APIAeropuerto.Application.DTOs.Client;
+using APIAeropuerto.Application.DTOs.ClientService;
 using APIAeropuerto.Application.DTOs.Services;
 using APIAeropuerto.Application.Exceptions.NotFound;
 using APIAeropuerto.Domain.Entities;
@@ -28,12 +29,16 @@ public class ClientRepository : BaseRepository<ClientEntity,ClientPersistence,Co
     {
         var temp = await _context.Clients.Include(x => x.ClientServices)
             .ThenInclude(x => x.Service)
+            .ThenInclude(x => x.Installation)
+            .Include(x => x.ClientServices)
+            .ThenInclude(x => x.Service)
+            .ThenInclude(x => x.ServiceType)
             .FirstOrDefaultAsync(x => x.Id == id, ct);
         if (temp == null) throw new NotFoundException("Client not Found");
-        var services = temp.ClientServices?.Select(x => x.Service);
+        var services = temp.ClientServices.Where(x => x.IdClient == id).ToList();
         return new GetlAllServicesClientDTO()
         {
-            Services = _mapper.Map<List<GetAllServicesDTO>>(services)
+            Services = _mapper.Map<List<ClientServicesDTO>>(services)
         };
     }
 
