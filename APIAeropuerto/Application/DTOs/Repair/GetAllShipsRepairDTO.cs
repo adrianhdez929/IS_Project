@@ -5,5 +5,5 @@ namespace APIAeropuerto.Application.DTOs.Repair;
 public class GetAllShipsRepairDTO
 {
     public Guid IdRepair { get; set; }
-    public IEnumerable<ShipDTO> Ships { get; set; }
+    public IEnumerable<GetAllShipDTO> Ships { get; set; }
 }

@@ -50,23 +50,25 @@ public class RepairEntity
             ErrorMessage = "Date estimated must be after date init"
         };
         float cost = 0;
-        var time = (dateEnd - dateInit).TotalHours;
-        var timeRetarded = (dateEnd - dateEstimated).TotalHours;
-        var flag = false;
+        // var time = (dateEnd - dateInit).TotalHours;
+        // var timeRetarded = (dateEnd - dateEstimated).TotalHours;
+        // var flag = false;
         if (firstTime)
         {
-            price += price * 0.01f;
-            cost = price * (float)time;
-            flag = true;
+            cost = price * 0.01f;
         }
-        if (dateEstimated < dateEnd)
+        else
         {
-            var desc = price * 0.01f;
-            if(!flag) cost += price * (float)time;
-            cost -= desc * (float)timeRetarded;
-            flag = true;
+            cost = price;
         }
-        if(!flag) cost = price * (float)time;
+        // if (dateEstimated < dateEnd)
+        // {
+        //     var desc = price * 0.01f;
+        //     if(!flag) cost += price * (float)time;
+        //     cost -= desc * (float)timeRetarded;
+        //     flag = true;
+        // }
+        // if(!flag) cost = price * (float)time;
         var repair = new RepairEntity(Guid.NewGuid(),rating, comment, cost, dateInit, dateEnd, dateEstimated);
         return new RepairWrapper
         {
