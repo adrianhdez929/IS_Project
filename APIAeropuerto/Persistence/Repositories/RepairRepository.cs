@@ -15,12 +15,13 @@ public class RepairRepository : BaseRepository<RepairEntity,RepairPersistence,Co
     {
     }
 
-    public async Task<IEnumerable<RepairShipDTO>> GetAllRepairsShip(Guid idShip)
+    public async Task<IEnumerable<GetAllRepairDTO>> GetAllRepairsShip(Guid idShip)
     {
         var repairs = await _context.Repairs.Include(x => x.Service)
+            .Include(x => x.Ship)
             .Where(x => x.IdShip == idShip)
             .ToListAsync();
-        return _mapper.Map<IEnumerable<RepairShipDTO>>(repairs);
+        return _mapper.Map<IEnumerable<GetAllRepairDTO>>(repairs);
     }
 
     public async Task<RepairDTO> GetOneRepair(Guid id)
@@ -39,7 +40,7 @@ public class RepairRepository : BaseRepository<RepairEntity,RepairPersistence,Co
         return _mapper.Map<IEnumerable<GetAllRepairDTO>>(repairs);
     }
 
-    public async Task<IEnumerable<ShipDTO>> GetAllShipsRepair(Guid idRepair)
+    public async Task<IEnumerable<GetAllShipDTO>> GetAllShipsRepair(Guid idRepair)
     {
         var ships = await _context.Repairs.Include(x => x.Ship)
             .Where(x => x.IdService == idRepair)
@@ -47,17 +48,20 @@ public class RepairRepository : BaseRepository<RepairEntity,RepairPersistence,Co
             .Distinct()
             .Include(y => y.Propietary)
             .ToListAsync();
-        return _mapper.Map<IEnumerable<ShipDTO>>(ships);
+        return _mapper.Map<IEnumerable<GetAllShipDTO>>(ships);
     }
 
-    public async Task<IEnumerable<ServiceDTO>> GetAllServicesShip(Guid idShip)
+    public async Task<IEnumerable<GetAllServicesDTO>> GetAllServicesShip(Guid idShip)
     {
         var services = await _context.Repairs.Include(x => x.Service)
+            .ThenInclude(x => x.ServiceType)
+            .Include(x => x.Service)
+            .ThenInclude(x => x.Installation)
             .Where(x => x.IdShip == idShip)
             .Select(x => x.Service)
             .Distinct()
             .ToListAsync();
         
-        return _mapper.Map<IEnumerable<ServiceDTO>>(services);
+        return _mapper.Map<IEnumerable<GetAllServicesDTO>>(services);
     }
 }

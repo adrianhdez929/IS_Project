@@ -3,5 +3,5 @@
 public class GetAllRepairsShipDTO
 {
     public Guid IdShip { get; set; }
-    public IEnumerable<RepairShipDTO> Repairs { get; set; }
+    public IEnumerable<GetAllRepairDTO> Repairs { get; set; }
 }

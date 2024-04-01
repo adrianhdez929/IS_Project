@@ -7,11 +7,11 @@ namespace APIAeropuerto.Domain.Interfaces;
 
 public interface IRepairRepository
 {
-    Task<IEnumerable<RepairShipDTO>> GetAllRepairsShip(Guid idShip);
+    Task<IEnumerable<GetAllRepairDTO>> GetAllRepairsShip(Guid idShip);
     Task<RepairDTO> GetOneRepair(Guid id);
     Task<IEnumerable<GetAllRepairDTO>> GetAllRepairs();
     
-    Task<IEnumerable<ShipDTO>> GetAllShipsRepair(Guid idRepair);
+    Task<IEnumerable<GetAllShipDTO>> GetAllShipsRepair(Guid idRepair);
     
-    Task<IEnumerable<ServiceDTO>> GetAllServicesShip(Guid idShip);
+    Task<IEnumerable<GetAllServicesDTO>> GetAllServicesShip(Guid idShip);
 }
