@@ -44,7 +44,7 @@ public class InstallationTypeController : Controller
     }
     
     [HttpDelete]
-    //[Route("{id}")]
+    [Route("{id}")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = ClaimsStrings.WriteInstallationTypes)]
     public async Task<IActionResult> DeleteInstallationType(Guid id)
     {
