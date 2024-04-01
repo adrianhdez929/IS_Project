@@ -182,26 +182,40 @@ public class ExportPdfUseCase
         if (airportWithRepairServices.Any())
         {
             mainContentPage.Paragraphs.Add(new TextFragment("Airport with repair services:"));
+            mainContentPage.Paragraphs.Add(new TextFragment("\n"));
             mainContentPage.Paragraphs.Add(table);
+            mainContentPage.Paragraphs.Add(new TextFragment("\n"));
+            mainContentPage.Paragraphs.Add(new TextFragment("\n"));
         }
         if (amountRepairAirport.Any())
         {
             mainContentPage.Paragraphs.Add(new TextFragment("Amount repair airport:"));
+            mainContentPage.Paragraphs.Add(new TextFragment("\n"));
             mainContentPage.Paragraphs.Add(table1);
+            mainContentPage.Paragraphs.Add(new TextFragment("\n"));
+            mainContentPage.Paragraphs.Add(new TextFragment("\n"));
         }
         if (clientAirportJM.Any())
         {
             mainContentPage.Paragraphs.Add(new TextFragment("Client airport JM:"));
+            mainContentPage.Paragraphs.Add(new TextFragment("\n"));
             mainContentPage.Paragraphs.Add(table2);
+            mainContentPage.Paragraphs.Add(new TextFragment("\n"));
+            mainContentPage.Paragraphs.Add(new TextFragment("\n"));
         }
         if (airportWithLessShip.Any())
         {
             mainContentPage.Paragraphs.Add(new TextFragment("Airport with less ship:"));
+            mainContentPage.Paragraphs.Add(new TextFragment("\n"));
             mainContentPage.Paragraphs.Add(table3);
+            mainContentPage.Paragraphs.Add(new TextFragment("\n"));
+            mainContentPage.Paragraphs.Add(new TextFragment("\n"));
         }
         if (avgServicesPriceJM.Any())
         {
+            
             mainContentPage.Paragraphs.Add(new TextFragment("Avg services price JM:"));
+            mainContentPage.Paragraphs.Add(new TextFragment("\n"));
             mainContentPage.Paragraphs.Add(table4);
         }
         var pathTo = Path.Combine(path, "Report.pdf");
